@@ -1,5 +1,6 @@
 package committee.nova.mods.avaritia.common.item.tools.blaze;
 
+import committee.nova.mods.avaritia.api.iface.IBlazeTool;
 import committee.nova.mods.avaritia.api.iface.ITooltip;
 import committee.nova.mods.avaritia.common.entity.FireBallEntity;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
@@ -37,7 +38,7 @@ import java.util.List;
  * Date: 2022/4/2 20:00
  * Version: 1.0
  */
-public class BlazeSwordItem extends SwordItem implements ITooltip {
+public class BlazeSwordItem extends SwordItem implements ITooltip, IBlazeTool {
     private final String name;
     public BlazeSwordItem(String name) {
         super(ModToolTiers.BLAZE_SWORD, 0, -2.4f,

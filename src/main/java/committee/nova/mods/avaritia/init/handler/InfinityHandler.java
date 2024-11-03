@@ -1,6 +1,6 @@
 package committee.nova.mods.avaritia.init.handler;
 
-import committee.nova.mods.avaritia.Static;
+import committee.nova.mods.avaritia.api.iface.IBlazeTool;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.common.item.InfinityArmorItem;
 import committee.nova.mods.avaritia.common.item.MatterClusterItem;
@@ -30,12 +30,12 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.item.ItemEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -46,13 +46,11 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
-import top.theillusivec4.curios.api.CuriosApi;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Description:
@@ -238,7 +236,7 @@ public class InfinityHandler {
                 event.setCanceled(true);
                 player.setHealth(player.getMaxHealth());
             }
-            ItemStack totem = getPlayerTotemItem(player);
+            ItemStack totem = ToolUtils.getPlayerTotemItem(player);
             if (!totem.isEmpty()){
                 NetworkHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new S2CTotemPacket(totem, player.getId()));
 
@@ -323,6 +321,21 @@ public class InfinityHandler {
     }
 
     @SubscribeEvent
+    public static void toolEnchant(BlockEvent.BreakEvent event) {//炽热
+        var player = event.getPlayer();
+        if (player == null) return;
+        var tool = player.getMainHandItem();
+        if (tool.isEmpty()) return;
+        var world = (Level) event.getLevel();
+        BlockPos pos = event.getPos();
+        Block block = event.getState().getBlock();
+        BlockState state = event.getState();
+        if (tool.is(ModItems.blaze_axe.get()) || tool.is(ModItems.blaze_pickaxe.get()) || tool.is(ModItems.blaze_shovel.get())) {
+            ToolUtils.melting(block, state, world, pos, player, tool, event);
+        }
+    }
+
+    @SubscribeEvent
     public static void entityItemUnDeath(ItemEvent event) {
         ItemEntity entityItem = event.getEntity();
         Item item = entityItem.getItem().getItem();
@@ -339,36 +352,4 @@ public class InfinityHandler {
         event.getDrops().add(entity);
     }
 
-    /**
-     * 获取玩家背包中的图腾
-     * @param player 玩家
-     * @return 图腾
-     */
-    private static ItemStack getPlayerTotemItem(Player player){
-        AtomicReference<ItemStack> totemItem = new AtomicReference<>(ItemStack.EMPTY);;
-        ItemStack mainHandItem = player.getMainHandItem();
-        if (mainHandItem.is(ModItems.infinity_totem.get())){
-            totemItem.set(mainHandItem);
-        }
-        ItemStack offhand = player.getOffhandItem();
-        if (offhand.is(ModItems.infinity_totem.get())){
-            totemItem.set(offhand);
-        }
-        for (ItemStack stack : player.getInventory().items) {
-            if (stack.is(ModItems.infinity_totem.get()))
-                totemItem.set(stack);
-        }
-
-        if (Static.isLoad("curios") && Static.isLoad("charmofundying")){
-            CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
-                curiosInventory.getStacksHandler("charm").ifPresent(slotInventory -> {
-                    if (slotInventory.getStacks().getStackInSlot(0).is(ModItems.infinity_totem.get())){
-                        totemItem.set(slotInventory.getStacks().getStackInSlot(0));
-                    }
-                });
-            });
-        }
-
-        return totemItem.get();
-    }
 }

@@ -2,6 +2,7 @@ package committee.nova.mods.avaritia.util;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.common.entity.arrow.HeavenSubArrowEntity;
 import committee.nova.mods.avaritia.common.item.InfinityArmorItem;
 import committee.nova.mods.avaritia.init.config.ModConfig;
@@ -18,27 +19,33 @@ import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -48,10 +55,13 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import top.theillusivec4.curios.api.CuriosApi;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -456,6 +466,102 @@ public class ToolUtils {
     private static boolean isLogOrLeaves(Level world, BlockPos pos) {
         BlockState b = world.getBlockState(pos);
         return b.is(BlockTags.LOGS) || b.is(BlockTags.LEAVES);
+    }
+
+    /**
+     * 获取玩家背包中的图腾
+     * @param player 玩家
+     * @return 图腾
+     */
+    public static ItemStack getPlayerTotemItem(Player player){
+        AtomicReference<ItemStack> totemItem = new AtomicReference<>(ItemStack.EMPTY);;
+        ItemStack mainHandItem = player.getMainHandItem();
+        if (mainHandItem.is(ModItems.infinity_totem.get())){
+            totemItem.set(mainHandItem);
+        }
+        ItemStack offhand = player.getOffhandItem();
+        if (offhand.is(ModItems.infinity_totem.get())){
+            totemItem.set(offhand);
+        }
+        for (ItemStack stack : player.getInventory().items) {
+            if (stack.is(ModItems.infinity_totem.get()))
+                totemItem.set(stack);
+        }
+
+        if (Static.isLoad("curios") && Static.isLoad("charmofundying")){
+            CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
+                curiosInventory.getStacksHandler("charm").ifPresent(slotInventory -> {
+                    if (slotInventory.getStacks().getStackInSlot(0).is(ModItems.infinity_totem.get())){
+                        totemItem.set(slotInventory.getStacks().getStackInSlot(0));
+                    }
+                });
+            });
+        }
+
+        return totemItem.get();
+    }
+
+    public static void melting(Block block, BlockState state, Level world, BlockPos pos, Player player, ItemStack tool, BlockEvent.BreakEvent event){
+        if (!block.canHarvestBlock(state, world, pos, player) || block instanceof CropBlock) return;
+        List<ItemStack> drops = Block.getDrops(state, (ServerLevel) world, pos, null);
+        int unLuck = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
+        //霉运影响
+        boolean flag = unLuck > 0  &&  world.random.nextDouble() < unLuck * 0.2; //霉运判断结果 true触发
+        if (drops.isEmpty() || flag) return;
+        drops.forEach(itemStack -> {
+            ItemStack dropStack = getMeltingItem(world, itemStack, tool);
+            if (!dropStack.equals(itemStack)){
+                ToolUtils.meltingAchieve(world, player, pos, event);
+                world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, dropStack));
+            }
+        });
+    }
+
+    /**
+     * 获取物品烧炼后产物
+     * @param world world
+     * @param itemStack 烧炼前物品
+     * @param tool 使用工具
+     * @return 烧炼产物
+     */
+    public static ItemStack getMeltingItem(Level world,ItemStack itemStack, ItemStack tool){
+        ItemStack dropStack = world.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(itemStack), world)
+                .map(smeltingRecipe -> smeltingRecipe.getResultItem(world.registryAccess())).filter(e -> !e.isEmpty())
+                .map(e -> ItemHandlerHelper.copyStackWithSize(e, tool.getCount() * e.getCount()))
+                .orElse(itemStack);
+        int fortune = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
+        if (fortune > 0){ //时运影响产物数量
+            RandomSource random = RandomSource.create();
+            int count = 1;
+            if (random.nextDouble() < 0.3 + fortune * 0.1)
+                count += Mth.nextInt(random, 0, fortune + 1);
+            if (random.nextDouble() < 0.1 + fortune * 0.05){ //触发暴击
+                count *= Mth.nextInt(random, 1, fortune);
+            }
+            dropStack.setCount(count);
+        }
+        return dropStack;
+    }
+
+
+    /**
+     * 熔炼附魔的伪实现 通过取消方块破坏事件，同时生成掉落物
+     * @param world 世界
+     * @param player 玩家
+     * @param pos 坐标
+     * @param event 事件
+     *  from <a href="https://github.com/yuoft/MoreEnchants/blob/master/src/main/java/com/yuo/enchants/Event/EventHelper.java">...</a>
+     */
+    public static void meltingAchieve(Level world, Player player, BlockPos pos, BlockEvent.BreakEvent event){
+        if (!world.isClientSide){
+            ServerLevel serverWorld = (ServerLevel) world;
+            for (int i = 0; i < 10; i++){
+                serverWorld.addParticle(ParticleTypes.FLAME, pos.getX() + world.random.nextDouble(), pos.getY() + 1d,
+                        pos.getZ() + world.random.nextDouble(), 1, 0, 0);
+            }
+        }
+        world.playSound(player, pos, SoundEvents.FIRECHARGE_USE,  SoundSource.BLOCKS,1.0f, 1.0f);
+        world.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState()); //设置此坐标为空气
     }
 
     private static class BlockPosList extends ArrayList<BlockPos> {

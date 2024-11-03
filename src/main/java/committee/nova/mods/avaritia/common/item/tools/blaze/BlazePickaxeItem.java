@@ -1,5 +1,6 @@
 package committee.nova.mods.avaritia.common.item.tools.blaze;
 
+import committee.nova.mods.avaritia.api.iface.IBlazeTool;
 import committee.nova.mods.avaritia.api.iface.ITooltip;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
@@ -26,7 +27,7 @@ import java.util.List;
  * Date: 2022/4/2 20:00
  * Version: 1.0
  */
-public class BlazePickaxeItem extends PickaxeItem implements ITooltip {
+public class BlazePickaxeItem extends PickaxeItem implements ITooltip, IBlazeTool {
     private final String name;
     public BlazePickaxeItem(String name) {
         super(ModToolTiers.BLAZE_SWORD, 0, -2.4f,
