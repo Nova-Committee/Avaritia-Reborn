@@ -1,21 +1,17 @@
 package committee.nova.mods.avaritia.common.item.tools.blaze;
 
-import committee.nova.mods.avaritia.api.iface.IBlazeTool;
+import committee.nova.mods.avaritia.api.iface.ISwitchable;
 import committee.nova.mods.avaritia.api.iface.ITooltip;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
 import committee.nova.mods.avaritia.init.registry.ModToolTiers;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +23,7 @@ import java.util.List;
  * Date: 2022/4/2 20:00
  * Version: 1.0
  */
-public class BlazePickaxeItem extends PickaxeItem implements ITooltip, IBlazeTool {
+public class BlazePickaxeItem extends PickaxeItem implements ITooltip{
     private final String name;
     public BlazePickaxeItem(String name) {
         super(ModToolTiers.BLAZE_SWORD, 0, -2.4f,
@@ -69,15 +65,4 @@ public class BlazePickaxeItem extends PickaxeItem implements ITooltip, IBlazeToo
 //        level.playSound(player, player.getOnPos(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
 //        return InteractionResultHolder.success(heldItem);
 //    }
-
-    @Override
-    public boolean hasCustomEntity(ItemStack stack) {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public Entity createEntity(Level level, Entity location, ItemStack stack) {
-        return ImmortalItemEntity.create(ModEntities.IMMORTAL.get(), level, location.getX(), location.getY(), location.getZ(), stack);
-    }
 }

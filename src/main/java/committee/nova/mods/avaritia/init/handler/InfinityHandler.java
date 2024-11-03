@@ -1,6 +1,6 @@
 package committee.nova.mods.avaritia.init.handler;
 
-import committee.nova.mods.avaritia.api.iface.IBlazeTool;
+import committee.nova.mods.avaritia.api.iface.ISwitchable;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.common.item.InfinityArmorItem;
 import committee.nova.mods.avaritia.common.item.MatterClusterItem;
@@ -330,8 +330,11 @@ public class InfinityHandler {
         BlockPos pos = event.getPos();
         Block block = event.getState().getBlock();
         BlockState state = event.getState();
-        if (tool.is(ModItems.blaze_axe.get()) || tool.is(ModItems.blaze_pickaxe.get()) || tool.is(ModItems.blaze_shovel.get())) {
-            ToolUtils.melting(block, state, world, pos, player, tool, event);
+        if (
+                (tool.is(ModItems.blaze_axe.get()) || tool.is(ModItems.blaze_pickaxe.get()) || tool.is(ModItems.blaze_shovel.get()))
+                && tool.getItem() instanceof ISwitchable
+        ) {
+            if (((ISwitchable)tool.getItem()).isActive(tool)) ToolUtils.melting(block, state, world, pos, player, tool, event);
         }
     }
 
