@@ -1,22 +1,29 @@
 package committee.nova.mods.avaritia.common.item.tools.crystal;
 
 import committee.nova.mods.avaritia.api.iface.ITooltip;
+import committee.nova.mods.avaritia.init.config.ModConfig;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
 import committee.nova.mods.avaritia.init.registry.ModToolTiers;
 import committee.nova.mods.avaritia.util.ItemUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +43,8 @@ public class CrystalHoeItem extends HoeItem implements ITooltip {
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)
-                        .fireResistant());
+                        .fireResistant()
+        );
         this.name = name;
     }
     @Override
@@ -66,24 +74,37 @@ public class CrystalHoeItem extends HoeItem implements ITooltip {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level world, Player player, @NotNull InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-        if (player.isCrouching()) {
-            if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0) {
-                ItemUtils.clearEnchants(stack);
-                stack.enchant(Enchantments.BLOCK_FORTUNE, 3);
-                if(!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(Component.translatable("tooltip.crystal_pickaxe.enchant_1"), true);
-            } else {
-                ItemUtils.clearEnchants(stack);
-                stack.enchant(Enchantments.SILK_TOUCH, 1);
-                if(!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(Component.translatable("tooltip.crystal_pickaxe.enchant_2"), true);
-            }
-            player.swing(hand);
-            return InteractionResultHolder.success(stack);
-        }
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level world, @NotNull Player player, @NotNull InteractionHand hand) {
+
+
+
+
         return super.use(world, player, hand);
     }
 
+    @Override
+    public @NotNull InteractionResult useOn(@NotNull UseOnContext pContext) {
+        var pos = pContext.getClickedPos();
+        var level = pContext.getLevel();
+        var targetState = level.getBlockState(pos);
+        var targetBlock = targetState.getBlock();
+        if (level instanceof ServerLevel serverLevel && targetBlock instanceof BonemealableBlock growable
+        ) {
+            if (growable.isValidBonemealTarget(serverLevel, pos, targetState, false) && ForgeHooks.onCropsGrowPre(serverLevel, pos, targetState, true)) {
+                growable.performBonemeal(serverLevel, level.random, pos, targetState);
+                serverLevel.levelEvent(2005, pos, 0);
+                ForgeHooks.onCropsGrowPost(serverLevel, pos, targetState);
+            }
+        }
+        return super.useOn(pContext);
+    }
 
-
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            // 取消攻击冷却
+            serverPlayer.resetAttackStrengthTicker();
+        }
+        return super.onLeftClickEntity(stack, player, entity);
+    }
 }

@@ -339,7 +339,7 @@ public class InfinityHandler {
     }
 
     @SubscribeEvent
-    public static void entityItemUnDeath(ItemEvent event) {
+    public static void entityItemUnDeath(ItemEvent event) {//取消无尽物品受到的伤害
         ItemEntity entityItem = event.getEntity();
         Item item = entityItem.getItem().getItem();
         if (item instanceof InfinityArmorItem || item instanceof InfinityAxeItem || item instanceof InfinityBowItem ||

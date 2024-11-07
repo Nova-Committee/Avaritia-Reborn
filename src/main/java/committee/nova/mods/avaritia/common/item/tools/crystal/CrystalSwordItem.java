@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
@@ -32,7 +33,7 @@ public class CrystalSwordItem extends SwordItem implements ITooltip {
     private final String name;
 
     public CrystalSwordItem(String name) {
-        super(ModToolTiers.CRYSTAL_PICKAXE, 1, -1.5F,
+        super(ModToolTiers.CRYSTAL_SWORD, 1, 0F,
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)
@@ -67,24 +68,13 @@ public class CrystalSwordItem extends SwordItem implements ITooltip {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level world, Player player, @NotNull InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-        if (player.isCrouching()) {
-            if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0) {
-                ItemUtils.clearEnchants(stack);
-                stack.enchant(Enchantments.BLOCK_FORTUNE, 3);
-                if(!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(Component.translatable("tooltip.crystal_pickaxe.enchant_1"), true);
-            } else {
-                ItemUtils.clearEnchants(stack);
-                stack.enchant(Enchantments.SILK_TOUCH, 1);
-                if(!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(Component.translatable("tooltip.crystal_pickaxe.enchant_2"), true);
-            }
-            player.swing(hand);
-            return InteractionResultHolder.success(stack);
+    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            // 取消攻击冷却
+            serverPlayer.resetAttackStrengthTicker();
         }
-        return super.use(world, player, hand);
+        return super.onLeftClickEntity(stack, player, entity);
     }
-
 
 
 }

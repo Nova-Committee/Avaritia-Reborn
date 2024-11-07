@@ -12,6 +12,9 @@ import java.util.function.Supplier;
  * Version: 1.0
  */
 public enum ModToolTiers implements net.minecraft.world.item.Tier {
+    CRYSTAL_SWORD(50, 4888, 4888f, 50F, 0, () -> {
+        return Ingredient.of(ModItems.crystal_matrix_ingot.get());
+    }),
     CRYSTAL_PICKAXE(50, 4888, 4888f, 8.0F, 0, () -> {
         return Ingredient.of(ModItems.crystal_matrix_ingot.get());
     }),
