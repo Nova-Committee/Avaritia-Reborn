@@ -9,6 +9,7 @@ import committee.nova.mods.avaritia.common.block.ResourceBlock;
 import committee.nova.mods.avaritia.common.block.cake.EndlessCakeBlock;
 import committee.nova.mods.avaritia.common.block.craft.CompressedCraftTableBlock;
 import committee.nova.mods.avaritia.common.block.craft.DoubleCompressedCraftTableBlock;
+import committee.nova.mods.avaritia.common.block.misc.SoulFarmLandBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -38,6 +39,7 @@ public class ModBlocks {
     public static RegistryObject<Block> crystal_matrix = block("crystal_matrix", ResourceBlock::new, ModRarities.RARE);
     public static RegistryObject<Block> blaze_cube_block = block("blaze_cube_block", ResourceBlock::new, ModRarities.RARE);
     public static RegistryObject<Block> compressed_chest = block("compressed_chest", CompressedChestBlock::new, ModRarities.RARE);
+    public static RegistryObject<Block> soul_farmland = block("soul_farmland", SoulFarmLandBlock::new, ModRarities.RARE);
 
     //MACHINE
     public static RegistryObject<Block> sculk_crafting_table = block("sculk_crafting_table", () -> new ModCraftTableBlock(ModCraftTier.SCULK), ModRarities.COMMON);

@@ -53,10 +53,6 @@ public class BlazeSwordItem extends SwordItem implements ITooltip, ISwitchable {
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         var heldItem = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            List<Entity> entities = level.getEntities(player, player.getBoundingBox().deflate(10));
-            double d2 = 0;
-            if (!entities.isEmpty()) d2 = entities.get(0).getY(0.5D) - player.getY(0.5D);
-
             FireBallEntity fireBallEntity = ModEntities.FIRE_BALL.get().create(level);
             if (fireBallEntity != null){
                 fireBallEntity.setOwner(player);

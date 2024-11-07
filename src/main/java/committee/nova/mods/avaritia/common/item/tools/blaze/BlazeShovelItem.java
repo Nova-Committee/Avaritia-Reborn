@@ -7,11 +7,14 @@ import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
 import committee.nova.mods.avaritia.init.registry.ModToolTiers;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,24 +48,20 @@ public class BlazeShovelItem extends ShovelItem implements ITooltip, ISwitchable
         this.appendTooltip(pStack, pLevel, pTooltipComponents, pIsAdvanced, name);
     }
 
-//    @Override
-//    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
-//        var heldItem = player.getItemInHand(hand);
-//        if (!level.isClientSide) {
-//            List<Entity> entities = level.getEntities(player, player.getBoundingBox().deflate(10));
-//            double d2 = 0;
-//            if (!entities.isEmpty()) d2 = entities.get(0).getY(0.5D) - player.getY(0.5D);
-//
-//            FireBallEntity fireBallEntity = ModEntities.FIRE_BALL.get().create(level);
-//            if (fireBallEntity != null){
-//                fireBallEntity.setOwner(player);
-//                fireBallEntity.setPos(player.getX(), player.getEyeY() + 0.1, player.getZ());
-//                fireBallEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
-//                level.addFreshEntity(fireBallEntity);
-//            }
-//
-//        }
-//        level.playSound(player, player.getOnPos(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
-//        return InteractionResultHolder.success(heldItem);
-//    }
+    @Override
+    public @NotNull InteractionResult useOn(@NotNull UseOnContext pContext) {
+        var level = pContext.getLevel();
+        var blockpos = pContext.getClickedPos();
+        var blockstate = level.getBlockState(blockpos);
+        if (blockstate.is(Blocks.GRAVEL)){
+            level.setBlockAndUpdate(blockpos, Blocks.NETHERRACK.defaultBlockState());
+            return InteractionResult.SUCCESS;
+        } else if (blockstate.is(Blocks.SAND)){
+            level.setBlockAndUpdate(blockpos, Blocks.SOUL_SAND.defaultBlockState());
+            return InteractionResult.SUCCESS;
+        } else if (blockstate.is(Blocks.DIRT)){
+            level.setBlockAndUpdate(blockpos, Blocks.SOUL_SOIL.defaultBlockState());
+            return InteractionResult.SUCCESS;
+        } else return super.useOn(pContext);
+    }
 }

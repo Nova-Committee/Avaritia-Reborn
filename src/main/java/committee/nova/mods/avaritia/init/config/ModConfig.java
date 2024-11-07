@@ -26,6 +26,7 @@ public class ModConfig {
     public static final ForgeConfigSpec.IntValue shovelBreakRange;
     public static final ForgeConfigSpec.IntValue neutronCollectorProductTick;
     public static final ForgeConfigSpec.IntValue singularityTimeRequired;
+    public static final ForgeConfigSpec.DoubleValue growth_soul_farmland;
 
     public static final ForgeConfigSpec.IntValue neutronPileEmc;
     public static final ForgeConfigSpec.IntValue vanillaTotemEmc;
@@ -48,6 +49,7 @@ public class ModConfig {
         shovelBreakRange = buildInt(common, "Shovel Break Range", 8, 2, 32, "The range of Infinity Shovel can break");
         neutronCollectorProductTick = buildInt(common, "Neutron Collector Product Tick", 3600, 1200, Integer.MAX_VALUE, "The product tick of NeutronCollector");
         singularityTimeRequired = buildInt(common, "Singularity Time Required", 240, 0, Integer.MAX_VALUE, "Singularity default time required");
+        growth_soul_farmland = buildDouble(common, "Growth soul farmland rate", 0.8, 0.0, 1.0, "Growth soul farmland rate");
         common.pop();
         common.push("emc");
         neutronPileEmc = buildInt(common, "Neutron Pile Emc", 100, 0, Integer.MAX_VALUE, "Emc of Neutron Pile");
