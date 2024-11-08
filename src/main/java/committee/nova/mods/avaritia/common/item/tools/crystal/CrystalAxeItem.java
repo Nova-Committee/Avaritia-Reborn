@@ -8,11 +8,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -69,22 +68,20 @@ public class CrystalAxeItem extends AxeItem implements ITooltip {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level world, Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (player.isCrouching()) {
-            if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0) {
-                ItemUtils.clearEnchants(stack);
-                stack.enchant(Enchantments.BLOCK_FORTUNE, 3);
-                if(!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(Component.translatable("tooltip.crystal_pickaxe.enchant_1"), true);
-            } else {
-                ItemUtils.clearEnchants(stack);
-                stack.enchant(Enchantments.SILK_TOUCH, 1);
-                if(!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(Component.translatable("tooltip.crystal_pickaxe.enchant_2"), true);
-            }
-            player.swing(hand);
-            return InteractionResultHolder.success(stack);
-        }
+
         return super.use(world, player, hand);
     }
 
-
-
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+        if (entity instanceof ServerPlayer serverPlayer && !serverPlayer.level().isClientSide()){
+            serverPlayer.getCooldowns().addCooldown(serverPlayer.getUseItem().getItem(), 1200);
+            serverPlayer.stopUsingItem();
+            if (serverPlayer.getOffhandItem().getItem() instanceof ShieldItem) {
+                serverPlayer.getOffhandItem().setDamageValue(serverPlayer.getOffhandItem().getDamageValue() / 2);
+            }
+            serverPlayer.level().broadcastEntityEvent(serverPlayer, (byte)30);
+        }
+        return super.onLeftClickEntity(stack, player, entity);
+    }
 }
