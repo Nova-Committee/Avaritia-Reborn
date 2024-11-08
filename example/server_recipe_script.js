@@ -1,7 +1,8 @@
 ServerEvents.recipes(
     event => {
         event.custom({
-            type: 'avaritia:shaped_extreme_craft',//shapeless is avaritia:shapeless_extreme_craft。
+            type: 'avaritia:shaped_table',//shapeless is avaritia:shapeless_table
+            tier: 4,
             pattern: [
                 "       IA",
                 "      III",

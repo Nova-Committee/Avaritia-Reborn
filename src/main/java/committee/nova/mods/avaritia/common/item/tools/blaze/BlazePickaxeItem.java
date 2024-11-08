@@ -6,6 +6,7 @@ import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
 import committee.nova.mods.avaritia.init.registry.ModToolTiers;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -29,7 +30,7 @@ import java.util.List;
 public class BlazePickaxeItem extends PickaxeItem implements ITooltip, ISwitchable{
     private final String name;
     public BlazePickaxeItem(String name) {
-        super(ModToolTiers.BLAZE_SWORD, 0, -2.4f,
+        super(ModToolTiers.BLAZE_SWORD, 0, 0f,
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)
@@ -52,7 +53,7 @@ public class BlazePickaxeItem extends PickaxeItem implements ITooltip, ISwitchab
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level world, Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (player.isCrouching()) {
-            switchMode(world, player, hand);
+            switchMode(world, player, hand, I18n.get("tooltip.avaritia.tool.smelt"));
             return InteractionResultHolder.success(stack);
         }
         return super.use(world, player, hand);

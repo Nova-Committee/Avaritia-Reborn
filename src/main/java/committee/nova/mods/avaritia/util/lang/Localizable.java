@@ -90,7 +90,7 @@ public class Localizable {
 
         public MutableComponent build() {
             MutableComponent component = Component.translatable(this.key, this.args);
-            if (!this.prependText.equals("")) {
+            if (!this.prependText.isEmpty()) {
                 component = (Component.literal(this.prependText)).append(component);
             }
 

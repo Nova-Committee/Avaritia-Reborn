@@ -107,6 +107,10 @@
   "tooltip.avaritia.added_by": "Added By: %s",
   "tooltip.avaritia.time_consume": "Time Required: %s",
   "tooltip.avaritia.progress": "Progress: %s",
+  "tooltip.avaritia.active": "%s mode active!",
+  "tooltip.avaritia.inactive": "%s mode inactive!",
+  "tooltip.avaritia.switch": "Switch to %s",
+  "tooltip.avaritia.tool.smelt": "Smelt",
   "block.avaritia.neutron": "Neutron Block",
   "block.avaritia.infinity": "Infinity Block",
   "block.avaritia.blaze_cube_block": "Blaze Cube Block",
@@ -228,5 +232,7 @@
   "config.jade.plugin_avaritia.sculk":"Sculk Crafting",
   "config.jade.plugin_avaritia.end":"End Crafting",
   "config.jade.plugin_avaritia.nether":"Nether Crafting",
-  "config.jade.plugin_avaritia.extreme":"Extreme Crafting"
+  "config.jade.plugin_avaritia.extreme":"Extreme Crafting",
+  "rarity.legend.name": "Legend",
+  "rarity.cosmic.name": "Cosmic"
 }

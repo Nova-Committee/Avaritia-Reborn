@@ -7,6 +7,7 @@ import committee.nova.mods.avaritia.init.registry.ModBlocks;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
 import committee.nova.mods.avaritia.init.registry.ModToolTiers;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -56,7 +57,7 @@ public class BlazeHoeItem extends HoeItem implements ITooltip, ISwitchable {
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level world, Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (player.isCrouching()) {
-            switchMode(world, player, hand);
+            switchMode(world, player, hand, I18n.get("tooltip.avaritia.tool.smelt"));
             return InteractionResultHolder.success(stack);
         }
         return super.use(world, player, hand);

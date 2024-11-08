@@ -9,6 +9,7 @@ import com.blamejared.crafttweaker.api.ingredient.IIngredient;
 import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.item.MCItemStack;
 import com.blamejared.crafttweaker.api.recipe.manager.base.IRecipeManager;
+import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.api.common.crafting.ISpecialRecipe;
 import committee.nova.mods.avaritia.common.crafting.recipe.InfinityCatalystCraftRecipe;
 import committee.nova.mods.avaritia.common.crafting.recipe.ShapedTableCraftingRecipe;
@@ -29,17 +30,22 @@ import java.util.stream.Collectors;
  * Date: 2022/5/17 8:39
  * Version: 1.0
  */
-@ZenCodeType.Name("mods.avaritia.ExtremeTableCrafting")
+@ZenCodeType.Name("mods.avaritia.CraftingTable")
 @ZenRegister
-public class ExtremeTableCrafting implements IRecipeManager<ISpecialRecipe> {
-    private static final ExtremeTableCrafting INSTANCE = new ExtremeTableCrafting();
+public class CraftingTable implements IRecipeManager<ISpecialRecipe> {
+    private static final CraftingTable INSTANCE = new CraftingTable();
     @Override
     public RecipeType<ISpecialRecipe> getRecipeType() {
         return ModRecipeTypes.EXTREME_CRAFT_RECIPE.get();
     }
+
     @ZenCodeType.Method
-    public static void addShaped(String name, IItemStack output, IIngredient[][] inputs) {
+    public static void addShaped(String name, int tier, IItemStack output, IIngredient[][] inputs) {
         var id = CraftTweakerConstants.rl(INSTANCE.fixRecipeName(name));
+        if (tier > 4 || tier < 0) {
+            tier = 0;
+            CraftTweakerAPI.getLogger(Static.MOD_ID).error("Unable to assign a tier to the Table Recipe for stack " + output.getCommandString() + ". Tier cannot be greater than 4 or less than 0.");
+        }
         int height = inputs.length;
         int width = 0;
         for (var row : inputs) {
@@ -59,7 +65,7 @@ public class ExtremeTableCrafting implements IRecipeManager<ISpecialRecipe> {
             }
         }
 
-        var recipe = new ShapedTableCraftingRecipe(id, width, height, ingredients, output.getInternal());
+        var recipe = new ShapedTableCraftingRecipe(id, width, height, ingredients, output.getInternal(), tier);
         recipe.setTransformers((x, y, stack) -> inputs[y][x].getRemainingItem(new MCItemStack(stack)).getInternal());
 
         CraftTweakerAPI.apply(new ActionAddRecipe<>(INSTANCE, recipe));
@@ -67,8 +73,17 @@ public class ExtremeTableCrafting implements IRecipeManager<ISpecialRecipe> {
 
     @ZenCodeType.Method
     public static void addShapeless(String name, IItemStack output, IIngredient[] inputs) {
+        addShapeless(name, 0, output, inputs);
+    }
+
+    @ZenCodeType.Method
+    public static void addShapeless(String name, int tier, IItemStack output, IIngredient[] inputs) {
         var id = CraftTweakerConstants.rl(INSTANCE.fixRecipeName(name));
-        var recipe = new ShapelessTableCraftingRecipe(id, toIngredientsList(inputs), output.getInternal());
+        if (tier > 4 || tier < 0) {
+            tier = 0;
+            CraftTweakerAPI.getLogger(Static.MOD_ID).error("Unable to assign a tier to the Table Recipe for stack " + output.getCommandString() + ". Tier cannot be greater than 4 or less than 0.");
+        }
+        var recipe = new ShapelessTableCraftingRecipe(id, toIngredientsList(inputs), output.getInternal(), tier);
 
         recipe.setTransformers((slot, stack) -> inputs[slot].getRemainingItem(new MCItemStack(stack)).getInternal());
 

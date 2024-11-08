@@ -1,4 +1,4 @@
-mods.avaritia.ExtremeTableCrafting.addShaped("diamond_block", <item:minecraft:diamond_block>,
+mods.avaritia.CraftingTable.addShaped("diamond_block", 4, <item:minecraft:diamond_block>,
 [
     [],
     [],
@@ -12,7 +12,7 @@ mods.avaritia.ExtremeTableCrafting.addShaped("diamond_block", <item:minecraft:di
 ]
 
 );
-mods.avaritia.ExtremeTableCrafting.addShapeless("diamond_blocks", <item:minecraft:diamond_block>,
+mods.avaritia.CraftingTable.addShapeless("diamond_blocks", <item:minecraft:diamond_block>,
 [
     <item:minecraft:coal_block>, <item:minecraft:coal_block>, <item:minecraft:coal_block>,
     <item:minecraft:coal_block>, <item:minecraft:diamond>, <item:minecraft:coal_block>,

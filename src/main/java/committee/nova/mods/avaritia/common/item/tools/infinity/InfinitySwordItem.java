@@ -1,5 +1,6 @@
 package committee.nova.mods.avaritia.common.item.tools.infinity;
 
+import committee.nova.mods.avaritia.api.iface.IMultiFunction;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.init.config.ModConfig;
 import committee.nova.mods.avaritia.init.registry.*;
@@ -25,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
  * Date: 2022/4/2 19:41
  * Version: 1.0
  */
-public class InfinitySwordItem extends SwordItem {
+public class InfinitySwordItem extends SwordItem implements IMultiFunction {
     public InfinitySwordItem() {
         super(ModToolTiers.INFINITY_SWORD, 0, -2.8F, (new Properties())
                 .stacksTo(1)
