@@ -8,10 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.TallFlowerBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
@@ -64,6 +61,10 @@ public class SoulFarmLandBlock extends Block {
                     level.levelEvent(2005, pos.above(), 0);
                     ForgeHooks.onCropsGrowPost(level, pos.above(), aboveState);
                 }
+            }
+
+            if (aboveBlock instanceof NetherWartBlock && aboveState.getValue(NetherWartBlock.AGE) < 3){
+                aboveState.setValue(NetherWartBlock.AGE, aboveState.getValue(NetherWartBlock.AGE) + 1);
             }
         }
     }

@@ -32,7 +32,7 @@ import static committee.nova.mods.avaritia.util.ToolUtils.destroyTree;
 public class InfinityAxeItem extends AxeItem {
 
     public InfinityAxeItem() {
-        super(ModToolTiers.INFINITY_PICKAXE, 10, -3.0f, (new Properties())
+        super(ModToolTiers.INFINITY_AXE, 0, 0f, (new Properties())
                 .stacksTo(1)
                 .fireResistant());
 

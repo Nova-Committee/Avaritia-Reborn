@@ -43,7 +43,7 @@ import java.util.Map;
 public class InfinityHoeItem extends HoeItem {
 
     public InfinityHoeItem() {
-        super(ModToolTiers.INFINITY_HOE, -5, 0f, (new Properties())
+        super(ModToolTiers.INFINITY_HOE, 0, 0f, (new Properties())
                 .stacksTo(1)
                 .fireResistant());
 

@@ -28,56 +28,41 @@ import org.jetbrains.annotations.Nullable;
  */
 public class InfinitySwordItem extends SwordItem implements IMultiFunction {
     public InfinitySwordItem() {
-        super(ModToolTiers.INFINITY_SWORD, 0, -2.8F, (new Properties())
+        super(ModToolTiers.INFINITY_SWORD, 0, 0F, (new Properties())
                 .stacksTo(1)
                 .fireResistant());
     }
 
     @Override
-    public boolean isFoil(@NotNull ItemStack pStack) {
-        return false;
-    }
-
-    @Override
-    public boolean hasCustomEntity(ItemStack stack) {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public Entity createEntity(Level level, Entity location, ItemStack stack) {
-        return ImmortalItemEntity.create(ModEntities.IMMORTAL.get(), level, location.getX(), location.getY(), location.getZ(), stack);
-    }
-
-    @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity victim, LivingEntity livingEntity) {
         var level = livingEntity.level();
-        if (level.isClientSide) {
-            return true;
+        var endlessDamage = ModConfig.isSwordAttackEndless.get();
+        if (!level.isClientSide){
+            if (victim instanceof EnderDragon dragon && livingEntity instanceof Player player) {
+                dragon.hurt(dragon.head, player.damageSources().source(ModDamageTypes.INFINITY, player, victim), endlessDamage ? Float.POSITIVE_INFINITY : ModToolTiers.INFINITY_SWORD.getAttackDamageBonus());
+                dragon.setHealth(0);//fix
+            } else if (victim instanceof Player pvp) {
+                if (ToolUtils.isInfinite(pvp)) {
+                    // 玩家身着无尽甲则只造成爆炸伤害
+                    pvp.level().explode(livingEntity, pvp.getBlockX(), pvp.getBlockY(), pvp.getBlockZ(), 25.0f, Level.ExplosionInteraction.BLOCK);
+                } else
+                    victim.hurt(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), endlessDamage ? Float.POSITIVE_INFINITY : ModToolTiers.INFINITY_SWORD.getAttackDamageBonus());
+
+            } else {
+                victim.setInvulnerable(false);
+                victim.hurt(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), endlessDamage ? Float.POSITIVE_INFINITY : ModToolTiers.INFINITY_SWORD.getAttackDamageBonus());
+            }
+
+            victim.lastHurtByPlayerTime = 60;
+            victim.getCombatTracker().recordDamage(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), victim.getHealth());
+
+            ToolUtils.sweepAttack(level, livingEntity, victim);//横扫
+
+            if (endlessDamage) {
+                victim.setHealth(0);//设置血量为零
+                victim.die(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim));//设置死亡
+            }
         }
-
-        if (victim instanceof EnderDragon dragon && livingEntity instanceof Player player) {
-            dragon.hurt(dragon.head, player.damageSources().source(ModDamageTypes.INFINITY, player, victim), Float.POSITIVE_INFINITY);
-            dragon.setHealth(0);//fix
-        } else if (victim instanceof Player pvp) {
-            if (ToolUtils.isInfinite(pvp)) {
-                // 玩家身着无尽甲则只造成爆炸伤害
-                pvp.level().explode(livingEntity, pvp.getBlockX(), pvp.getBlockY(), pvp.getBlockZ(), 25.0f, Level.ExplosionInteraction.BLOCK);
-            } else
-                victim.hurt(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), Float.POSITIVE_INFINITY);
-
-        } else {
-            victim.setInvulnerable(false);
-            victim.hurt(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), Float.POSITIVE_INFINITY);
-        }
-
-        victim.lastHurtByPlayerTime = 60;
-        victim.getCombatTracker().recordDamage(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), victim.getHealth());
-
-        ToolUtils.sweepAttack(level, livingEntity, victim);//横扫
-
-        victim.setHealth(0);//设置血量为零
-        victim.die(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim));//设置死亡
         return true;
     }
 
@@ -121,5 +106,21 @@ public class InfinitySwordItem extends SwordItem implements IMultiFunction {
     @Override
     public int getEnchantmentValue(ItemStack stack) {
         return 0;
+    }
+
+    @Override
+    public boolean isFoil(@NotNull ItemStack pStack) {
+        return false;
+    }
+
+    @Override
+    public boolean hasCustomEntity(ItemStack stack) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public Entity createEntity(Level level, Entity location, ItemStack stack) {
+        return ImmortalItemEntity.create(ModEntities.IMMORTAL.get(), level, location.getX(), location.getY(), location.getZ(), stack);
     }
 }

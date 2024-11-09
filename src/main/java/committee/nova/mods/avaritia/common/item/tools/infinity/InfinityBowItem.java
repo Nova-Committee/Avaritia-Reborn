@@ -1,5 +1,6 @@
 package committee.nova.mods.avaritia.common.item.tools.infinity;
 
+import committee.nova.mods.avaritia.api.iface.ITooltip;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.common.entity.arrow.HeavenArrowEntity;
 import committee.nova.mods.avaritia.common.entity.arrow.TraceArrowEntity;
@@ -38,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
  * Date: 2022/4/2 20:07
  * Version: 1.0
  */
-public class InfinityBowItem extends BowItem {
+public class InfinityBowItem extends BowItem implements ITooltip {
     public InfinityBowItem() {
         super(new Properties()
                 .stacksTo(1)
@@ -53,16 +54,6 @@ public class InfinityBowItem extends BowItem {
     @Override
     public boolean isDamageable(ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public boolean canBeHurtBy(@NotNull DamageSource source) {
-        return source.is(DamageTypes.FELL_OUT_OF_WORLD);
-    }
-
-    @Override
-    public boolean hasCustomEntity(ItemStack stack) {
-        return true;
     }
 
     @Override
@@ -94,6 +85,11 @@ public class InfinityBowItem extends BowItem {
     @Override
     public Entity createEntity(Level level, Entity location, ItemStack stack) {
         return ImmortalItemEntity.create(ModEntities.IMMORTAL.get(), level, location.getX(), location.getY(), location.getZ(), stack);
+    }
+
+    @Override
+    public boolean hasCustomEntity(ItemStack stack) {
+        return true;
     }
 
     @Override

@@ -1,0 +1,10 @@
+{
+  "parent": "item/crossbow",
+  "textures": {
+    "layer0": "avaritia:item/tool/infinity_crossbow/pull_0"
+  },
+  "loader": "avaritia:cosmic",
+  "cosmic": {
+    "mask": "avaritia:mask/infinity_crossbow/pull_0_mask"
+  }
+}

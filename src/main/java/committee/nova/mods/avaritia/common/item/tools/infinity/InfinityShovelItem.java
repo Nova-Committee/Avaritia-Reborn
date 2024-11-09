@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 public class InfinityShovelItem extends ShovelItem {
 
     public InfinityShovelItem() {
-        super(ModToolTiers.INFINITY_SHOVEL, -2, -2.8f, (new Properties())
+        super(ModToolTiers.INFINITY_SHOVEL, 0, 0f, (new Properties())
                 .stacksTo(1)
                 .fireResistant());
 

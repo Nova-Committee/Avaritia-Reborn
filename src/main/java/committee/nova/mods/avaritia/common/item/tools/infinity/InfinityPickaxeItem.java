@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 public class InfinityPickaxeItem extends PickaxeItem {
 
     public InfinityPickaxeItem() {
-        super(ModToolTiers.INFINITY_PICKAXE, 1, -2.8F, (new Properties())
+        super(ModToolTiers.INFINITY_PICKAXE, 0, 0F, (new Properties())
                 .stacksTo(1)
                 .fireResistant());
 

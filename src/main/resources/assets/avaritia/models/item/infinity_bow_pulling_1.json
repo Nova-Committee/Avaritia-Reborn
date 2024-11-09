@@ -5,6 +5,6 @@
   },
   "loader": "avaritia:cosmic",
   "cosmic": {
-    "mask": "avaritia:mask/infinity_bow_pull_1_mask"
+    "mask": "avaritia:mask/infinity_bow/pull_1_mask"
   }
 }
