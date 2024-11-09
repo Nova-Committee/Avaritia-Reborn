@@ -6,8 +6,10 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
@@ -18,6 +20,9 @@ import java.util.function.Function;
  * Version: 1.0
  */
 public abstract class BaseTileEntityBlock extends BaseBlock implements EntityBlock {
+    public BaseTileEntityBlock(BlockBehaviour.Properties properties) {
+        super(properties);
+    }
     public BaseTileEntityBlock(Function<Properties, Properties> properties) {
         super(properties);
     }
@@ -43,7 +48,7 @@ public abstract class BaseTileEntityBlock extends BaseBlock implements EntityBlo
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         return level.isClientSide()
                 ? this.getClientTicker(level, state, type)
                 : this.getServerTicker(level, state, type);

@@ -2,6 +2,6 @@
   "parent": "minecraft:block/template_farmland",
   "textures": {
     "dirt": "minecraft:block/soul_soil",
-    "top": "minecraft:block/farmland"
+    "top": "avaritia:block/resource/soul_farmland"
   }
 }
