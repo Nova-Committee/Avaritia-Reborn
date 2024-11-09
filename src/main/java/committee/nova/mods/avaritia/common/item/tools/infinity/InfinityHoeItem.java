@@ -5,10 +5,12 @@ import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
 import committee.nova.mods.avaritia.init.registry.ModToolTiers;
 import committee.nova.mods.avaritia.util.ClustersUtils;
+import committee.nova.mods.avaritia.util.ToolUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -82,53 +85,17 @@ public class InfinityHoeItem extends HoeItem {
                     ), true);
             return InteractionResultHolder.success(stack);
         }
-        if (!world.isClientSide) {
+        if (!world.isClientSide && world instanceof ServerLevel serverLevel && stack.getOrCreateTag().getBoolean("sow")) {
             player.swing(hand);
             BlockPos blockPos = player.getOnPos();
             int rang = 7;
             int height = 2;
-            BlockPos minPos = blockPos.offset(-rang, -height, -rang);
-            BlockPos maxPos = blockPos.offset(rang, height, rang);
-            for (BlockPos pos : BlockPos.betweenClosed(minPos, maxPos)) {
-                BlockState state = world.getBlockState(pos);
-                Block block = state.getBlock();
-                Map<ItemStack, Integer> map = new HashMap<>();
-                //harvest
-                if (block instanceof CropBlock) { //common
-                    if (block instanceof BeetrootBlock ? state.getValue(BeetrootBlock.AGE) >= 3 : state.getValue(CropBlock.AGE) >= 7) {
-                        ClustersUtils.putMapDrops(world, pos, player, new ItemStack(this), map);
-                        world.setBlock(pos, state.setValue(block instanceof BeetrootBlock ? BeetrootBlock.AGE : CropBlock.AGE, 0), 11);
-                    }
-                }
-                if (block instanceof CocoaBlock) { //coca
-                    if (state.getValue(CocoaBlock.AGE) >= 2) {
-                        ClustersUtils.putMapDrops(world, pos, player, new ItemStack(this), map);
-                        world.setBlock(pos, state.setValue(CocoaBlock.AGE, 0), 11);
-                    }
-                }
-                if (block instanceof StemGrownBlock) { //pumpkin
-                    ClustersUtils.putMapDrops(world, pos, player, new ItemStack(this), map);
-                    world.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
-                }
-                if (block instanceof SweetBerryBushBlock) { //SweetBerry
-                    if (state.getValue(SweetBerryBushBlock.AGE) >= 3) {
-                        ClustersUtils.putMapDrops(world, pos, player, new ItemStack(this), map);
-                        world.setBlock(pos, state.setValue(SweetBerryBushBlock.AGE, 0), 11);
-                    }
-                }
-                //grow
-                if (block instanceof BonemealableBlock bonemealableBlock && !(block instanceof GrassBlock) && bonemealableBlock.isValidBonemealTarget(world, pos, state, true)) {
-                    for (int i = 0; i < 3; i++)
-                        bonemealableBlock.isBonemealSuccess(world, world.random, pos, state);
-                }
-                ClustersUtils.spawnClusters(world, player, map);
-
-            }
+            ToolUtils.rangeHarvest(serverLevel, player, stack, blockPos, rang, height);
+            ToolUtils.rangeBonemealable(serverLevel, blockPos, rang, height, 3);
             player.getCooldowns().addCooldown(stack.getItem(), 20);
+            world.playSound(player, player.getOnPos(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0f, 5.0f);
         }
-        world.playSound(player, player.getOnPos(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0f, 5.0f);
         return InteractionResultHolder.pass(stack);
-
     }
 
     @Override

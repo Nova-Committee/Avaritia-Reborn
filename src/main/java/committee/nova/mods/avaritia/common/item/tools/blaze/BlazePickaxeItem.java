@@ -30,7 +30,7 @@ import java.util.List;
 public class BlazePickaxeItem extends PickaxeItem implements ITooltip, ISwitchable{
     private final String name;
     public BlazePickaxeItem(String name) {
-        super(ModToolTiers.BLAZE_SWORD, 0, 0f,
+        super(ModToolTiers.BLAZE_PICKAXE, 0, 0f,
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)

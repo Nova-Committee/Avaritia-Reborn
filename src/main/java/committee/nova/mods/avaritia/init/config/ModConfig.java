@@ -29,6 +29,7 @@ public class ModConfig {
     public static final ForgeConfigSpec.DoubleValue growth_soul_farmland;
 
     public static final ForgeConfigSpec.IntValue neutronPileEmc;
+    public static final ForgeConfigSpec.IntValue blazeCubeEmc;
     public static final ForgeConfigSpec.IntValue vanillaTotemEmc;
 
     //SERVER
@@ -54,6 +55,7 @@ public class ModConfig {
         common.push("emc");
         neutronPileEmc = buildInt(common, "Neutron Pile Emc", 100, 0, Integer.MAX_VALUE, "Emc of Neutron Pile");
         vanillaTotemEmc = buildInt(common, "Vanilla Totem Emc", 1000, 0, Integer.MAX_VALUE, "Emc of Totem Of Undying");
+        blazeCubeEmc = buildInt(common, "Blaze Cube Emc", 100, 0, Integer.MAX_VALUE, "Emc of Blaze Cube");
         common.pop();
 
         COMMON = common.build();

@@ -3,11 +3,13 @@ package committee.nova.mods.avaritia.util;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import committee.nova.mods.avaritia.Static;
+import committee.nova.mods.avaritia.common.entity.EndestPearlEntity;
 import committee.nova.mods.avaritia.common.entity.arrow.HeavenSubArrowEntity;
 import committee.nova.mods.avaritia.common.item.InfinityArmorItem;
 import committee.nova.mods.avaritia.init.config.ModConfig;
 import committee.nova.mods.avaritia.init.handler.ItemCaptureHandler;
 import committee.nova.mods.avaritia.init.registry.ModDamageTypes;
+import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.init.registry.ModItems;
 import committee.nova.mods.avaritia.util.math.RayTracer;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
@@ -43,15 +45,13 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.level.BlockEvent;
@@ -99,6 +99,13 @@ public class ToolUtils {
         return state.getTags().collect(Collectors.toSet()).retainAll(keySets);
     }
 
+    /**
+     * 破坏方块
+     * @param world 世界
+     * @param player 玩家
+     * @param pos 点击坐标
+     * @param heldItem 手中工具
+     */
     private static void destroy(ServerLevel world, Player player, BlockPos pos, ItemStack heldItem) {
         if (heldItem != null) {
             heldItem.getItem().mineBlock(heldItem, world, world.getBlockState(pos), pos, player);
@@ -107,14 +114,23 @@ public class ToolUtils {
     }
 
 
-    /***
-     * Equipment
-     * ***/
+    /**
+     * 是否穿着
+     * @param entity 生物
+     * @param slot 装备槽
+     * @param predicate 过滤
+     * @return 是否穿着
+     */
     public static boolean isPlayerWearing(LivingEntity entity, EquipmentSlot slot, Predicate<Item> predicate) {
         ItemStack stack = entity.getItemBySlot(slot);
         return !stack.isEmpty() && predicate.test(stack.getItem());
     }
 
+    /**
+     * 身穿全套无尽装备
+     * @param player 玩家
+     * @return 是否身穿全套无尽装备
+     */
     public static boolean isInfinite(LivingEntity player) {
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             if (slot.getType() != EquipmentSlot.Type.ARMOR) {
@@ -129,9 +145,15 @@ public class ToolUtils {
     }
 
 
-    /***
-     * PickAxe
-     * ***/
+    /**
+     * 破坏范围方块
+     * @param player 玩家
+     * @param stack 手中工具
+     * @param pos 点击坐标
+     * @param range 范围
+     * @param keySets 满足的方块
+     * @param filterTrash 使用黑名单
+     */
     public static void breakRangeBlocks(Player player, ItemStack stack, BlockPos pos, int range, Set<TagKey<Block>> keySets, boolean filterTrash) {
         BlockHitResult traceResult = RayTracer.retrace(player, range);
         var world = player.level();
@@ -209,11 +231,20 @@ public class ToolUtils {
     }
 
 
-    /***
-     * Arrow
-     * ***/
+    /**
+     * 列表中生物被弓箭攻击使用无尽伤害
+     */
     private static final List<String> projectileAntiImmuneEntities = Lists.newArrayList("minecraft:enderman", "minecraft:wither", "minecraft:ender_dragon", "draconicevolution:guardian_wither");
 
+    /**
+     * 召唤箭
+     * @param shooter 攻击者
+     * @param level 世界
+     * @param piercedAndKilledEntities
+     * @param pickup
+     * @param randy 随机
+     * @param pos 击中坐标
+     */
     public static void arrowBarrage(Entity shooter, Level level, List<Entity> piercedAndKilledEntities, AbstractArrow.Pickup pickup, RandomSource randy, BlockPos pos) {
         for (int i = 0; i < 30; i++) {//30支箭
             double angle = randy.nextDouble() * 2 * Math.PI;
@@ -258,6 +289,11 @@ public class ToolUtils {
         return damagesource;
     }
 
+    /**
+     * 追踪箭
+     * @param result 命中结果
+     * @param arrow 弓箭
+     */
     public static void infinityArrowDamage(@NotNull EntityHitResult result, Arrow arrow) {
 
         Entity entity = result.getEntity();
@@ -356,9 +392,12 @@ public class ToolUtils {
         }
     }
 
-    /***
-     * Sword
-     * ***/
+    /**
+     * 横扫攻击
+     * @param level 世界
+     * @param livingEntity 玩家
+     * @param victim 被攻击者
+     */
     public static void sweepAttack(Level level, LivingEntity livingEntity, LivingEntity victim) {
         if (livingEntity instanceof Player player){
             for(LivingEntity livingentity : level.getEntitiesOfClass(LivingEntity.class, player.getItemInHand(InteractionHand.MAIN_HAND).getSweepHitBox(player, victim))) {
@@ -378,6 +417,36 @@ public class ToolUtils {
         }
     }
 
+    /**
+     * 终望珍珠攻击
+     * @param player 玩家
+     * @param stack  Pearl
+     * @param world 世界
+     */
+    public static void pearlAttack(Player player, ItemStack stack, Level world) {
+        if (!world.isClientSide) {
+            EndestPearlEntity pearl = ModEntities.ENDER_PEARL.get().create(player.level());
+            if (pearl != null){
+                pearl.setItem(stack);
+                pearl.setShooter(player);
+                pearl.setPos(player.getX(), player.getEyeY() + 0.1, player.getZ());
+                pearl.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+                world.addFreshEntity(pearl);
+                player.getCooldowns().addCooldown(stack.getItem(), 30);
+            }
+        }
+        world.playSound(player, player.getOnPos(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (world.random.nextFloat() * 0.4F + 0.8F));
+    }
+
+
+    /**
+     * 范围攻击
+     * @param player 玩家
+     * @param range 范围
+     * @param damage 伤害
+     * @param hurtAnimal 是否攻击动物
+     * @param lightOn 使用闪电
+     */
     public static void aoeAttack(Player player, float range, float damage, boolean hurtAnimal, boolean lightOn) {
         if (player.level().isClientSide) return;
         AABB aabb = player.getBoundingBox().deflate(range);
@@ -408,6 +477,81 @@ public class ToolUtils {
     }
 
 
+    /**
+     * 范围收获
+     * @param serverLevel 世界
+     * @param player 玩家
+     * @param stack 使用工具
+     * @param blockPos 点击位置
+     * @param rang 范围
+     * @param height 高度
+     */
+    public static void rangeHarvest(ServerLevel serverLevel, Player player, ItemStack stack, BlockPos blockPos, int rang, int height){
+        BlockPos minPos = blockPos.offset(-rang, -height, -rang);
+        BlockPos maxPos = blockPos.offset(rang, height, rang);
+        for (BlockPos pos : BlockPos.betweenClosed(minPos, maxPos)) {
+            BlockState state = serverLevel.getBlockState(pos);
+            Block block = state.getBlock();
+            Map<ItemStack, Integer> map = new HashMap<>();
+            //harvest
+            if (block instanceof CropBlock cropBlock) { //common
+                if (cropBlock instanceof BeetrootBlock ? state.getValue(BeetrootBlock.AGE) >= 3 : state.getValue(CropBlock.AGE) >= 7) {
+                    ClustersUtils.putMapDrops(serverLevel, pos, player, stack, map);
+                    serverLevel.setBlock(pos, state.setValue(block instanceof BeetrootBlock ? BeetrootBlock.AGE : CropBlock.AGE, 0), 11);
+                }
+            }
+            if (block instanceof CocoaBlock) { //coca
+                if (state.getValue(CocoaBlock.AGE) >= 2) {
+                    ClustersUtils.putMapDrops(serverLevel, pos, player, stack, map);
+                    serverLevel.setBlock(pos, state.setValue(CocoaBlock.AGE, 0), 11);
+                }
+            }
+            if (block instanceof StemGrownBlock) { //pumpkin
+                ClustersUtils.putMapDrops(serverLevel, pos, player, stack, map);
+                serverLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
+            }
+            if (block instanceof SweetBerryBushBlock) { //SweetBerry
+                if (state.getValue(SweetBerryBushBlock.AGE) >= 3) {
+                    ClustersUtils.putMapDrops(serverLevel, pos, player, stack, map);
+                    serverLevel.setBlock(pos, state.setValue(SweetBerryBushBlock.AGE, 0), 11);
+                }
+            }
+            if (block instanceof NetherWartBlock) { //NetherWart
+                if (state.getValue(NetherWartBlock.AGE) >= 3) {
+                    ClustersUtils.putMapDrops(serverLevel, pos, player, stack, map);
+                    serverLevel.setBlock(pos, state.setValue(NetherWartBlock.AGE, 0), 11);
+                }
+            }
+            ClustersUtils.spawnClusters(serverLevel, player, map);
+        }
+    }
+
+    /**
+     * 范围催熟
+     * @param serverLevel 世界
+     * @param blockPos 点击位置
+     * @param rang 范围
+     * @param height 高度
+     * @param cost 次数
+     */
+    public static void rangeBonemealable(ServerLevel serverLevel, BlockPos blockPos, int rang, int height, int cost) {
+        BlockPos minPos = blockPos.offset(-rang, -height, -rang);
+        BlockPos maxPos = blockPos.offset(rang, height, rang);
+        for (BlockPos pos : BlockPos.betweenClosed(minPos, maxPos)) {
+            BlockState state = serverLevel.getBlockState(pos);
+            Block block = state.getBlock();
+            if (block instanceof BonemealableBlock bonemealableBlock && !(block instanceof GrassBlock)
+                    && bonemealableBlock.isValidBonemealTarget(serverLevel, pos, state, false)
+                    && ForgeHooks.onCropsGrowPre(serverLevel, pos, state, true)
+            ) {
+                for (int i = 0; i < cost; i++) {
+                    bonemealableBlock.performBonemeal(serverLevel, serverLevel.random, pos, state);
+                    serverLevel.levelEvent(2005, pos, 0);
+                    ForgeHooks.onCropsGrowPost(serverLevel, pos, state);
+                }
+            }
+        }
+    }
 
     /***
      * Axe
@@ -426,6 +570,13 @@ public class ToolUtils {
     }
 
 
+    /**
+     * 连锁砍树
+     * @param player 玩家
+     * @param world 世界
+     * @param pos 点击坐标
+     * @param heldItem 使用的工具
+     */
     public static void destroyTree(Player player, ServerLevel world, BlockPos pos, ItemStack heldItem) {
         List<BlockPos> connectedLogs = getConnectedLogs(world, pos);
 
@@ -501,6 +652,16 @@ public class ToolUtils {
         return totemItem.get();
     }
 
+    /**
+     * 炽热 自动识别可进行的熔炉配方进行处理（如：原矿-矿物锭）
+     * @param block 原矿方块
+     * @param state 原矿状态
+     * @param world 世界
+     * @param pos 点击坐标
+     * @param player 玩家
+     * @param tool 使用的工具
+     * @param event 破坏事件
+     */
     public static void melting(Block block, BlockState state, Level world, BlockPos pos, Player player, ItemStack tool, BlockEvent.BreakEvent event){
         if (!block.canHarvestBlock(state, world, pos, player) || block instanceof CropBlock) return;
         List<ItemStack> drops = Block.getDrops(state, (ServerLevel) world, pos, null);

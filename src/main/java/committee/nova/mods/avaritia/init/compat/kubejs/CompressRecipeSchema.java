@@ -19,7 +19,7 @@ import dev.latvian.mods.kubejs.recipe.schema.RecipeSchema;
 public interface CompressRecipeSchema {
     RecipeKey<InputItem[]> INGREDIENTS = ItemComponents.INPUT_ARRAY.key("ingredients");
     RecipeKey<OutputItem> OUTPUT = ItemComponents.OUTPUT.key("result");
-    RecipeKey<Long> COMPRESS_TIME = TimeComponent.TICKS.key("timeCost").optional(240L);
-    RecipeKey<Integer> MATERIAL_COUNT = NumberComponent.INT.key("inputCount").optional(1000);
-    RecipeSchema SCHEMA = new RecipeSchema(RecipeJS.class, RecipeJS::new, INGREDIENTS, OUTPUT, MATERIAL_COUNT, COMPRESS_TIME);
+    RecipeKey<Long> TIME_COST = TimeComponent.TICKS.key("timeCost").optional(240L);
+    RecipeKey<Integer> INPUT_COUNT = NumberComponent.INT.key("inputCount").optional(1000);
+    RecipeSchema SCHEMA = new RecipeSchema(RecipeJS.class, RecipeJS::new, INGREDIENTS, OUTPUT, INPUT_COUNT, TIME_COST);
 }

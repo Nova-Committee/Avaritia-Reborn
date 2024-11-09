@@ -115,9 +115,9 @@ public class CompressorRecipe implements ISpecialRecipe, ICompressorRecipe {
     public static class Serializer implements RecipeSerializer<CompressorRecipe> {
         @Override
         public @NotNull CompressorRecipe fromJson(@NotNull ResourceLocation recipeId, JsonObject json) {
-            var input = Ingredient.fromJson(json.getAsJsonObject("ingredient"));
+            var input = Ingredient.fromJson(json.getAsJsonObject("ingredients"));
             var output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-            int inputCount = GsonHelper.getAsInt(json, "inputCount", 10000);
+            int inputCount = GsonHelper.getAsInt(json, "inputCount", 1000);
             int timeCost = GsonHelper.getAsInt(json, "timeCost");
             return new CompressorRecipe(recipeId, input, output, inputCount, timeCost);
         }

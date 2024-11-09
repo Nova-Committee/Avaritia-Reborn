@@ -12,40 +12,40 @@ import java.util.function.Supplier;
  * Version: 1.0
  */
 public enum ModToolTiers implements net.minecraft.world.item.Tier {
-    CRYSTAL_SWORD(50, 4888, 4888f, 50F, 0, () -> {
+    CRYSTAL_SWORD(8888, 8888, 8888f, 50F, 0, () -> {
         return Ingredient.of(ModItems.crystal_matrix_ingot.get());
     }),
-    CRYSTAL_PICKAXE(50, 4888, 4888f, 8.0F, 0, () -> {
+    CRYSTAL_PICKAXE(8888, 8888, 8888f, 8.0F, 0, () -> {
         return Ingredient.of(ModItems.crystal_matrix_ingot.get());
     }),
-    BLAZE_PICKAXE(50, 4888, 4888f, 8.0F, 0, () -> {
+    BLAZE_PICKAXE(7777, 7777, 7777f, 10F, 0, () -> {
         return Ingredient.of(ModItems.infinity_ingot.get());
     }),
-    BLAZE_SWORD(50, 4888, 4888f, 10F, 0, () -> {
+    BLAZE_SWORD(7777, 7777, 7777f, 25F, 0, () -> {
         return Ingredient.of(ModItems.infinity_ingot.get());
     }),
-    BLAZE_SHOVEL(50, 4888, 4888f, 8.0F, 0, () -> {
+    BLAZE_SHOVEL(7777, 7777, 7777f, 10F, 0, () -> {
         return Ingredient.of(ModItems.infinity_ingot.get());
     }),
-    BLAZE_HOE(50, 4888, 4888f, 8.0F, 0, () -> {
+    BLAZE_HOE(7777, 7777, 7777f, 10F, 0, () -> {
         return Ingredient.of(ModItems.infinity_ingot.get());
     }),
-    BLAZE_AXE(50, 4888, 4888f, 8.0F, 0, () -> {
+    BLAZE_AXE(7777, 7777, 7777f, 35F, 0, () -> {
         return Ingredient.of(ModItems.infinity_ingot.get());
     }),
-    INFINITY_PICKAXE(100, 9999, 9999f, 8.0F, 0, () -> {
+    INFINITY_PICKAXE(9999, 9999, 9999f, 50F, 0, () -> {
         return Ingredient.of(ModItems.infinity_ingot.get());
     }),
-    INFINITY_SWORD(100, 9999, 9999f, 10F, 0, () -> {
+    INFINITY_SWORD(9999, 9999, 9999f, 1000F, 0, () -> {
         return Ingredient.of(ModItems.infinity_ingot.get());
     }),
-    INFINITY_SHOVEL(100, 9999, 9999f, 8.0F, 0, () -> {
+    INFINITY_SHOVEL(9999, 9999, 9999f, 50F, 0, () -> {
         return Ingredient.of(ModItems.infinity_ingot.get());
     }),
-    INFINITY_HOE(100, 9999, 9999f, 8.0F, 0, () -> {
+    INFINITY_HOE(9999, 9999, 9999f, 50F, 0, () -> {
         return Ingredient.of(ModItems.infinity_ingot.get());
     }),
-    INFINITY_AXE(100, 9999, 9999f, 8.0F, 0, () -> {
+    INFINITY_AXE(9999, 9999, 9999f, 100F, 0, () -> {
         return Ingredient.of(ModItems.infinity_ingot.get());
     });
 

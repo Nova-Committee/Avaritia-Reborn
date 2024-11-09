@@ -58,22 +58,6 @@ public class CrystalShovelItem extends ShovelItem implements ITooltip {
     }
 
     @Override
-    public boolean isDamageable(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public int getEnchantmentValue(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
-        return 100F;
-    }
-
-
-    @Override
     public void inventoryTick(@NotNull ItemStack pStack, @NotNull Level pLevel, @NotNull Entity pEntity, int pSlotId, boolean pIsSelected) {
         super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
         if (!pLevel.isClientSide && pSlotId < Inventory.getSelectionSize() && pEntity instanceof Player player && pIsSelected) {

@@ -3,6 +3,7 @@ package committee.nova.mods.avaritia.common.item.tools.infinity;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.init.config.ModConfig;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
+import committee.nova.mods.avaritia.init.registry.ModItems;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
 import committee.nova.mods.avaritia.init.registry.ModToolTiers;
 import committee.nova.mods.avaritia.util.ToolUtils;
@@ -81,6 +82,13 @@ public class InfinityShovelItem extends ShovelItem {
                     ), true);
             return InteractionResultHolder.success(stack);
         }
+
+        //右键发射发射终望珍珠,冷却20s
+        if (stack.getOrCreateTag().contains("destroyer") && stack.getOrCreateTag().getBoolean("destroyer")){
+            ToolUtils.pearlAttack(player, ModItems.endest_pearl.get().getDefaultInstance(), pLevel);//
+            player.getCooldowns().addCooldown(stack.getItem(), 200);
+        }
+
         return super.use(pLevel, player, hand);
     }
 

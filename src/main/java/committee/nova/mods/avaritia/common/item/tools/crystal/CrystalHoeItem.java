@@ -39,7 +39,7 @@ public class CrystalHoeItem extends HoeItem implements ITooltip {
 
     private final String name;
     public CrystalHoeItem(String name) {
-        super(ModToolTiers.CRYSTAL_PICKAXE, 1, -1.5F,
+        super(ModToolTiers.CRYSTAL_PICKAXE, 1, 0F,
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)
@@ -59,26 +59,7 @@ public class CrystalHoeItem extends HoeItem implements ITooltip {
     }
 
     @Override
-    public boolean isDamageable(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public int getEnchantmentValue(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
-        return 100F;
-    }
-
-    @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level world, @NotNull Player player, @NotNull InteractionHand hand) {
-
-
-
-
         return super.use(world, player, hand);
     }
 

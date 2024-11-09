@@ -53,21 +53,6 @@ public class CrystalSwordItem extends SwordItem implements ITooltip {
     }
 
     @Override
-    public boolean isDamageable(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public int getEnchantmentValue(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
-        return 100F;
-    }
-
-    @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
         if (player instanceof ServerPlayer serverPlayer) {
             // 取消攻击冷却

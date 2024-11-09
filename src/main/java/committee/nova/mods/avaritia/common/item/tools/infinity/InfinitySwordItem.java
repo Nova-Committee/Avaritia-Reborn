@@ -61,25 +61,23 @@ public class InfinitySwordItem extends SwordItem implements IMultiFunction {
             dragon.setHealth(0);//fix
         } else if (victim instanceof Player pvp) {
             if (ToolUtils.isInfinite(pvp)) {
-                victim.hurt(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), 4.0F);
+                // 玩家身着无尽甲则只造成爆炸伤害
+                pvp.level().explode(livingEntity, pvp.getBlockX(), pvp.getBlockY(), pvp.getBlockZ(), 25.0f, Level.ExplosionInteraction.BLOCK);
             } else
                 victim.hurt(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), Float.POSITIVE_INFINITY);
 
-        } else
+        } else {
+            victim.setInvulnerable(false);
             victim.hurt(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), Float.POSITIVE_INFINITY);
+        }
 
         victim.lastHurtByPlayerTime = 60;
         victim.getCombatTracker().recordDamage(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), victim.getHealth());
 
-        if(victim instanceof Player victimP && ToolUtils.isInfinite(victimP)) {
-            victimP.level().explode(livingEntity, victimP.getBlockX(), victimP.getBlockY(), victimP.getBlockZ(), 25.0f, Level.ExplosionInteraction.BLOCK);
-            // 玩家身着无尽甲则只造成爆炸伤害
-        	return true;
-        }
-        ToolUtils.sweepAttack(level, livingEntity, victim);
+        ToolUtils.sweepAttack(level, livingEntity, victim);//横扫
 
-        victim.setHealth(0);
-        victim.die(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim));
+        victim.setHealth(0);//设置血量为零
+        victim.die(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim));//设置死亡
         return true;
     }
 
@@ -97,18 +95,18 @@ public class InfinitySwordItem extends SwordItem implements IMultiFunction {
 
 
 
-    @Override
-    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if (!entity.level().isClientSide && entity instanceof Player victim) {
-            if (!victim.isCreative() && !victim.isDeadOrDying() && victim.getHealth() > 0 && !ToolUtils.isInfinite(victim)) {
-                victim.getCombatTracker().recordDamage(player.damageSources().source(ModDamageTypes.INFINITY, player, victim), victim.getHealth());
-                victim.setHealth(0);
-                victim.die(player.damageSources().source(ModDamageTypes.INFINITY, player, victim));
-                return true;
-            }
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+//        if (!entity.level().isClientSide && entity instanceof Player victim) {
+//            if (!victim.isCreative() && !victim.isDeadOrDying() && victim.getHealth() > 0 && !ToolUtils.isInfinite(victim)) {
+//                victim.getCombatTracker().recordDamage(player.damageSources().source(ModDamageTypes.INFINITY, player, victim), victim.getHealth());
+//                victim.setHealth(0);
+//                victim.die(player.damageSources().source(ModDamageTypes.INFINITY, player, victim));
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     @Override
     public @NotNull Rarity getRarity(@NotNull ItemStack stack) {

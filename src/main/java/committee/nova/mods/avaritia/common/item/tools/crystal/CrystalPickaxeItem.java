@@ -31,7 +31,7 @@ public class CrystalPickaxeItem extends PickaxeItem implements ITooltip {
 
     private final String name;
     public CrystalPickaxeItem(String name) {
-        super(ModToolTiers.CRYSTAL_PICKAXE, 1, -1.5F,
+        super(ModToolTiers.CRYSTAL_PICKAXE, 1, 0F,
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)
@@ -47,11 +47,6 @@ public class CrystalPickaxeItem extends PickaxeItem implements ITooltip {
 
     @Override
     public boolean isFoil(@NotNull ItemStack pStack) {
-        return false;
-    }
-
-    @Override
-    public boolean isDamageable(ItemStack stack) {
         return false;
     }
 

@@ -32,7 +32,7 @@ import java.util.List;
 public class BlazeAxeItem extends AxeItem implements ITooltip, ISwitchable {
     private final String name;
     public BlazeAxeItem(String name) {
-        super(ModToolTiers.BLAZE_SWORD, 0, -2.4f,
+        super(ModToolTiers.BLAZE_AXE, 0, 0f,
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)
