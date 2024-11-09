@@ -169,7 +169,7 @@ public class ModShapelessRecipeBuilder extends CraftingRecipeBuilder implements 
 
         @Override
         public @NotNull RecipeSerializer<?> getType() {
-            return ModRecipeSerializers.SHAPELESS_EXTREME_CRAFT_SERIALIZER.get();
+            return ModRecipeSerializers.SHAPELESS_CRAFT_SERIALIZER.get();
         }
 
         @Override

@@ -71,7 +71,7 @@ public class CompressorRecipe implements ISpecialRecipe, ICompressorRecipe {
     }
 
     @Override
-    public int getTimeRequire() {
+    public int getTimeCost() {
         return timeRequire;
     }
 
@@ -115,7 +115,7 @@ public class CompressorRecipe implements ISpecialRecipe, ICompressorRecipe {
     public static class Serializer implements RecipeSerializer<CompressorRecipe> {
         @Override
         public @NotNull CompressorRecipe fromJson(@NotNull ResourceLocation recipeId, JsonObject json) {
-            var input = Ingredient.fromJson(json.getAsJsonObject("ingredients"));
+            var input = Ingredient.fromJson(json.getAsJsonObject("ingredient"));
             var output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
             int inputCount = GsonHelper.getAsInt(json, "inputCount", 1000);
             int timeCost = GsonHelper.getAsInt(json, "timeCost");

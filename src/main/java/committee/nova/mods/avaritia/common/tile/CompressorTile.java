@@ -91,7 +91,7 @@ public class CompressorTile extends BaseInventoryTileEntity implements MenuProvi
                 if (tile.materialCount >= tile.recipe.getInputCount()) {
                     tile.progress++;
                     tile.data.set(0, tile.progress);
-                    if (tile.progress >= tile.recipe.getTimeRequire()) {
+                    if (tile.progress >= tile.recipe.getTimeCost()) {
                         var result = tile.recipe.assemble(tile.inventory);
 
                         if (ItemUtils.canCombineStacks(result, output)) {
@@ -214,7 +214,7 @@ public class CompressorTile extends BaseInventoryTileEntity implements MenuProvi
 
     public int getTimeRequired() {
         if (this.hasRecipe())
-            return this.recipe.getTimeRequire();
+            return this.recipe.getTimeCost();
         return 0;
     }
 

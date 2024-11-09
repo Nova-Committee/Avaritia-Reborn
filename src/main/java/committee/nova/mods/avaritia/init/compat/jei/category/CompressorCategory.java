@@ -81,7 +81,7 @@ public class CompressorCategory implements IRecipeCategory<ICompressorRecipe> {
         }
 
         if (mouseX > 86 && mouseX < 107 && mouseY > 22 && mouseY < 36) {
-            return Collections.singletonList(ModTooltips.TIME_CONSUME.args(recipe.getTimeRequire()).color(ChatFormatting.BLUE).build());
+            return Collections.singletonList(ModTooltips.TIME_CONSUME.args(recipe.getTimeCost()).color(ChatFormatting.BLUE).build());
         }
         return List.of();
     }

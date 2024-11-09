@@ -18,6 +18,5 @@ import dev.latvian.mods.kubejs.recipe.schema.RecipeSchema;
 
 public interface InfinityCatalystRecipeSchema {
     RecipeKey<InputItem[]> INGREDIENTS = ItemComponents.INPUT_ARRAY.key("ingredients");
-    RecipeKey<OutputItem> OUTPUT = ItemComponents.OUTPUT.key("result");
-    RecipeSchema SCHEMA = new RecipeSchema(RecipeJS.class, RecipeJS::new, INGREDIENTS, OUTPUT);
+    RecipeSchema SCHEMA = new RecipeSchema(RecipeJS.class, RecipeJS::new, INGREDIENTS);
 }

@@ -21,10 +21,10 @@ import org.openzen.zencode.java.ZenCodeType;
  * Date: 2022/5/17 8:35
  * Version: 1.0
  */
-@ZenCodeType.Name("mods.avaritia.CompressionCrafting")
+@ZenCodeType.Name("mods.avaritia.Compressor")
 @ZenRegister
-public class CompressionCrafting implements IRecipeManager<ICompressorRecipe> {
-    private static final CompressionCrafting INSTANCE = new CompressionCrafting();
+public class CompressorCrafting implements IRecipeManager<ICompressorRecipe> {
+    private static final CompressorCrafting INSTANCE = new CompressorCrafting();
 
     @Override
     public RecipeType<ICompressorRecipe> getRecipeType() {

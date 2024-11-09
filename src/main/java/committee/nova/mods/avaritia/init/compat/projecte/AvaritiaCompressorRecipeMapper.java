@@ -45,7 +45,7 @@ public class AvaritiaCompressorRecipeMapper implements IRecipeTypeMapper {
         } else {
             boolean handled = false;
             var ingredients = compressorRecipe.getIngredients();
-            int timeRequire = compressorRecipe.getTimeRequire();
+            int timeRequire = compressorRecipe.getTimeCost();
 
             for (Ingredient representation : ingredients) {
                 for (ItemStack input : representation.getItems()) {

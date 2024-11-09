@@ -79,22 +79,23 @@
 
 ### **CraftTweaker:**
 ```
-mods.avaritia.CompressionCrafting.addRecipe("name",input, inputCount, timeRequierd);//添加中子态素压缩配方。
-mods.avaritia.CompressionCrafting.remove(output);//移除中子态素压缩配方。
-mods.avaritia.ExtremeTableCrafting.addShaped("name",output, ingredients);//添加无尽工作台有序配方。
-mods.avaritia.ExtremeTableCrafting.addShapeless("name",output, ingredients);//添加无尽工作台无序配方。
-mods.avaritia.ExtremeTableCrafting.remove(output);//删除无尽工作台配方。
+mods.avaritia.Compressor.addRecipe("name", input, output, inputCount, timeCost);//添加中子态素压缩配方。
+mods.avaritia.Compressor.remove(output);//移除中子态素压缩配方。
+mods.avaritia.CraftingTable.addShaped("name", tier, output, ingredients);//添加无尽工作台有序配方。
+mods.avaritia.CraftingTable.addShapeless("name", tier, output, ingredients);//添加无尽工作台无序配方。
+mods.avaritia.CraftingTable.remove(output);//删除无尽工作台配方。
 ```
 
 ### **KubeJs:**
 ```javascript
-//添加到server_scripts文件夹的js文件中
 ServerEvents.recipes(
     event => {
-        //无尽工作台
-        event.custom({
-            type: 'avaritia:shaped_extreme_craft',//无序配方是 avaritia:shapeless_extreme_craft。
-            pattern: [
+        const { avaritia } = event.recipes;
+        avaritia.shaped_table(
+            // 无序配方是 avaritia.shapeless_table
+            4,//工作台等级
+            "avaritia:infinity_sword",//产品
+            [
                 "       I ",
                 "      III",
                 "     III ",
@@ -103,41 +104,40 @@ ServerEvents.recipes(
                 "  CII    ",
                 "  NC     ",
                 " N  C    ",
-                "X        "
+                "X        ",
             ],
-            key: {
-                C: [
-                    {item: 'avaritia:crystal_matrix_ingot'}
-                ],
-                I: [
-                    {item: 'avaritia:infinity_ingot'}
-                ],
-                N: [
-                    {item: 'avaritia:neutron_ingot'}
-                ],
-                X: [
-                    {item: 'avaritia:infinity_catalyst'}
-                ]
-            },
-            result: {item: 'avaritia:infinity_sword'}
-        })
-        //中子态素压缩机
-        event.custom({
-            type: 'avaritia:compressor',
-            inputCount: 2000,
-            timeCost: 240,
-            ingredient: {tag: 'forge:ingots/copper'},
-            result: { item: 'avaritia:singularity', count: 1 , nbt: {Id: 'avaritia:copper'}}
-        })
+            {
+                C: "avaritia:crystal_matrix_ingot",
+                I: "avaritia:infinity_ingot",
+                N: "avaritia:neutron_ingot",
+                X: "avaritia:infinity_catalyst",
+            }//输入
+        );
+        //compressor
+        avaritia
+            .compressor("#forge:ingots/copper", Item.of("avaritia:singularity", '{Id:"avaritia:copper"}'))
+            .timeCost(240)//所需时间
+            .inputCount(2000);//所需数量
+        //infinity catalyst
+        avaritia.infinity_catalyst(
+            [
+                "minecraft:emerald_block",
+                "avaritia:crystal_matrix_ingot",
+                "avaritia:neutron_ingot",
+                "avaritia:cosmic_meatballs",
+                "avaritia:ultimate_stew",
+                "avaritia:endest_pearl",
+                "avaritia:record_fragment",
+            ]
+        );
         console.log('Hello! The avaritia recipe event has fired!')
     }
 )
 ```
 ### **InfinityCatalyst:**
-    由于自定义奇点的存在，无尽催化剂的配方是根据加载的奇点动态变化的，你可以自定义添加除奇点以外的物品，且此配方类型只能产出无尽催化剂，更改result无法更改产品。
 ```json5
 {
-  "type": "avaritia:infinity_catalyst_craft",//无尽催化剂的配方类型。
+  "type": "avaritia:infinity_catalyst",//Infinity Catalyst recipe type
   "category": "misc",
   "ingredients": [
     {
@@ -161,10 +161,7 @@ ServerEvents.recipes(
     {
       "item": "avaritia:record_fragment"
     }
-  ],
-  "result": {
-    "item": "avaritia:infinity_catalyst"//固定的产品。
-  }
+  ]
 }
 ```
 

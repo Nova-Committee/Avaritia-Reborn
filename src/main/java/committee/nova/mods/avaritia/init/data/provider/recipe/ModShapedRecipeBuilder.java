@@ -16,7 +16,6 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -279,7 +278,7 @@ public class ModShapedRecipeBuilder extends CraftingRecipeBuilder implements Rec
 
         @Override
         public @NotNull RecipeSerializer<?> getType() {
-            return ModRecipeSerializers.SHAPED_EXTREME_CRAFT_SERIALIZER.get();
+            return ModRecipeSerializers.SHAPED_CRAFT_SERIALIZER.get();
         }
 
         @Override

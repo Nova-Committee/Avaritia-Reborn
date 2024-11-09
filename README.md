@@ -51,20 +51,23 @@
 ## **🔎Develop:**
 ### **CraftTweaker:**
 ```
-mods.avaritia.CompressionCrafting.addRecipe("name",input, inputCount, timeRequierd);
-mods.avaritia.CompressionCrafting.remove(output);
-mods.avaritia.ExtremeTableCrafting.addShaped("name",output, ingredients);
-mods.avaritia.ExtremeTableCrafting.addShapeless("name",output, ingredients);
-mods.avaritia.ExtremeTableCrafting.remove(output);
+mods.avaritia.Compressor.addRecipe("name", input, output, inputCount, timeCost);
+mods.avaritia.Compressor.remove(output);
+mods.avaritia.CraftingTable.addShaped("name", tier, output, ingredients);
+mods.avaritia.CraftingTable.addShapeless("name", tier, output, ingredients);
+mods.avaritia.CraftingTable.remove(output);
 ```
 
 ### **KubeJs:**
 ```javascript
 ServerEvents.recipes(
     event => {
-        event.custom({
-            type: 'avaritia:shaped_extreme_craft',//shapeless is avaritia:shapeless_extreme_craft。
-            pattern: [
+        const { avaritia } = event.recipes;
+        avaritia.shaped_table(
+            // shapeless is avaritia.shapeless_table
+            4,
+            "avaritia:infinity_sword",
+            [
                 "       I ",
                 "      III",
                 "     III ",
@@ -73,31 +76,32 @@ ServerEvents.recipes(
                 "  CII    ",
                 "  NC     ",
                 " N  C    ",
-                "X        "
+                "X        ",
             ],
-            key: {
-                C: [
-                    {item: 'avaritia:crystal_matrix_ingot'}
-                ],
-                I: [
-                    {item: 'avaritia:infinity_ingot'}
-                ],
-                N: [
-                    {item: 'avaritia:neutron_ingot'}
-                ],
-                X: [
-                    {item: 'avaritia:infinity_catalyst'}
-                ]
-            },
-            result: {item: 'avaritia:infinity_sword'}
-        })
-        event.custom({
-            type: 'avaritia:compressor',
-            inputCount: 2000,
-            timeCost: 240,
-            ingredient: {tag: 'forge:ingots/copper'},
-            result: { item: 'avaritia:singularity', count: 1 , nbt: {Id: 'avaritia:copper'}}
-        })
+            {
+                C: "avaritia:crystal_matrix_ingot",
+                I: "avaritia:infinity_ingot",
+                N: "avaritia:neutron_ingot",
+                X: "avaritia:infinity_catalyst",
+            }
+        );
+        //compressor
+        avaritia
+            .compressor("#forge:ingots/copper", Item.of("avaritia:singularity", '{Id:"avaritia:copper"}'))
+            .timeCost(240)
+            .inputCount(2000);
+        //infinity catalyst
+        avaritia.infinity_catalyst(
+            [
+                "minecraft:emerald_block",
+                "avaritia:crystal_matrix_ingot",
+                "avaritia:neutron_ingot",
+                "avaritia:cosmic_meatballs",
+                "avaritia:ultimate_stew",
+                "avaritia:endest_pearl",
+                "avaritia:record_fragment",
+            ]
+        );
         console.log('Hello! The avaritia recipe event has fired!')
     }
 )
@@ -105,7 +109,7 @@ ServerEvents.recipes(
 ### **InfinityCatalyst:**
 ```json5
 {
-  "type": "avaritia:infinity_catalyst_craft",//Infinity Catalyst recipe type
+  "type": "avaritia:infinity_catalyst",//Infinity Catalyst recipe type
   "category": "misc",
   "ingredients": [
     {
@@ -129,10 +133,7 @@ ServerEvents.recipes(
     {
       "item": "avaritia:record_fragment"
     }
-  ],
-  "result": {
-    "item": "avaritia:infinity_catalyst"//Fixed products
-  }
+  ]
 }
 ```
 

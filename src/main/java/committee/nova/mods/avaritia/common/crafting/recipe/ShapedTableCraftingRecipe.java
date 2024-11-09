@@ -128,7 +128,7 @@ public class ShapedTableCraftingRecipe implements ISpecialRecipe, ITierRecipe {
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return ModRecipeSerializers.SHAPED_EXTREME_CRAFT_SERIALIZER.get();
+        return ModRecipeSerializers.SHAPED_CRAFT_SERIALIZER.get();
     }
 
     @Override
