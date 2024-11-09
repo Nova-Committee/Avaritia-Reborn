@@ -92,7 +92,7 @@ public class InfinityHoeItem extends HoeItem {
             int height = 2;
             ToolUtils.rangeHarvest(serverLevel, player, stack, blockPos, rang, height);
             ToolUtils.rangeBonemealable(serverLevel, blockPos, rang, height, 3);
-            player.getCooldowns().addCooldown(stack.getItem(), 20);
+            player.getCooldowns().addCooldown(stack.getItem(), 10);
             world.playSound(player, player.getOnPos(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0f, 5.0f);
         }
         return InteractionResultHolder.pass(stack);
@@ -114,7 +114,7 @@ public class InfinityHoeItem extends HoeItem {
         if (context.getClickedFace() != Direction.DOWN && world.isEmptyBlock(blockpos.above()) &&
                 (targetBlock instanceof GrassBlock || targetBlock.equals(Blocks.DIRT) || targetBlock.equals(Blocks.COARSE_DIRT))) {
             if (player != null && !world.isClientSide) {
-                if (stack.getOrCreateTag().getBoolean("sow")) {
+                if (player.isCrouching() && stack.getOrCreateTag().getBoolean("sow")) {
                     var boxMutable = BlockPos.betweenClosed(minPos, maxPos);
                     for (BlockPos pos : boxMutable) {
                         var state = world.getBlockState(pos);
