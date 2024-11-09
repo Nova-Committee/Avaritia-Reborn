@@ -45,6 +45,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -79,15 +80,6 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
     public boolean isDamageable(ItemStack stack) {
         return false;
     }
-
-    @Override
-    public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
-        if (entity.getAge() >= 0) {
-            entity.setExtendedLifetime();
-        }
-        return super.onEntityItemUpdate(stack, entity);
-    }
-
     @Override
     public boolean isEnchantable(@NotNull ItemStack pStack) {
         return true;
@@ -122,23 +114,6 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
-        return 0;
-    }
-
-    @Override
-    public void setDamage(ItemStack stack, int damage) {
-        stack.getOrCreateTag().putInt("Damage", 0);
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        int damage = stack.getDamageValue();
-        if (damage > 0) {
-            stack.getOrCreateTag().putInt("Damage", 0);
-        }
-    }
-    @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (isCharged(itemstack)) { //弹药以装填
@@ -149,14 +124,13 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
             if (!isCharged(itemstack)) {
                 this.isLoadingStart = false;
                 this.isLoadingMiddle = false;
-                player.swing(hand);
+                player.startUsingItem(hand);
             }
-
             return InteractionResultHolder.consume(itemstack);
         }else if (findArrow(player).isEmpty() && !isCharged(itemstack)){ //无弹药依然触发装填
             this.isLoadingStart = false;
             this.isLoadingMiddle = false;
-            player.swing(hand);
+            player.startUsingItem(hand);
             return InteractionResultHolder.consume(itemstack);
         } else {
             return InteractionResultHolder.fail(itemstack);
@@ -254,12 +228,12 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
                     } else {
                         fireProjectile(worldIn, shooter, stack, itemstack, afloat[i], flag, velocityIn, inaccuracyIn, 10.0F);
                     }
-                }else { // 无尽箭矢 扇形射出大量箭矢 中间为无尽箭
+                } else { // 无尽箭矢 扇形射出大量箭矢 中间为无尽箭
                     {
                         fireProjectile(worldIn, shooter, stack, new ItemStack(Items.ARROW), afloat[i < 10 ? 1 : 2], flag, velocityIn, inaccuracyIn, getArrowAngle(i, i < 10));
                     }
                 }
-            }else {
+            } else {
                 fireProjectile(worldIn, shooter, stack, itemstack, afloat[i], flag, velocityIn, inaccuracyIn, 0.0F);
             }
         }
@@ -298,11 +272,9 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
         CompoundTag compoundtag = pCrossbowStack.getTag();
         if (compoundtag != null && compoundtag.contains("ChargedProjectiles", 9)) {
             ListTag listtag = compoundtag.getList("ChargedProjectiles", 10);
-            if (listtag != null) {
-                for(int i = 0; i < listtag.size(); ++i) {
-                    CompoundTag compoundtag1 = listtag.getCompound(i);
-                    list.add(ItemStack.of(compoundtag1));
-                }
+            for (int i = 0; i < listtag.size(); ++i) {
+                CompoundTag compoundtag1 = listtag.getCompound(i);
+                list.add(ItemStack.of(compoundtag1));
             }
         }
         return list;
@@ -343,13 +315,13 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
             }
 
             if (pShooter instanceof CrossbowAttackMob crossbowattackmob) {
-                crossbowattackmob.shootCrossbowProjectile(crossbowattackmob.getTarget(), pCrossbowStack, projectile, pProjectileAngle);
+                crossbowattackmob.shootCrossbowProjectile(Objects.requireNonNull(crossbowattackmob.getTarget()), pCrossbowStack, projectile, pProjectileAngle);
             } else {
                 Vec3 vec31 = pShooter.getUpVector(1.0F);
-                Quaternionf quaternionf = (new Quaternionf()).setAngleAxis((double)(pProjectileAngle * ((float)Math.PI / 180F)), vec31.x, vec31.y, vec31.z);
+                Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(pProjectileAngle * ((float)Math.PI / 180F), vec31.x, vec31.y, vec31.z);
                 Vec3 vec3 = pShooter.getViewVector(1.0F);
                 Vector3f vector3f = vec3.toVector3f().rotate(quaternionf);
-                projectile.shoot((double)vector3f.x(), (double)vector3f.y(), (double)vector3f.z(), pVelocity, pInaccuracy);
+                projectile.shoot(vector3f.x(), vector3f.y(), vector3f.z(), pVelocity, pInaccuracy);
             }
 
             pLevel.addFreshEntity(projectile);

@@ -1,8 +1,8 @@
 {
   "parent": "item/crossbow",
   "textures": {
-    "layer0": "avaritia:item/tool/infinity_crossbow/standby",
-    "layer1": "avaritia:item/tool/infinity_crossbow/core"
+    "layer0": "avaritia:item/tools/infinity_crossbow/standby",
+    "layer1": "avaritia:item/tools/infinity_crossbow/core"
   },
   "loader": "avaritia:cosmic",
   "cosmic": {
