@@ -9,6 +9,8 @@ import committee.nova.mods.avaritia.init.registry.ModToolTiers;
 import committee.nova.mods.avaritia.init.registry.ModTooltips;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -39,7 +41,8 @@ public class BlazeHoeItem extends HoeItem implements ITooltip, ISwitchable, Init
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)
-                        .fireResistant());
+                        .fireResistant()
+        );
 
         this.name = name;
     }
@@ -75,11 +78,14 @@ public class BlazeHoeItem extends HoeItem implements ITooltip, ISwitchable, Init
         var level = pContext.getLevel();
         var blockpos = pContext.getClickedPos();
         var blockstate = level.getBlockState(blockpos);
+        var player = pContext.getPlayer();
         if (blockstate.is(Blocks.SOUL_SAND)){
             level.setBlockAndUpdate(blockpos, Blocks.SOUL_SOIL.defaultBlockState());
+            level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
             return InteractionResult.SUCCESS;
         } else if (blockstate.is(Blocks.SOUL_SOIL)){
             level.setBlockAndUpdate(blockpos, ModBlocks.soul_farmland.get().defaultBlockState());
+            level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
             return InteractionResult.SUCCESS;
         } else return super.useOn(pContext);
     }

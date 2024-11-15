@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -35,7 +36,7 @@ import java.util.List;
 public class BlazeSwordItem extends SwordItem implements ITooltip, ISwitchable, InitEnchantItem {
     private final String name;
     public BlazeSwordItem(String name) {
-        super(ModToolTiers.BLAZE_SWORD, 0, 0f,
+        super(ModToolTiers.BLAZE_SWORD, 50, 0f,
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)

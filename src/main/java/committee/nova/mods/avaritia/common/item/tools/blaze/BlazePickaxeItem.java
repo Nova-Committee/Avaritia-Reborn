@@ -46,13 +46,16 @@ public class BlazePickaxeItem extends PickaxeItem implements ITooltip, ISwitchab
 
     @Override
     public int getInitEnchantLevel(ItemStack stack, Enchantment enchantment) {
+        if (enchantment == Enchantments.SILK_TOUCH) return 0;
+        if (enchantment == Enchantments.BLOCK_FORTUNE) return 4;
         return enchantment == Enchantments.FIRE_ASPECT ? 10 : 0;
     }
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltipComponents,
                                 @NotNull TooltipFlag isAdvanced) {
-        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.FIRE_ASPECT.getFullname(10)).build());
+        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.BLOCK_FORTUNE.getFullname(4)).build());
+        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.BLOCK_FORTUNE.getFullname(10)).build());
         this.appendTooltip(stack, level, tooltipComponents, isAdvanced, name);
     }
 

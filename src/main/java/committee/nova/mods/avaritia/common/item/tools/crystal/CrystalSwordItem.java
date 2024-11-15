@@ -26,7 +26,7 @@ public class CrystalSwordItem extends SwordItem implements ITooltip {
     private final String name;
 
     public CrystalSwordItem(String name) {
-        super(ModToolTiers.CRYSTAL_SWORD, 1, 0F,
+        super(ModToolTiers.CRYSTAL_SWORD, 50, 0F,
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)
