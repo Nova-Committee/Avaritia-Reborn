@@ -39,11 +39,9 @@ public class CosmicBakeModel extends WrappedItemModel{
     public void renderItem(ItemStack stack, ItemDisplayContext transformType, PoseStack pStack, MultiBufferSource source, int light, int overlay) {
         if (stack.getItem() == ModItems.infinity_sword.get()) {
             this.parentState = TransformUtils.DEFAULT_TOOL;
-        }
-        if (stack.getItem() == ModItems.infinity_bow.get()) {
+        } else if (stack.getItem() == ModItems.infinity_bow.get() || stack.getItem() == ModItems.infinity_crossbow.get()) {
             this.parentState = TransformUtils.DEFAULT_BOW;
-        }
-        if (stack.getItem() != ModItems.infinity_bow.get() && stack.getItem() != ModItems.infinity_sword.get()) {
+        } else {
             this.parentState = TransformUtils.DEFAULT_ITEM;
         }
         this.renderWrapped(stack, pStack, source, light, overlay, true);

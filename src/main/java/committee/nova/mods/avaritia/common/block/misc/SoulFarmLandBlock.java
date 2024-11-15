@@ -86,12 +86,12 @@ public class SoulFarmLandBlock extends BaseBlock {
                 return;
             }
 
-            if (ModConfig.growth_soul_farmland.get() == 0.0) {
+            if (ModConfig.growthSoulFarmland.get() == 0.0) {
                 return;
             }
 
             if (aboveBlock instanceof BonemealableBlock growable
-                    && level.random.nextFloat() <= ModConfig.growth_soul_farmland.get()
+                    && level.random.nextFloat() <= ModConfig.growthSoulFarmland.get()
             ) {
                 if (growable.isValidBonemealTarget(level, pos.above(), aboveState, false) && ForgeHooks.onCropsGrowPre(level, pos.above(), aboveState, true)) {
                     growable.performBonemeal(level, level.random, pos.above(), aboveState);

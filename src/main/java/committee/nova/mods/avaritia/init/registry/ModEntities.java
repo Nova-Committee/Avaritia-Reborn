@@ -80,6 +80,13 @@ public class ModEntities {
                     .setUpdateInterval(10)
                     .build(new ResourceLocation(Static.MOD_ID, "fire_ball").toString()));
 
+    public static final RegistryObject<EntityType<BladeSlashEntity>> BLADE_SLASH = ENTITIES.register("blade_slash",
+            () -> EntityType.Builder.<BladeSlashEntity>of(BladeSlashEntity::new, MobCategory.MISC)
+                    .sized(3F, 0.5F)
+                    .fireImmune()
+                    .setUpdateInterval(10)
+                    .build(new ResourceLocation(Static.MOD_ID, "blade_slash").toString()));
+
     @OnlyIn(Dist.CLIENT)
     public static void onClientSetup() {
         EntityRenderers.register(ModEntities.IMMORTAL.get(), ItemEntityRenderer::new);
@@ -90,6 +97,7 @@ public class ModEntities {
         EntityRenderers.register(ModEntities.TRACE_ARROW.get(), TracerArrowRender::new);
         EntityRenderers.register(ModEntities.INFINITY_GOLEM.get(), InfinityGolemRenderer::new);
         EntityRenderers.register(ModEntities.FIRE_BALL.get(), FireBallRender::new);
+        EntityRenderers.register(ModEntities.BLADE_SLASH.get(), BladeSlashRender::new);
     }
 
 }

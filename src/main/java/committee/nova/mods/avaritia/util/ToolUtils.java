@@ -3,6 +3,7 @@ package committee.nova.mods.avaritia.util;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import committee.nova.mods.avaritia.Static;
+import committee.nova.mods.avaritia.common.entity.BladeSlashEntity;
 import committee.nova.mods.avaritia.common.entity.EndestPearlEntity;
 import committee.nova.mods.avaritia.common.entity.arrow.HeavenSubArrowEntity;
 import committee.nova.mods.avaritia.common.item.InfinityArmorItem;
@@ -91,19 +92,24 @@ public class ToolUtils {
     public static final Set<TagKey<Block>> materialsShovel = Sets.newHashSet(
             BlockTags.MINEABLE_WITH_SHOVEL
     );
+    /**
+     * 列表中生物被弓箭攻击使用无尽伤害
+     */
+    private static final List<String> projectileAntiImmuneEntities = Lists.newArrayList("minecraft:enderman", "minecraft:wither", "minecraft:ender_dragon", "draconicevolution:guardian_wither");
 
     /***
      * Common
      * ***/
-    public static boolean canUseTool(BlockState state, Set<TagKey<Block>> keySets){
+    public static boolean canUseTool(BlockState state, Set<TagKey<Block>> keySets) {
         return state.getTags().collect(Collectors.toSet()).retainAll(keySets);
     }
 
     /**
      * 破坏方块
-     * @param world 世界
-     * @param player 玩家
-     * @param pos 点击坐标
+     *
+     * @param world    世界
+     * @param player   玩家
+     * @param pos      点击坐标
      * @param heldItem 手中工具
      */
     private static void destroy(ServerLevel world, Player player, BlockPos pos, ItemStack heldItem) {
@@ -113,11 +119,11 @@ public class ToolUtils {
         }
     }
 
-
     /**
      * 是否穿着
-     * @param entity 生物
-     * @param slot 装备槽
+     *
+     * @param entity    生物
+     * @param slot      装备槽
      * @param predicate 过滤
      * @return 是否穿着
      */
@@ -128,6 +134,7 @@ public class ToolUtils {
 
     /**
      * 身穿全套无尽装备
+     *
      * @param player 玩家
      * @return 是否身穿全套无尽装备
      */
@@ -144,14 +151,14 @@ public class ToolUtils {
         return true;
     }
 
-
     /**
      * 破坏范围方块
-     * @param player 玩家
-     * @param stack 手中工具
-     * @param pos 点击坐标
-     * @param range 范围
-     * @param keySets 满足的方块
+     *
+     * @param player      玩家
+     * @param stack       手中工具
+     * @param pos         点击坐标
+     * @param range       范围
+     * @param keySets     满足的方块
      * @param filterTrash 使用黑名单
      */
     public static void breakRangeBlocks(Player player, ItemStack stack, BlockPos pos, int range, Set<TagKey<Block>> keySets, boolean filterTrash) {
@@ -200,7 +207,7 @@ public class ToolUtils {
     public static void removeBlockWithDrops(ServerLevel world, Player player,
                                             BlockPos pos, ItemStack stack,
                                             Set<TagKey<Block>> validMaterials
-                                            ) {
+    ) {
         if (!world.isLoaded(pos)) {
             return;
         }
@@ -230,20 +237,15 @@ public class ToolUtils {
 
     }
 
-
-    /**
-     * 列表中生物被弓箭攻击使用无尽伤害
-     */
-    private static final List<String> projectileAntiImmuneEntities = Lists.newArrayList("minecraft:enderman", "minecraft:wither", "minecraft:ender_dragon", "draconicevolution:guardian_wither");
-
     /**
      * 召唤箭
-     * @param shooter 攻击者
-     * @param level 世界
+     *
+     * @param shooter                  攻击者
+     * @param level                    世界
      * @param piercedAndKilledEntities
      * @param pickup
-     * @param randy 随机
-     * @param pos 击中坐标
+     * @param randy                    随机
+     * @param pos                      击中坐标
      */
     public static void arrowBarrage(Entity shooter, Level level, List<Entity> piercedAndKilledEntities, AbstractArrow.Pickup pickup, RandomSource randy, BlockPos pos) {
         for (int i = 0; i < 50; i++) {//50支箭
@@ -291,14 +293,15 @@ public class ToolUtils {
 
     /**
      * 追踪箭
+     *
      * @param result 命中结果
-     * @param arrow 弓箭
+     * @param arrow  弓箭
      */
     public static void infinityArrowDamage(@NotNull EntityHitResult result, Arrow arrow) {
 
         Entity entity = result.getEntity();
-        float f = (float)arrow.getDeltaMovement().length();
-        int i = Mth.ceil(Mth.clamp((double)f * arrow.getBaseDamage(), 0.0D, 2.147483647E9D));
+        float f = (float) arrow.getDeltaMovement().length();
+        int i = Mth.ceil(Mth.clamp((double) f * arrow.getBaseDamage(), 0.0D, 2.147483647E9D));
         Entity owner = arrow.getOwner() == null ? arrow : arrow.getOwner();
         if (arrow.getPierceLevel() > 0) {
             if (arrow.piercingIgnoreEntityIds == null) {
@@ -319,7 +322,7 @@ public class ToolUtils {
 
         if (arrow.isCritArrow()) {
             long j = arrow.random.nextInt(i / 2 + 2);
-            i = (int)Math.min(j + (long)i, 2147483647L);
+            i = (int) Math.min(j + (long) i, 2147483647L);
         }
 
         DamageSource damagesource = ToolUtils.getArrowDamageSource(arrow, owner, entity);
@@ -332,19 +335,19 @@ public class ToolUtils {
         if (entity instanceof Player player) {
             if (player.isUsingItem() && player.getUseItem().getItem() instanceof ShieldItem) {
                 player.getCooldowns().addCooldown(player.getUseItem().getItem(), 100);
-                arrow.level().broadcastEntityEvent(player, (byte)30);
+                arrow.level().broadcastEntityEvent(player, (byte) 30);
                 player.stopUsingItem();
             }
         }
 
-        if (entity.hurt(damagesource, (float)i)) {
+        if (entity.hurt(damagesource, (float) i)) {
             if (entity instanceof LivingEntity livingentity) {
                 if (!arrow.level().isClientSide && arrow.getPierceLevel() <= 0) {
                     livingentity.setArrowCount(livingentity.getArrowCount() + 1);
                 }
 
                 if (arrow.knockback > 0) {
-                    Vec3 vector3d = arrow.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double)arrow.knockback * 0.6D);
+                    Vec3 vector3d = arrow.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) arrow.knockback * 0.6D);
                     if (vector3d.lengthSqr() > 0.0D) {
                         livingentity.push(vector3d.x, 0.1D, vector3d.z);
                     }
@@ -394,23 +397,24 @@ public class ToolUtils {
 
     /**
      * 横扫攻击
-     * @param level 世界
+     *
+     * @param level        世界
      * @param livingEntity 玩家
-     * @param victim 被攻击者
+     * @param victim       被攻击者
      */
     public static void sweepAttack(Level level, LivingEntity livingEntity, LivingEntity victim) {
-        if (livingEntity instanceof Player player){
-            for(LivingEntity livingentity : level.getEntitiesOfClass(LivingEntity.class, player.getItemInHand(InteractionHand.MAIN_HAND).getSweepHitBox(player, victim))) {
+        if (livingEntity instanceof Player player) {
+            for (LivingEntity livingentity : level.getEntitiesOfClass(LivingEntity.class, player.getItemInHand(InteractionHand.MAIN_HAND).getSweepHitBox(player, victim))) {
                 double entityReachSq = Mth.square(player.getEntityReach()); // Use entity reach instead of constant 9.0. Vanilla uses bottom center-to-center checks here, so don't update this to use canReach, since it uses closest-corner checks.
-                if (!player.isAlliedTo(livingentity) && (!(livingentity instanceof ArmorStand) || !((ArmorStand)livingentity).isMarker()) && player.distanceToSqr(livingentity) < entityReachSq) {
-                    livingentity.knockback(0.6F, Mth.sin(player.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(player.getYRot() * ((float)Math.PI / 180F)));
+                if (!player.isAlliedTo(livingentity) && (!(livingentity instanceof ArmorStand) || !((ArmorStand) livingentity).isMarker()) && player.distanceToSqr(livingentity) < entityReachSq) {
+                    livingentity.knockback(0.6F, Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(player.getYRot() * ((float) Math.PI / 180F)));
                     victim.setHealth(0);
                     victim.die(player.damageSources().source(ModDamageTypes.INFINITY, player, victim));
                 }
             }
             level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, livingEntity.getSoundSource(), 1.0F, 1.0F);
-            double d0 = -Mth.sin(player.getYRot() * ((float)Math.PI / 180F));
-            double d1 = Mth.cos(player.getYRot() * ((float)Math.PI / 180F));
+            double d0 = -Mth.sin(player.getYRot() * ((float) Math.PI / 180F));
+            double d1 = Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
             if (level instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(ParticleTypes.SWEEP_ATTACK, player.getX() + d0, player.getY(0.5D), player.getZ() + d1, 0, d0, 0.0D, d1, 0.0D);
             }
@@ -419,14 +423,15 @@ public class ToolUtils {
 
     /**
      * 终望珍珠攻击
+     *
      * @param player 玩家
      * @param stack  Pearl
-     * @param world 世界
+     * @param world  世界
      */
     public static void pearlAttack(Player player, ItemStack stack, Level world) {
         if (!world.isClientSide) {
             EndestPearlEntity pearl = ModEntities.ENDER_PEARL.get().create(player.level());
-            if (pearl != null){
+            if (pearl != null) {
                 pearl.setItem(stack);
                 pearl.setShooter(player);
                 pearl.setPos(player.getX(), player.getEyeY() + 0.1, player.getZ());
@@ -441,11 +446,12 @@ public class ToolUtils {
 
     /**
      * 范围攻击
-     * @param player 玩家
-     * @param range 范围
-     * @param damage 伤害
+     *
+     * @param player     玩家
+     * @param range      范围
+     * @param damage     伤害
      * @param hurtAnimal 是否攻击动物
-     * @param lightOn 使用闪电
+     * @param lightOn    使用闪电
      */
     public static void aoeAttack(Player player, float range, float damage, boolean hurtAnimal, boolean lightOn) {
         if (player.level().isClientSide) return;
@@ -461,7 +467,7 @@ public class ToolUtils {
                 } else if (mob instanceof WitherBoss wither) {
                     wither.setInvulnerableTicks(0);
                     wither.hurt(src, damage);
-                } else if (!(mob instanceof Animal)){
+                } else if (!(mob instanceof Animal)) {
                     mob.hurt(src, damage);
                 }
             }
@@ -479,14 +485,15 @@ public class ToolUtils {
 
     /**
      * 范围收获
+     *
      * @param serverLevel 世界
-     * @param player 玩家
-     * @param stack 使用工具
-     * @param blockPos 点击位置
-     * @param rang 范围
-     * @param height 高度
+     * @param player      玩家
+     * @param stack       使用工具
+     * @param blockPos    点击位置
+     * @param rang        范围
+     * @param height      高度
      */
-    public static void rangeHarvest(ServerLevel serverLevel, Player player, ItemStack stack, BlockPos blockPos, int rang, int height){
+    public static void rangeHarvest(ServerLevel serverLevel, Player player, ItemStack stack, BlockPos blockPos, int rang, int height) {
         BlockPos minPos = blockPos.offset(-rang, -height, -rang);
         BlockPos maxPos = blockPos.offset(rang, height, rang);
         for (BlockPos pos : BlockPos.betweenClosed(minPos, maxPos)) {
@@ -528,11 +535,12 @@ public class ToolUtils {
 
     /**
      * 范围催熟
+     *
      * @param serverLevel 世界
-     * @param blockPos 点击位置
-     * @param rang 范围
-     * @param height 高度
-     * @param cost 次数
+     * @param blockPos    点击位置
+     * @param rang        范围
+     * @param height      高度
+     * @param cost        次数
      */
     public static void rangeBonemealable(ServerLevel serverLevel, BlockPos blockPos, int rang, int height, int cost) {
         BlockPos minPos = blockPos.offset(-rang, -height, -rang);
@@ -572,9 +580,10 @@ public class ToolUtils {
 
     /**
      * 连锁砍树
-     * @param player 玩家
-     * @param world 世界
-     * @param pos 点击坐标
+     *
+     * @param player   玩家
+     * @param world    世界
+     * @param pos      点击坐标
      * @param heldItem 使用的工具
      */
     public static void destroyTree(Player player, ServerLevel world, BlockPos pos, ItemStack heldItem) {
@@ -587,6 +596,7 @@ public class ToolUtils {
         ItemCaptureHandler.enableItemCapture(false);
         ClustersUtils.spawnClusters(world, player, ItemCaptureHandler.getCapturedDrops());
     }
+
     private static List<BlockPos> getConnectedLogs(Level world, BlockPos pos) {
         BlockPosList positions = new BlockPosList();
         collectLogs(world, pos, positions);
@@ -621,17 +631,19 @@ public class ToolUtils {
 
     /**
      * 获取玩家背包中的图腾
+     *
      * @param player 玩家
      * @return 图腾
      */
-    public static ItemStack getPlayerTotemItem(Player player){
-        AtomicReference<ItemStack> totemItem = new AtomicReference<>(ItemStack.EMPTY);;
+    public static ItemStack getPlayerTotemItem(Player player) {
+        AtomicReference<ItemStack> totemItem = new AtomicReference<>(ItemStack.EMPTY);
+        ;
         ItemStack mainHandItem = player.getMainHandItem();
-        if (mainHandItem.is(ModItems.infinity_totem.get())){
+        if (mainHandItem.is(ModItems.infinity_totem.get())) {
             totemItem.set(mainHandItem);
         }
         ItemStack offhand = player.getOffhandItem();
-        if (offhand.is(ModItems.infinity_totem.get())){
+        if (offhand.is(ModItems.infinity_totem.get())) {
             totemItem.set(offhand);
         }
         for (ItemStack stack : player.getInventory().items) {
@@ -639,10 +651,10 @@ public class ToolUtils {
                 totemItem.set(stack);
         }
 
-        if (Static.isLoad("curios") && Static.isLoad("charmofundying")){
+        if (Static.isLoad("curios") && Static.isLoad("charmofundying")) {
             CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
                 curiosInventory.getStacksHandler("charm").ifPresent(slotInventory -> {
-                    if (slotInventory.getStacks().getStackInSlot(0).is(ModItems.infinity_totem.get())){
+                    if (slotInventory.getStacks().getStackInSlot(0).is(ModItems.infinity_totem.get())) {
                         totemItem.set(slotInventory.getStacks().getStackInSlot(0));
                     }
                 });
@@ -654,24 +666,25 @@ public class ToolUtils {
 
     /**
      * 炽热 自动识别可进行的熔炉配方进行处理（如：原矿-矿物锭）
-     * @param block 原矿方块
-     * @param state 原矿状态
-     * @param world 世界
-     * @param pos 点击坐标
+     *
+     * @param block  原矿方块
+     * @param state  原矿状态
+     * @param world  世界
+     * @param pos    点击坐标
      * @param player 玩家
-     * @param tool 使用的工具
-     * @param event 破坏事件
+     * @param tool   使用的工具
+     * @param event  破坏事件
      */
-    public static void melting(Block block, BlockState state, Level world, BlockPos pos, Player player, ItemStack tool, BlockEvent.BreakEvent event){
+    public static void melting(Block block, BlockState state, Level world, BlockPos pos, Player player, ItemStack tool, BlockEvent.BreakEvent event) {
         if (!block.canHarvestBlock(state, world, pos, player) || block instanceof CropBlock) return;
         List<ItemStack> drops = Block.getDrops(state, (ServerLevel) world, pos, null);
         int unLuck = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
         //霉运影响
-        boolean flag = unLuck > 0  &&  world.random.nextDouble() < unLuck * 0.2; //霉运判断结果 true触发
+        boolean flag = unLuck > 0 && world.random.nextDouble() < unLuck * 0.2; //霉运判断结果 true触发
         if (drops.isEmpty() || flag) return;
         drops.forEach(itemStack -> {
             ItemStack dropStack = getMeltingItem(world, itemStack, tool);
-            if (!dropStack.equals(itemStack)){
+            if (!dropStack.equals(itemStack)) {
                 ToolUtils.meltingAchieve(world, player, pos, event);
                 world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, dropStack));
             }
@@ -680,23 +693,24 @@ public class ToolUtils {
 
     /**
      * 获取物品烧炼后产物
-     * @param world world
+     *
+     * @param world     world
      * @param itemStack 烧炼前物品
-     * @param tool 使用工具
+     * @param tool      使用工具
      * @return 烧炼产物
      */
-    public static ItemStack getMeltingItem(Level world,ItemStack itemStack, ItemStack tool){
+    public static ItemStack getMeltingItem(Level world, ItemStack itemStack, ItemStack tool) {
         ItemStack dropStack = world.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(itemStack), world)
                 .map(smeltingRecipe -> smeltingRecipe.getResultItem(world.registryAccess())).filter(e -> !e.isEmpty())
                 .map(e -> ItemHandlerHelper.copyStackWithSize(e, tool.getCount() * e.getCount()))
                 .orElse(itemStack);
         int fortune = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool);
-        if (fortune > 0){ //时运影响产物数量
+        if (fortune > 0) { //时运影响产物数量
             RandomSource random = RandomSource.create();
             int count = 1;
             if (random.nextDouble() < 0.3 + fortune * 0.1)
                 count += Mth.nextInt(random, 0, fortune + 1);
-            if (random.nextDouble() < 0.1 + fortune * 0.05){ //触发暴击
+            if (random.nextDouble() < 0.1 + fortune * 0.05) { //触发暴击
                 count *= Mth.nextInt(random, 1, fortune);
             }
             dropStack.setCount(count);
@@ -707,22 +721,36 @@ public class ToolUtils {
 
     /**
      * 熔炼附魔的伪实现 通过取消方块破坏事件，同时生成掉落物
-     * @param world 世界
+     *
+     * @param world  世界
      * @param player 玩家
-     * @param pos 坐标
-     * @param event 事件
-     *  from <a href="https://github.com/yuoft/MoreEnchants/blob/master/src/main/java/com/yuo/enchants/Event/EventHelper.java">...</a>
+     * @param pos    坐标
+     * @param event  事件
+     *               from <a href="https://github.com/yuoft/MoreEnchants/blob/master/src/main/java/com/yuo/enchants/Event/EventHelper.java">...</a>
      */
-    public static void meltingAchieve(Level world, Player player, BlockPos pos, BlockEvent.BreakEvent event){
-        if (!world.isClientSide){
+    public static void meltingAchieve(Level world, Player player, BlockPos pos, BlockEvent.BreakEvent event) {
+        if (!world.isClientSide) {
             ServerLevel serverWorld = (ServerLevel) world;
-            for (int i = 0; i < 10; i++){
+            for (int i = 0; i < 10; i++) {
                 serverWorld.addParticle(ParticleTypes.FLAME, pos.getX() + world.random.nextDouble(), pos.getY() + 1d,
                         pos.getZ() + world.random.nextDouble(), 1, 0, 0);
             }
         }
-        world.playSound(player, pos, SoundEvents.FIRECHARGE_USE,  SoundSource.BLOCKS,1.0f, 1.0f);
+        world.playSound(player, pos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
         world.setBlockAndUpdate(event.getPos(), Blocks.AIR.defaultBlockState()); //设置此坐标为空气
+    }
+
+    /**
+     * 发射剑气
+     * @param stack 工具
+     * @param player 玩家
+     */
+    public static void shootBladeSlash(ItemStack stack, Player player) {
+        Level world = player.level();
+        BladeSlashEntity projectile = new BladeSlashEntity(world, player, EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SWEEPING_EDGE, stack));
+        world.addFreshEntity(projectile);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, player.getSoundSource(), 1.0F, 1.0F);
+        player.swing(player.getUsedItemHand());
     }
 
     private static class BlockPosList extends ArrayList<BlockPos> {

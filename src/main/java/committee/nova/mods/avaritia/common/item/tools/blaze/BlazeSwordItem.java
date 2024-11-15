@@ -1,5 +1,7 @@
 package committee.nova.mods.avaritia.common.item.tools.blaze;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import committee.nova.mods.avaritia.api.iface.ISwitchable;
 import committee.nova.mods.avaritia.api.iface.ITooltip;
 import committee.nova.mods.avaritia.api.iface.InitEnchantItem;
@@ -14,6 +16,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -36,7 +42,7 @@ import java.util.Map;
 public class BlazeSwordItem extends SwordItem implements ITooltip, ISwitchable, InitEnchantItem {
     private final String name;
     public BlazeSwordItem(String name) {
-        super(ModToolTiers.BLAZE_SWORD, 50, 0f,
+        super(ModToolTiers.BLAZE_SWORD, 0, 0f,
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)
@@ -83,6 +89,16 @@ public class BlazeSwordItem extends SwordItem implements ITooltip, ISwitchable, 
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
         entity.setInvulnerable(false);
         return super.onLeftClickEntity(stack, player, entity);
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create();
+        if (slot == EquipmentSlot.MAINHAND) {
+            multimap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", getTier().getAttackDamageBonus(), AttributeModifier.Operation.ADDITION));
+            multimap.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", getTier().getSpeed(), AttributeModifier.Operation.ADDITION));
+        }
+        return multimap;
     }
 
 }
