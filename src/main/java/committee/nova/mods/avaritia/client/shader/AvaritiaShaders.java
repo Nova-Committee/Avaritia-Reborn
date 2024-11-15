@@ -1,6 +1,5 @@
 package committee.nova.mods.avaritia.client.shader;
 
-import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import committee.nova.mods.avaritia.Static;
@@ -9,9 +8,7 @@ import committee.nova.mods.avaritia.api.client.shader.CCUniform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterShadersEvent;
@@ -39,7 +36,6 @@ public class AvaritiaShaders {
 
 
     public static CCShaderInstance cosmicShader;
-    public static CCShaderInstance cosmicShader2;
 
     public static CCUniform cosmicTime;
     public static CCUniform cosmicYaw;
@@ -47,13 +43,6 @@ public class AvaritiaShaders {
     public static CCUniform cosmicExternalScale;
     public static CCUniform cosmicOpacity;
     public static CCUniform cosmicUVs;
-
-//    public static Uniform cosmicTime2;
-//    public static Uniform cosmicYaw2;
-//    public static Uniform cosmicPitch2;
-//    public static Uniform cosmicExternalScale2;
-//    public static Uniform cosmicOpacity2;
-//    public static Uniform cosmicUVs2;
 
 
     public static RenderType COSMIC_RENDER_TYPE = RenderType.create("avaritia:cosmic",
@@ -81,39 +70,7 @@ public class AvaritiaShaders {
                 cosmicTime.set((float)renderTime + renderFrame);
             });
         });
-
-//        event.registerShader(CCShaderInstance.create(event.getResourceProvider(), new ResourceLocation(Static.MOD_ID, "cosmic"), DefaultVertexFormat.BLOCK), e -> {
-//            cosmicShader2 = (CCShaderInstance)e;
-//            cosmicTime2 = Objects.requireNonNull(cosmicShader2.getUniform("time"));
-//            cosmicYaw2 = Objects.requireNonNull(cosmicShader2.getUniform("yaw"));
-//            cosmicPitch2 = Objects.requireNonNull(cosmicShader2.getUniform("pitch"));
-//            cosmicExternalScale2 = Objects.requireNonNull(cosmicShader2.getUniform("externalScale"));
-//            cosmicOpacity2 = Objects.requireNonNull(cosmicShader2.getUniform("opacity"));
-//            cosmicUVs2 = Objects.requireNonNull(cosmicShader2.getUniform("cosmicuvs"));
-//            cosmicTime2.set((float)renderTime + renderFrame);
-//            cosmicShader2.onApply(() -> {
-//                cosmicTime2.set((float)renderTime + renderFrame);
-//            });
-//        });
-
-
     }
-
-//    @SubscribeEvent
-//    public static void onRenderTick(TickEvent.RenderTickEvent event) {
-//        if (event.phase == TickEvent.Phase.START) {
-//            for (int i = 0; i < 10; ++i) {
-//                TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(Static.rl("misc/cosmic_" + i));
-//                COSMIC_UVS[i * 4] = sprite.getU0();
-//                COSMIC_UVS[i * 4 + 1] = sprite.getV0();
-//                COSMIC_UVS[i * 4 + 2] = sprite.getU1();
-//                COSMIC_UVS[i * 4 + 3] = sprite.getV1();
-//            }
-//            if (cosmicUVs != null) {
-//                cosmicUVs.set(COSMIC_UVS);
-//            }
-//        }
-//    }
 
 
     @SubscribeEvent

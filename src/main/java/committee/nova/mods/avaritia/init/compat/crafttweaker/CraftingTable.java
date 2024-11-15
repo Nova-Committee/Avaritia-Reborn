@@ -21,7 +21,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.openzen.zencode.java.ZenCodeType;
 
-import java.util.*;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**

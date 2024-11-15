@@ -1,5 +1,6 @@
 package committee.nova.mods.avaritia.common.item.resources;
 
+import committee.nova.mods.avaritia.api.iface.ITooltip;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
 import net.minecraft.ChatFormatting;
@@ -22,7 +23,7 @@ import java.util.List;
  * Date: 2022/4/1 21:25
  * Version: 1.0
  */
-public class ResourceItem extends Item {
+public class ResourceItem extends Item implements ITooltip {
     private final Rarity rarity;
     private final String name;
     private final boolean needsTooltip;
@@ -45,9 +46,9 @@ public class ResourceItem extends Item {
 
 
     @Override
-    public void appendHoverText(@NotNull ItemStack p_41421_, @Nullable Level p_41422_, @NotNull List<Component> components, @NotNull TooltipFlag p_41424_) {
+    public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> components, @NotNull TooltipFlag p_41424_) {
         if (needsTooltip)
-            components.add(Component.literal(ChatFormatting.DARK_GRAY + "" + ChatFormatting.ITALIC + I18n.get("tooltip." + name + ".desc")));
+            appendTooltip(pStack, pLevel, components, p_41424_, name);
     }
 
     @Nullable

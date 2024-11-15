@@ -3,7 +3,6 @@ package committee.nova.mods.avaritia.init.data.provider;
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.tags.EntityTypeTags;

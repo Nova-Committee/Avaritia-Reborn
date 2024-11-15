@@ -49,14 +49,14 @@ public class GapingVoidRender extends EntityRenderer<GapingVoidEntity> {
         final Colour colour = getColour(age, 1.0);
         final double scale = GapingVoidEntity.getVoidScale(age);
         double halocoord = 0.58 * scale;
-        final double haloscaledist = 2.2 * scale;
+        final double haloScaleDist = 2.2 * scale;
         final Vec3 cam = this.entityRenderDispatcher.camera.getPosition();
         final double dx = ent.getX() - cam.x();
         final double dy = ent.getY() - cam.y();
         final double dz = ent.getZ() - cam.z();
         final double len = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (len <= haloscaledist) {
-            final double close = (haloscaledist - len) / haloscaledist;
+        if (len <= haloScaleDist) {
+            final double close = (haloScaleDist - len) / haloScaleDist;
             halocoord *= 1.0 + close * close * close * close * 1.5;
         }
         stack.pushPose();

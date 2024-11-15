@@ -1,7 +1,10 @@
 package committee.nova.mods.avaritia.init.registry;
 
 import committee.nova.mods.avaritia.Static;
-import committee.nova.mods.avaritia.client.screen.*;
+import committee.nova.mods.avaritia.client.screen.CompressedChestScreen;
+import committee.nova.mods.avaritia.client.screen.CompressorScreen;
+import committee.nova.mods.avaritia.client.screen.NeutronCollectorScreen;
+import committee.nova.mods.avaritia.client.screen.NeutronRingScreen;
 import committee.nova.mods.avaritia.client.screen.craft.EndCraftScreen;
 import committee.nova.mods.avaritia.client.screen.craft.ExtremeCraftScreen;
 import committee.nova.mods.avaritia.client.screen.craft.NetherCraftScreen;

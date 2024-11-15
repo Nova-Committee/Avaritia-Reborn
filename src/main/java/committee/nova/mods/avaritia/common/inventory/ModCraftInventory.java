@@ -13,16 +13,16 @@ import org.jetbrains.annotations.NotNull;
  * Date: 2022/4/2 11:09
  * Version: 1.0
  */
-public class ExtremeInventory extends TransientCraftingContainer {
+public class ModCraftInventory extends TransientCraftingContainer {
     private final AbstractContainerMenu container;
     private final BaseItemStackHandler inventory;
     private final boolean autoTable;
 
-    public ExtremeInventory(AbstractContainerMenu container, BaseItemStackHandler inventory, int size) {
+    public ModCraftInventory(AbstractContainerMenu container, BaseItemStackHandler inventory, int size) {
         this(container, inventory, size, false);
     }
 
-    public ExtremeInventory(AbstractContainerMenu container, BaseItemStackHandler inventory, int size, boolean autoTable) {
+    public ModCraftInventory(AbstractContainerMenu container, BaseItemStackHandler inventory, int size, boolean autoTable) {
         super(container, size, size);
         this.container = container;
         this.inventory = inventory;

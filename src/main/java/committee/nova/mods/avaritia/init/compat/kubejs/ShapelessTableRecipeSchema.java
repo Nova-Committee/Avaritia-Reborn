@@ -5,7 +5,8 @@ import dev.latvian.mods.kubejs.recipe.component.NumberComponent;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchema;
 import dev.latvian.mods.kubejs.recipe.schema.minecraft.ShapelessRecipeSchema;
 
-import static dev.latvian.mods.kubejs.recipe.schema.minecraft.ShapedRecipeSchema.*;
+import static dev.latvian.mods.kubejs.recipe.schema.minecraft.ShapedRecipeSchema.INGREDIENTS;
+import static dev.latvian.mods.kubejs.recipe.schema.minecraft.ShapedRecipeSchema.RESULT;
 
 /**
  * @Project: Avaritia

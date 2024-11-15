@@ -1,9 +1,5 @@
 package committee.nova.mods.avaritia.init.registry;
 
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-
 /**
  * ModCaps
  *

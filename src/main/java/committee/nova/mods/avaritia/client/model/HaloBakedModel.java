@@ -6,7 +6,6 @@ import committee.nova.mods.avaritia.api.client.model.PerspectiveModelState;
 import committee.nova.mods.avaritia.api.client.model.Quad;
 import committee.nova.mods.avaritia.api.client.model.bakedmodels.WrappedItemModel;
 import committee.nova.mods.avaritia.api.client.render.buffer.AlphaOverrideVertexConsumer;
-import committee.nova.mods.avaritia.api.client.render.item.IItemRenderer;
 import committee.nova.mods.avaritia.util.client.TransformUtils;
 import committee.nova.mods.avaritia.util.client.colour.ColourARGB;
 import net.minecraft.client.Minecraft;
@@ -28,7 +27,7 @@ import java.util.Random;
  * Description:
  */
 
-public class HaloBakedModel extends WrappedItemModel implements IItemRenderer {
+public class HaloBakedModel extends WrappedItemModel{
     private final Random random;
     private final BakedQuad haloQuad;
     private final boolean pulse;

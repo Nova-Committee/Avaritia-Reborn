@@ -1,10 +1,12 @@
 package committee.nova.mods.avaritia.common.item.tools.infinity;
 
 import committee.nova.mods.avaritia.api.iface.IMultiFunction;
+import committee.nova.mods.avaritia.api.iface.InitEnchantItem;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.init.config.ModConfig;
 import committee.nova.mods.avaritia.init.registry.*;
 import committee.nova.mods.avaritia.util.ToolUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -16,9 +18,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Description:
@@ -26,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
  * Date: 2022/4/2 19:41
  * Version: 1.0
  */
-public class InfinitySwordItem extends SwordItem implements IMultiFunction {
+public class InfinitySwordItem extends SwordItem implements IMultiFunction, InitEnchantItem {
     public InfinitySwordItem() {
         super(ModToolTiers.INFINITY_SWORD, 0, 0F, (new Properties())
                 .stacksTo(1)
@@ -122,5 +129,16 @@ public class InfinitySwordItem extends SwordItem implements IMultiFunction {
     @Override
     public Entity createEntity(Level level, Entity location, ItemStack stack) {
         return ImmortalItemEntity.create(ModEntities.IMMORTAL.get(), level, location.getX(), location.getY(), location.getZ(), stack);
+    }
+
+    @Override
+    public int getInitEnchantLevel(ItemStack stack, Enchantment enchantment) {
+        return enchantment == Enchantments.MOB_LOOTING ? 10 : 0;
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltipComponents,
+                                @NotNull TooltipFlag isAdvanced) {
+        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.MOB_LOOTING.getFullname(10)).build());
     }
 }

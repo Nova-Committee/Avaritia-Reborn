@@ -1,14 +1,14 @@
 package committee.nova.mods.avaritia.init.registry;
 
 import committee.nova.mods.avaritia.Static;
+import committee.nova.mods.avaritia.common.block.ResourceBlock;
+import committee.nova.mods.avaritia.common.block.cake.EndlessCakeBlock;
 import committee.nova.mods.avaritia.common.block.chest.CompressedChestBlock;
 import committee.nova.mods.avaritia.common.block.collector.BaseNeutronCollectorBlock;
 import committee.nova.mods.avaritia.common.block.compressor.CompressorBlock;
-import committee.nova.mods.avaritia.common.block.craft.ModCraftTableBlock;
-import committee.nova.mods.avaritia.common.block.ResourceBlock;
-import committee.nova.mods.avaritia.common.block.cake.EndlessCakeBlock;
 import committee.nova.mods.avaritia.common.block.craft.CompressedCraftTableBlock;
 import committee.nova.mods.avaritia.common.block.craft.DoubleCompressedCraftTableBlock;
+import committee.nova.mods.avaritia.common.block.craft.ModCraftTableBlock;
 import committee.nova.mods.avaritia.common.block.misc.SoulFarmLandBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
 import java.util.function.Supplier;
 
 

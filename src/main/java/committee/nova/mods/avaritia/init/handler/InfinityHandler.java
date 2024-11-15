@@ -71,57 +71,6 @@ public class InfinityHandler {
     @SubscribeEvent
     public static void opTool(PlayerEvent.ItemCraftedEvent event) {
         ItemStack stack = event.getCrafting();
-        if (stack.is(ModItems.infinity_sword.get())) {
-            if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.MOB_LOOTING, stack) < 10) {
-                stack.enchant(Enchantments.MOB_LOOTING, 10);
-            }
-        }
-        if (stack.is(ModItems.infinity_pickaxe.get())) {
-            if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack) < 10) {
-                stack.enchant(Enchantments.BLOCK_FORTUNE, 10);
-            }
-        }
-        if (stack.is(ModItems.infinity_bow.get())) {
-            if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) < 10) {
-                stack.enchant(Enchantments.INFINITY_ARROWS, 10);
-            }
-        }
-        if (stack.is(ModItems.neutron_horse_armor.get())) {
-            if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FROST_WALKER, stack) < 10) {
-                stack.enchant(Enchantments.FROST_WALKER, 10);
-            }
-            if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION, stack) < 10) {
-                stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 10);
-            }
-            if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FALL_PROTECTION, stack) < 10) {
-                stack.enchant(Enchantments.FALL_PROTECTION, 10);
-            }
-        }
-            if (stack.is(ModItems.blaze_sword.get())) {
-                if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, stack) < 2) {
-                    stack.enchant(Enchantments.FIRE_ASPECT, 2);
-                }
-            }
-            if (stack.is(ModItems.blaze_axe.get())) {
-                if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, stack) < 2) {
-                    stack.enchant(Enchantments.FIRE_ASPECT, 2);
-                }
-            }
-            if (stack.is(ModItems.blaze_pickaxe.get())) {
-                if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, stack) < 2) {
-                    stack.enchant(Enchantments.FIRE_ASPECT, 2);
-                }
-            }
-            if (stack.is(ModItems.blaze_hoe.get())) {
-                if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, stack) < 2) {
-                    stack.enchant(Enchantments.FIRE_ASPECT, 2);
-                }
-            }
-            if (stack.is(ModItems.blaze_shovel.get())) {
-                if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FIRE_ASPECT, stack) < 2) {
-                    stack.enchant(Enchantments.FIRE_ASPECT, 2);
-                }
-            }
     }
 
     @SubscribeEvent
@@ -207,10 +156,10 @@ public class InfinityHandler {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onTooltip(ItemTooltipEvent event) {
-        if (event.getItemStack().getItem() instanceof InfinitySwordItem) {
+        if (ModConfig.isSwordAttackEndless.get() && event.getItemStack().getItem() instanceof InfinitySwordItem) {
             for (int x = 0; x < event.getToolTip().size(); x++) {
                 if (event.getToolTip().get(x).getString().contains(I18n.get("attribute.name.generic.attack_damage"))) {
-                    event.getToolTip().set(x, Component.literal("+").withStyle(ChatFormatting.BLUE).append(Component.literal(TextUtils.makeFabulous(I18n.get("tooltip.infinity")))).append(" ").append(Component.translatable("tooltip.infinity.desc").withStyle(ChatFormatting.BLUE)));
+                    event.getToolTip().set(x, Component.literal(TextUtils.makeFabulous(I18n.get("tooltip.infinity"))).append(" ").append(Component.translatable("tooltip.infinity.desc").withStyle(ChatFormatting.DARK_GREEN)));
                     return;
                 }
             }

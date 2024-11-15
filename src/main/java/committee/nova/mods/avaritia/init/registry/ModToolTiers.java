@@ -1,12 +1,8 @@
 package committee.nova.mods.avaritia.init.registry;
 
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.ForgeTier;
 import net.minecraftforge.common.Tags;
-
-import java.util.function.Supplier;
 
 /**
  * Description:

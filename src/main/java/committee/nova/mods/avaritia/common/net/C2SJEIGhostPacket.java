@@ -1,6 +1,6 @@
 package committee.nova.mods.avaritia.common.net;
 
-import committee.nova.mods.avaritia.common.inventory.slot.ExtremeRecipeSlot;
+import committee.nova.mods.avaritia.common.inventory.slot.ModCraftRecipeSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +38,7 @@ public class C2SJEIGhostPacket {
         ctx.get().enqueueWork(() -> {
             ServerPlayer player = ctx.get().getSender();
             if (player != null && msg.slotIndex >= 0 && msg.slotIndex < player.containerMenu.slots.size()
-                    && player.containerMenu.getSlot(msg.slotIndex) instanceof ExtremeRecipeSlot f
+                    && player.containerMenu.getSlot(msg.slotIndex) instanceof ModCraftRecipeSlot f
             )
             {
                 f.set(msg.stack);

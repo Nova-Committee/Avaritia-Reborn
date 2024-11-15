@@ -1,7 +1,6 @@
 package committee.nova.mods.avaritia.api.init.data;
 
 import committee.nova.mods.avaritia.Static;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;

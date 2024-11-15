@@ -2,7 +2,9 @@ package committee.nova.mods.avaritia.client;
 
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.api.iface.IColored;
-import committee.nova.mods.avaritia.client.model.*;
+import committee.nova.mods.avaritia.client.model.CosmicModelLoader;
+import committee.nova.mods.avaritia.client.model.HaloModelLoader;
+import committee.nova.mods.avaritia.client.model.InfinityArmorModel;
 import committee.nova.mods.avaritia.client.render.tile.CompressedChestRenderer;
 import committee.nova.mods.avaritia.client.shader.AvaritiaShaders;
 import committee.nova.mods.avaritia.init.registry.ModEntities;

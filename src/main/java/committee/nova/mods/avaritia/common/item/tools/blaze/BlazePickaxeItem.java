@@ -2,19 +2,20 @@ package committee.nova.mods.avaritia.common.item.tools.blaze;
 
 import committee.nova.mods.avaritia.api.iface.ISwitchable;
 import committee.nova.mods.avaritia.api.iface.ITooltip;
-import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
-import committee.nova.mods.avaritia.init.registry.ModEntities;
+import committee.nova.mods.avaritia.api.iface.InitEnchantItem;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
 import committee.nova.mods.avaritia.init.registry.ModToolTiers;
+import committee.nova.mods.avaritia.init.registry.ModTooltips;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +28,7 @@ import java.util.List;
  * Date: 2022/4/2 20:00
  * Version: 1.0
  */
-public class BlazePickaxeItem extends PickaxeItem implements ITooltip, ISwitchable{
+public class BlazePickaxeItem extends PickaxeItem implements ITooltip, ISwitchable, InitEnchantItem {
     private final String name;
     public BlazePickaxeItem(String name) {
         super(ModToolTiers.BLAZE_PICKAXE, 0, 0f,
@@ -44,9 +45,15 @@ public class BlazePickaxeItem extends PickaxeItem implements ITooltip, ISwitchab
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        this.appendTooltip(pStack, pLevel, pTooltipComponents, pIsAdvanced, name);
+    public int getInitEnchantLevel(ItemStack stack, Enchantment enchantment) {
+        return enchantment == Enchantments.FIRE_ASPECT ? 10 : 0;
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltipComponents,
+                                @NotNull TooltipFlag isAdvanced) {
+        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.FIRE_ASPECT.getFullname(10)).build());
+        this.appendTooltip(stack, level, tooltipComponents, isAdvanced, name);
     }
 
     @Override

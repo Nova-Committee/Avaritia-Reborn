@@ -1,11 +1,13 @@
 package committee.nova.mods.avaritia.common.item.tools.infinity;
 
 import committee.nova.mods.avaritia.api.iface.ITooltip;
+import committee.nova.mods.avaritia.api.iface.InitEnchantItem;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.common.entity.arrow.HeavenArrowEntity;
 import committee.nova.mods.avaritia.common.entity.arrow.TraceArrowEntity;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
+import committee.nova.mods.avaritia.init.registry.ModTooltips;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,8 +17,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +26,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.SpectralArrow;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -33,13 +34,15 @@ import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * Description:
  * Author: cnlimiter
  * Date: 2022/4/2 20:07
  * Version: 1.0
  */
-public class InfinityBowItem extends BowItem implements ITooltip {
+public class InfinityBowItem extends BowItem implements ITooltip, InitEnchantItem {
     public InfinityBowItem() {
         super(new Properties()
                 .stacksTo(1)
@@ -90,6 +93,17 @@ public class InfinityBowItem extends BowItem implements ITooltip {
     @Override
     public boolean hasCustomEntity(ItemStack stack) {
         return true;
+    }
+
+    @Override
+    public int getInitEnchantLevel(ItemStack stack, Enchantment enchantment) {
+        return enchantment == Enchantments.INFINITY_ARROWS ? 10 : 0;
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltipComponents,
+                                @NotNull TooltipFlag isAdvanced) {
+        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.INFINITY_ARROWS.getFullname(10)).build());
     }
 
     @Override
@@ -152,7 +166,7 @@ public class InfinityBowItem extends BowItem implements ITooltip {
 
                 } else {
                     arrowEntity = this.customArrow(HeavenArrowEntity.create(level, player));
-                    arrowEntity.setPos(player.getX() - 0.3, player.getEyeY() - 0.1, player.getZ());
+                    arrowEntity.setPos(player.getX() + 0.2, player.getEyeY() - 0.1, player.getZ());
                     arrowEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, powerForTime * 3.0F, 0.01F);
                     if (draw == 1.0F) {
                         arrowEntity.setCritArrow(true);//蓄力满必暴击

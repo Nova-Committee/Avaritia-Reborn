@@ -2,7 +2,6 @@ package committee.nova.mods.avaritia.common.item.resources;
 
 import committee.nova.mods.avaritia.init.registry.ModRarities;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.Nullable;
 

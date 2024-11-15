@@ -44,11 +44,11 @@ public class InfinitySwordRender extends BlockEntityWithoutLevelRenderer {
             scale = 25f;
         }
         if (AvaritiaShaders.cosmicOpacity != null) {
-            AvaritiaShaders.cosmicOpacity.glUniform1f(1.0F);
+            AvaritiaShaders.cosmicOpacity.set(1.0F);
         }
-        AvaritiaShaders.cosmicYaw.glUniform1f(yaw);
-        AvaritiaShaders.cosmicPitch.glUniform1f(pitch);
-        AvaritiaShaders.cosmicExternalScale.glUniform1f(scale);
+        AvaritiaShaders.cosmicYaw.set(yaw);
+        AvaritiaShaders.cosmicPitch.set(pitch);
+        AvaritiaShaders.cosmicExternalScale.set(scale);
         final VertexConsumer cons = pBuffer.getBuffer(AvaritiaShaders.COSMIC_RENDER_TYPE);
         itemRenderer.renderModelLists(bakedModel1, pStack, pPackedLight, pPackedOverlay, pPoseStack, cons);
         pPoseStack.popPose();

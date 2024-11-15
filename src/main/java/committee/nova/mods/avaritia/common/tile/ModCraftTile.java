@@ -3,7 +3,6 @@ package committee.nova.mods.avaritia.common.tile;
 import committee.nova.mods.avaritia.api.common.item.BaseItemStackHandler;
 import committee.nova.mods.avaritia.api.common.tile.BaseInventoryTileEntity;
 import committee.nova.mods.avaritia.common.menu.ModCraftMenu;
-import committee.nova.mods.avaritia.common.tile.collector.CollectorTier;
 import committee.nova.mods.avaritia.init.registry.ModBlocks;
 import committee.nova.mods.avaritia.init.registry.ModCraftTier;
 import committee.nova.mods.avaritia.init.registry.ModTileEntities;

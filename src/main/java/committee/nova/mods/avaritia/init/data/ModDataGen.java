@@ -1,7 +1,7 @@
 package committee.nova.mods.avaritia.init.data;
 
-import committee.nova.mods.avaritia.init.data.provider.loot.ModLootTables;
 import committee.nova.mods.avaritia.init.data.provider.*;
+import committee.nova.mods.avaritia.init.data.provider.loot.ModLootTables;
 import committee.nova.mods.avaritia.init.data.provider.recipe.ModRecipes;
 import net.minecraft.DetectedVersion;
 import net.minecraft.core.HolderLookup;

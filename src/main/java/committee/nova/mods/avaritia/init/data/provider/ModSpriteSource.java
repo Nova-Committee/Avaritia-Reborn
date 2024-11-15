@@ -6,8 +6,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.SpriteSourceProvider;
 
-import java.util.Optional;
-
 /**
  * Name: Avaritia-forge / ModSpriteSource
  * Author: cnlimiter

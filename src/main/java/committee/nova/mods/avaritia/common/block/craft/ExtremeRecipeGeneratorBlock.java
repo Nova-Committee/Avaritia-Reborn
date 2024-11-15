@@ -2,7 +2,6 @@ package committee.nova.mods.avaritia.common.block.craft;
 
 import committee.nova.mods.avaritia.api.common.block.BaseTileEntityBlock;
 import committee.nova.mods.avaritia.common.tile.ModCraftTile;
-import committee.nova.mods.avaritia.init.registry.ModCraftTier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;

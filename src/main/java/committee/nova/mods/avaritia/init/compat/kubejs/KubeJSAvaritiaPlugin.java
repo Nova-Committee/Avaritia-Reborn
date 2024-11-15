@@ -3,8 +3,6 @@ package committee.nova.mods.avaritia.init.compat.kubejs;
 import committee.nova.mods.avaritia.init.registry.ModRecipeSerializers;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.recipe.schema.RegisterRecipeSchemasEvent;
-import dev.latvian.mods.kubejs.recipe.schema.minecraft.ShapedRecipeSchema;
-import dev.latvian.mods.kubejs.recipe.schema.minecraft.ShapelessRecipeSchema;
 
 /**
  * Name: Avaritia-forge / KubeJSAvaritiaPlugin

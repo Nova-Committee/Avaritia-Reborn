@@ -3,8 +3,6 @@ package committee.nova.mods.avaritia.util;
 import com.google.common.collect.Sets;
 import committee.nova.mods.avaritia.api.common.item.ItemStackWrapper;
 import committee.nova.mods.avaritia.common.item.MatterClusterItem;
-import committee.nova.mods.avaritia.init.config.ModConfig;
-import committee.nova.mods.avaritia.init.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;

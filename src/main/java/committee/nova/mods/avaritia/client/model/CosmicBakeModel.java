@@ -5,14 +5,12 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.api.client.model.PerspectiveModelState;
 import committee.nova.mods.avaritia.api.client.model.bakedmodels.WrappedItemModel;
-import committee.nova.mods.avaritia.api.client.render.item.IItemRenderer;
 import committee.nova.mods.avaritia.client.shader.AvaritiaShaders;
 import committee.nova.mods.avaritia.common.item.MatterClusterItem;
 import committee.nova.mods.avaritia.init.registry.ModItems;
 import committee.nova.mods.avaritia.util.client.TransformUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
@@ -22,17 +20,15 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * Name: Avaritia-forge / CosmicbakeModel
- * Author: cnlimiter
- * CreateTime: 2023/9/24 4:41
- * Description:
+ * @Project: Avaritia
+ * @Author: cnlimiter
+ * @CreateTime: 2024/11/14 22:58
+ * @Description:
  */
-
-public class CosmicBakeModel extends WrappedItemModel implements IItemRenderer {
+public class CosmicBakeModel extends WrappedItemModel{
     private final List<ResourceLocation> maskSprite;
     public CosmicBakeModel(final BakedModel wrapped, final List<ResourceLocation> maskSprite) {
         super(wrapped);

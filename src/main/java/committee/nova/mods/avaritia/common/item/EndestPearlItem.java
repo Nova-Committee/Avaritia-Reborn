@@ -1,12 +1,8 @@
 package committee.nova.mods.avaritia.common.item;
 
 import committee.nova.mods.avaritia.api.common.item.BaseItem;
-import committee.nova.mods.avaritia.common.entity.EndestPearlEntity;
-import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
 import committee.nova.mods.avaritia.util.ToolUtils;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;

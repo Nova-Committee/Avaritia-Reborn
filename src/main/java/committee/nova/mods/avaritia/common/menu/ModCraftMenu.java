@@ -2,8 +2,8 @@ package committee.nova.mods.avaritia.common.menu;
 
 import committee.nova.mods.avaritia.api.common.item.BaseItemStackHandler;
 import committee.nova.mods.avaritia.api.common.menu.BaseMenu;
-import committee.nova.mods.avaritia.common.inventory.ExtremeInventory;
-import committee.nova.mods.avaritia.common.inventory.slot.ExtremeResultSlot;
+import committee.nova.mods.avaritia.common.inventory.ModCraftInventory;
+import committee.nova.mods.avaritia.common.inventory.slot.ModCraftResultSlot;
 import committee.nova.mods.avaritia.init.registry.ModCraftTier;
 import committee.nova.mods.avaritia.init.registry.ModMenus;
 import committee.nova.mods.avaritia.init.registry.ModRecipeTypes;
@@ -76,9 +76,9 @@ public class ModCraftMenu extends BaseMenu {
         this.result = new ResultContainer();
         this.tier = tier;
 
-        var matrix = new ExtremeInventory(this, inventory, tier.size * tier.size);
+        var matrix = new ModCraftInventory(this, inventory, tier.size * tier.size);
 
-        this.addSlot(new ExtremeResultSlot(this.player,this, matrix, this.result, 0, tier.outX, tier.outY));
+        this.addSlot(new ModCraftResultSlot(this.player,this, matrix, this.result, 0, tier.outX, tier.outY));
 
         int i, j;
         for (i = 0; i < tier.size; i++) {

@@ -22,6 +22,7 @@ public class ModTooltips {
     public static final Tooltip COMPRESS = new Tooltip("tooltip.avaritia.compress");
     public static final Tooltip TIME_CONSUME = new Tooltip("tooltip.avaritia.time_consume");
     public static final Tooltip PROGRESS = new Tooltip("tooltip.avaritia.progress");
+    public static final Tooltip INIT_ENCHANT = new Tooltip("tooltip.avaritia.init_enchant");
 
 
     public static Component getAddedByTooltip(String modid) {

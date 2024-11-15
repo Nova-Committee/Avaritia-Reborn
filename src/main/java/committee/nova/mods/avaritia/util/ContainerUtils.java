@@ -2,10 +2,6 @@ package committee.nova.mods.avaritia.util;
 
 import com.google.common.base.Objects;
 import committee.nova.mods.avaritia.api.common.container.ContainerRange;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NumericTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;

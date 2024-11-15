@@ -17,8 +17,7 @@ public class ItemStackWrapper {
 
     @Override
     public boolean equals(Object otherobj) {
-        if (otherobj instanceof ItemStackWrapper) {
-            ItemStackWrapper other = (ItemStackWrapper) otherobj;
+        if (otherobj instanceof ItemStackWrapper other) {
 
             if (stack.getItem().equals(other.stack.getItem()) && stack.getDamageValue() == other.stack.getDamageValue()) {
 
@@ -27,9 +26,7 @@ public class ItemStackWrapper {
                 } else {
                     if (stack.getTag() == null ^ other.stack.getTag() == null) {
                         return false;
-                    } else if (stack.getTag().equals(other.stack.getTag())) {
-                        return true;
-                    }
+                    } else return stack.getTag().equals(other.stack.getTag());
                 }
 
             }

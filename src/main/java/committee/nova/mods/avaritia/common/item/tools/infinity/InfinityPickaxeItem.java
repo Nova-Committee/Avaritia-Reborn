@@ -1,10 +1,12 @@
 package committee.nova.mods.avaritia.common.item.tools.infinity;
 
+import committee.nova.mods.avaritia.api.iface.InitEnchantItem;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.init.config.ModConfig;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
 import committee.nova.mods.avaritia.init.registry.ModToolTiers;
+import committee.nova.mods.avaritia.init.registry.ModTooltips;
 import committee.nova.mods.avaritia.util.ToolUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -19,10 +21,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Description:
@@ -30,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
  * Date: 2022/3/31 10:25
  * Version: 1.0
  */
-public class InfinityPickaxeItem extends PickaxeItem {
+public class InfinityPickaxeItem extends PickaxeItem implements InitEnchantItem {
 
     public InfinityPickaxeItem() {
         super(ModToolTiers.INFINITY_PICKAXE, 0, 0F, (new Properties())
@@ -114,4 +121,14 @@ public class InfinityPickaxeItem extends PickaxeItem {
         return false;
     }
 
+    @Override
+    public int getInitEnchantLevel(ItemStack stack, Enchantment enchantment) {
+        return enchantment == Enchantments.BLOCK_FORTUNE ? 10 : 0;
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltipComponents,
+                                @NotNull TooltipFlag isAdvanced) {
+        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.BLOCK_FORTUNE.getFullname(10)).build());
+    }
 }
