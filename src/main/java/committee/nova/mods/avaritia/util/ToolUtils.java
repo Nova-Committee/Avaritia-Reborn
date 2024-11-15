@@ -246,18 +246,18 @@ public class ToolUtils {
      * @param pos 击中坐标
      */
     public static void arrowBarrage(Entity shooter, Level level, List<Entity> piercedAndKilledEntities, AbstractArrow.Pickup pickup, RandomSource randy, BlockPos pos) {
-        for (int i = 0; i < 30; i++) {//30支箭
-            double angle = randy.nextDouble() * 2 * Math.PI;
-            double dist = randy.nextGaussian() * 0.5;
+        for (int i = 0; i < 50; i++) {//50支箭
+            double angle = randy.nextDouble() * 9 * Math.PI;
+            double dist = randy.nextGaussian() * 0.8;
 
             double x = Math.sin(angle) * dist + pos.getX();
             double z = Math.cos(angle) * dist + pos.getZ();
             double y = pos.getY() + 25.0;//高度25
 
-            double dangle = randy.nextDouble() * 2 * Math.PI;
-            double ddist = randy.nextDouble() * 0.35;
-            double dx = Math.sin(dangle) * ddist;
-            double dz = Math.cos(dangle) * ddist;
+            double dangle = randy.nextDouble() * 9 * Math.PI;
+            double dDist = randy.nextDouble() * 0.35;
+            double dx = Math.sin(dangle) * dDist;
+            double dz = Math.cos(dangle) * dDist;
 
             HeavenSubArrowEntity subArrow = HeavenSubArrowEntity.create(level, x, y, z);
             if (shooter != null) subArrow.setOwner(shooter);

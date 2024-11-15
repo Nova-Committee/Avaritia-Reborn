@@ -7,10 +7,8 @@ import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.api.client.model.PerspectiveModel;
 import committee.nova.mods.avaritia.api.client.model.PerspectiveModelState;
 import committee.nova.mods.avaritia.util.client.TransformUtils;
-import committee.nova.mods.avaritia.util.vec.Transformation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -21,16 +19,13 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +33,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * A simple wrapper item model.
- * Created by covers1624 on 5/07/2017.
+ * @Project: Avaritia
+ * @Author: cnlimiter
+ * @CreateTime: 2024/11/14 22:58
+ * @Description:
  */
 public abstract class WrappedItemModel implements PerspectiveModel {
 
@@ -103,11 +100,6 @@ public abstract class WrappedItemModel implements PerspectiveModel {
 
     public boolean isCosmic() {
         return false;
-    }
-
-    @Override
-    public @NotNull List<BakedQuad> getQuads(BlockState state, Direction side, @NotNull RandomSource rand) {
-        return Collections.emptyList();
     }
 
     @Override
