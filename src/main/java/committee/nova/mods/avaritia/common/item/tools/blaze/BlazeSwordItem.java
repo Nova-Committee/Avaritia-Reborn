@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -34,7 +35,7 @@ import java.util.List;
 public class BlazeSwordItem extends SwordItem implements ITooltip, ISwitchable, InitEnchantItem {
     private final String name;
     public BlazeSwordItem(String name) {
-        super(ModToolTiers.BLAZE_SWORD, 0, -2.4f,
+        super(ModToolTiers.BLAZE_SWORD, 0, 0f,
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)
@@ -76,4 +77,11 @@ public class BlazeSwordItem extends SwordItem implements ITooltip, ISwitchable, 
         level.playSound(player, player.getOnPos(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
         return InteractionResultHolder.success(heldItem);
     }
+
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+        entity.setInvulnerable(false);
+        return super.onLeftClickEntity(stack, player, entity);
+    }
+
 }

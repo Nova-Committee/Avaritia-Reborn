@@ -51,6 +51,7 @@ public class CrystalSwordItem extends SwordItem implements ITooltip {
             // 取消攻击冷却
             serverPlayer.resetAttackStrengthTicker();
         }
+        entity.setInvulnerable(false);
         return super.onLeftClickEntity(stack, player, entity);
     }
 
