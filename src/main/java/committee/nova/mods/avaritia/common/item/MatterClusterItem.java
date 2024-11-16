@@ -17,6 +17,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -185,6 +186,7 @@ public class MatterClusterItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             ItemUtils.dropInventory(level, player.blockPosition(), readClusterInventory(stack));
+            //if (player.isCrouching()) player.openMenu(new SimpleMenuProvider((id, playerInventory, playerx) -> ))
         }
 
         player.setItemInHand(hand, ItemStack.EMPTY);

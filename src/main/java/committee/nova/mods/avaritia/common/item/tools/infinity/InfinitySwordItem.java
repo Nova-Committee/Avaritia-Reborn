@@ -91,21 +91,6 @@ public class InfinitySwordItem extends SwordItem implements IMultiFunction, Init
         return InteractionResultHolder.success(heldItem);
     }
 
-
-
-//    @Override
-//    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-//        if (!entity.level().isClientSide && entity instanceof Player victim) {
-//            if (!victim.isCreative() && !victim.isDeadOrDying() && victim.getHealth() > 0 && !ToolUtils.isInfinite(victim)) {
-//                victim.getCombatTracker().recordDamage(player.damageSources().source(ModDamageTypes.INFINITY, player, victim), victim.getHealth());
-//                victim.setHealth(0);
-//                victim.die(player.damageSources().source(ModDamageTypes.INFINITY, player, victim));
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
     @Override
     public @NotNull Rarity getRarity(@NotNull ItemStack stack) {
         return ModRarities.COSMIC;
@@ -152,6 +137,7 @@ public class InfinitySwordItem extends SwordItem implements IMultiFunction, Init
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create();
         if (slot == EquipmentSlot.MAINHAND) {
+            multimap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", getTier().getAttackDamageBonus(), AttributeModifier.Operation.ADDITION));
             multimap.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", getTier().getSpeed(), AttributeModifier.Operation.ADDITION));
         }
         return multimap;

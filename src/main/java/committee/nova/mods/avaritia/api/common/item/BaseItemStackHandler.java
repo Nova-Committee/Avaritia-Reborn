@@ -40,22 +40,27 @@ public class BaseItemStackHandler extends ItemStackHandler {
         this.slotSizeMap = new HashMap<>();
     }
 
+    @Override
     public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
         return this.outputSlots != null && ArrayUtils.contains(this.outputSlots, slot) ? stack : super.insertItem(slot, stack, simulate);
     }
 
+    @Override
     public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
         return this.outputSlots != null && !ArrayUtils.contains(this.outputSlots, slot) ? ItemStack.EMPTY : super.extractItem(slot, amount, simulate);
     }
 
+    @Override
     public int getSlotLimit(int slot) {
         return this.slotSizeMap.containsKey(slot) ? this.slotSizeMap.get(slot) : this.maxStackSize;
     }
 
+    @Override
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-        return this.slotValidator == null || (Boolean) this.slotValidator.apply(slot, stack);
+        return this.slotValidator == null || this.slotValidator.apply(slot, stack);
     }
 
+    @Override
     protected void onContentsChanged(int slot) {
         if (this.onContentsChanged != null) {
             this.onContentsChanged.run();
@@ -71,6 +76,7 @@ public class BaseItemStackHandler extends ItemStackHandler {
         return super.extractItem(slot, amount, simulate);
     }
 
+    @NotNull
     public NonNullList<ItemStack> getStacks() {
         return this.stacks;
     }
@@ -96,7 +102,7 @@ public class BaseItemStackHandler extends ItemStackHandler {
     }
 
     public Container toIInventory() {
-        return new SimpleContainer((ItemStack[]) this.stacks.toArray(new ItemStack[0]));
+        return new SimpleContainer(this.stacks.toArray(new ItemStack[0]));
     }
 
     public BaseItemStackHandler copy() {

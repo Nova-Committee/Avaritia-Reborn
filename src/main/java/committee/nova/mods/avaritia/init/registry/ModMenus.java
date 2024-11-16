@@ -54,7 +54,8 @@ public class ModMenus {
     public static RegistryObject<MenuType<ModCraftMenu>> extreme_crafting_table = menu("extreme_crafting_table", () -> new MenuType<>((IContainerFactory<ModCraftMenu>) (id, inventory, byteBuf) -> ModCraftMenu.extreme(id, inventory, byteBuf, ModCraftTier.EXTREME), FeatureFlagSet.of()));
     public static RegistryObject<MenuType<NeutronCollectorMenu>> neutron_collector = menu("neutron_collector", () -> new MenuType<>((IContainerFactory<NeutronCollectorMenu>) NeutronCollectorMenu::create, FeatureFlagSet.of()));
     public static RegistryObject<MenuType<CompressorMenu>> compressor = menu("compressor", () -> new MenuType<>((IContainerFactory<CompressorMenu>) CompressorMenu::create, FeatureFlagSet.of()));
-    public static RegistryObject<MenuType<CompressedChestMenu>> GENERIC_9x27 = menu("generic_9x27",
+        public static RegistryObject<MenuType<InfinityChestMenu>> infinity_chest = menu("infinity_chest", () -> new MenuType<>((IContainerFactory<InfinityChestMenu>) InfinityChestMenu::create, FeatureFlagSet.of()));
+public static RegistryObject<MenuType<CompressedChestMenu>> GENERIC_9x27 = menu("generic_9x27",
             () -> new MenuType<>((IContainerFactory<CompressedChestMenu>)
                     (windowId, playerInventory, buffer) -> new CompressedChestMenu(ModMenus.GENERIC_9x27.get(), windowId, playerInventory, new SimpleContainer(9*27), 9),
                     FeatureFlagSet.of()));

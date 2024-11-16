@@ -76,10 +76,4 @@ public class ModCraftTile extends BaseInventoryTileEntity implements MenuProvide
         return ModCraftMenu.extreme(p_createMenu_1_, p_createMenu_2_, this.inventory, this.getBlockPos(), ModCraftTier.EXTREME);
     }
 
-    @Override
-    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-        return !this.remove && cap == ForgeCapabilities.ITEM_HANDLER ? LazyOptional.empty() : super.getCapability(cap, side);
-    }
-
-
 }
