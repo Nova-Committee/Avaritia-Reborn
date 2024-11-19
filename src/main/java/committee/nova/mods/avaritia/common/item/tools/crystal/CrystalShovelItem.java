@@ -43,11 +43,13 @@ public class CrystalShovelItem extends ShovelItem implements ITooltip {
                         .fireResistant());
         this.name = name;
     }
+
     @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         this.appendTooltip(pStack, pLevel, pTooltipComponents, pIsAdvanced, name);
     }
+
     @Override
     public boolean isFoil(@NotNull ItemStack pStack) {
         return false;

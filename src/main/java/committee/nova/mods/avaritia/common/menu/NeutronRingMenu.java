@@ -25,14 +25,6 @@ public class NeutronRingMenu extends BaseMenu {
     public ItemStack ring = ItemStack.EMPTY;
     public int slot;
 
-    public static NeutronRingMenu create(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
-        return new NeutronRingMenu(ModMenus.neutron_ring.get(), windowId, playerInventory, buf);
-    }
-
-    public static NeutronRingMenu create(int windowId, Inventory playerInventory, int slot) {
-        return new NeutronRingMenu(ModMenus.neutron_ring.get(), windowId, playerInventory, slot);
-    }
-
     private NeutronRingMenu(MenuType<?> type, int id, Inventory playerInventory, FriendlyByteBuf buf) {
         this(type, id, playerInventory, buf.readInt());
     }
@@ -52,7 +44,7 @@ public class NeutronRingMenu extends BaseMenu {
                 int col = j % 9;
                 int xPos = 8 + col * 18;
                 int yPos = 18 + row * 18;
-                this.addSlot(new SlotItemHandler(h, j, xPos, yPos){
+                this.addSlot(new SlotItemHandler(h, j, xPos, yPos) {
                     @Override
                     public int getMaxStackSize() {
                         return Integer.MAX_VALUE;
@@ -70,6 +62,14 @@ public class NeutronRingMenu extends BaseMenu {
         for (j = 0; j < 9; j++) {
             this.addSlot(new BlackListSlot(playerInventory, j, 8 + j * 18, 251, ring));
         }
+    }
+
+    public static NeutronRingMenu create(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
+        return new NeutronRingMenu(ModMenus.neutron_ring.get(), windowId, playerInventory, buf);
+    }
+
+    public static NeutronRingMenu create(int windowId, Inventory playerInventory, int slot) {
+        return new NeutronRingMenu(ModMenus.neutron_ring.get(), windowId, playerInventory, slot);
     }
 
     @Override

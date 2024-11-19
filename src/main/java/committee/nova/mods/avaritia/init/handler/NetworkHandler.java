@@ -18,14 +18,15 @@ import net.minecraftforge.network.simple.SimpleChannel;
  */
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class NetworkHandler {
-    public static int id = 0;
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(Static.rl("main"), () -> {
         return "1.0";
     }, (s) -> {
         return true;
     }, (s) -> {
         return true;
-    });;
+    });
+    public static int id = 0;
+    ;
 
     @SubscribeEvent
     public static void init(FMLCommonSetupEvent event) {

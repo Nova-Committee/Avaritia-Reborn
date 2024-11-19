@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Description:
@@ -41,6 +40,7 @@ import java.util.Map;
  */
 public class BlazeSwordItem extends SwordItem implements ITooltip, ISwitchable, InitEnchantItem {
     private final String name;
+
     public BlazeSwordItem(String name) {
         super(ModToolTiers.BLAZE_SWORD, 0, 0f,
                 new Properties()
@@ -73,7 +73,7 @@ public class BlazeSwordItem extends SwordItem implements ITooltip, ISwitchable, 
         var heldItem = player.getItemInHand(hand);
         if (!level.isClientSide) {
             FireBallEntity fireBallEntity = ModEntities.FIRE_BALL.get().create(level);
-            if (fireBallEntity != null){
+            if (fireBallEntity != null) {
                 fireBallEntity.setOwner(player);
                 fireBallEntity.setPos(player.getX(), player.getEyeY() + 0.1, player.getZ());
                 fireBallEntity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);

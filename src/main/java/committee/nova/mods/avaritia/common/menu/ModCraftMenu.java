@@ -31,6 +31,43 @@ public class ModCraftMenu extends BaseMenu {
     private final Player player;
     private final ModCraftTier tier;
 
+    private ModCraftMenu(MenuType<?> type, int id, Inventory playerInventory, FriendlyByteBuf buf, ModCraftTier tier) {
+        this(type, id, playerInventory, new BaseItemStackHandler(tier.size * tier.size), buf.readBlockPos(), tier);
+    }
+
+    public ModCraftMenu(MenuType<?> type, int id, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos,
+                        ModCraftTier tier
+    ) {
+        super(type, id, pos);
+        this.player = playerInventory.player;
+        this.world = playerInventory.player.level();
+        this.result = new ResultContainer();
+        this.tier = tier;
+
+        var matrix = new ModCraftInventory(this, inventory, tier.size * tier.size);
+
+        this.addSlot(new ModCraftResultSlot(this.player, this, matrix, this.result, 0, tier.outX, tier.outY));
+
+        int i, j;
+        for (i = 0; i < tier.size; i++) {
+            for (j = 0; j < tier.size; j++) {
+                this.addSlot(new Slot(matrix, j + i * tier.size, tier.mainX + j * 18, tier.mainY + i * 18));
+            }
+        }
+
+        for (i = 0; i < 3; i++) {
+            for (j = 0; j < 9; j++) {
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, tier.playerInvX + j * 18, tier.playerInvY + i * 18));
+            }
+        }
+
+        for (j = 0; j < 9; j++) {
+            this.addSlot(new Slot(playerInventory, j, tier.hotBarX + j * 18, tier.hotBarY));
+        }
+
+        this.slotsChanged(matrix);
+    }
+
     public static ModCraftMenu sculk(int windowId, Inventory playerInventory, FriendlyByteBuf buf, ModCraftTier tier) {
         return new ModCraftMenu(ModMenus.sculk_crafting_tile_table.get(), windowId, playerInventory, buf, tier);
     }
@@ -61,43 +98,6 @@ public class ModCraftMenu extends BaseMenu {
 
     public static ModCraftMenu extreme(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos, ModCraftTier tier) {
         return new ModCraftMenu(ModMenus.extreme_crafting_table.get(), windowId, playerInventory, inventory, pos, tier);
-    }
-
-    private ModCraftMenu(MenuType<?> type, int id, Inventory playerInventory, FriendlyByteBuf buf, ModCraftTier tier) {
-        this(type, id, playerInventory, new BaseItemStackHandler(tier.size * tier.size), buf.readBlockPos(), tier);
-    }
-
-    public ModCraftMenu(MenuType<?> type, int id, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos,
-                        ModCraftTier tier
-    ) {
-        super(type, id, pos);
-        this.player = playerInventory.player;
-        this.world = playerInventory.player.level();
-        this.result = new ResultContainer();
-        this.tier = tier;
-
-        var matrix = new ModCraftInventory(this, inventory, tier.size * tier.size);
-
-        this.addSlot(new ModCraftResultSlot(this.player,this, matrix, this.result, 0, tier.outX, tier.outY));
-
-        int i, j;
-        for (i = 0; i < tier.size; i++) {
-            for (j = 0; j < tier.size; j++) {
-                this.addSlot(new Slot(matrix, j + i * tier.size, tier.mainX + j * 18, tier.mainY + i * 18));
-            }
-        }
-
-        for (i = 0; i < 3; i++) {
-            for (j = 0; j < 9; j++) {
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, tier.playerInvX + j * 18, tier.playerInvY + i * 18));
-            }
-        }
-
-        for (j = 0; j < 9; j++) {
-            this.addSlot(new Slot(playerInventory, j, tier.hotBarX + j * 18, tier.hotBarY));
-        }
-
-        this.slotsChanged(matrix);
     }
 
     @Override

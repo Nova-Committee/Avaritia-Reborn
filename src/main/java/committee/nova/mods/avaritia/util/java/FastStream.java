@@ -64,7 +64,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @param itr The {@link Iterable} to wrap.
      * @return The wrapped Iterable.
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     static <T> FastStream<T> of(Iterable<? extends T> itr) {
         if (itr instanceof FastStream) return (FastStream<T>) itr;
 
@@ -80,7 +80,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @param itr The {@link Spliterator}.
      * @return The {@link FastStream}
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     static <T> FastStream<T> of(Spliterator<? extends T> itr) {
         long exactSize = itr.getExactSizeIfKnown();
         if (exactSize == 0) return empty();
@@ -201,6 +201,17 @@ public interface FastStream<T> extends Iterable<T> {
     }
 
     /**
+     * Used to nudge Javac to perform looser inference on return types of some
+     * collecting functions provided in here.
+     */
+    static <T> TypeCheck<T, T> infer() {
+        return null;
+    }
+    // endregion
+
+    // region Stream operations
+
+    /**
      * Returns a {@link FastStream} with the provided {@link Iterable} concatenated
      * after.
      *
@@ -212,9 +223,6 @@ public interface FastStream<T> extends Iterable<T> {
 
         return concat(this, other);
     }
-    // endregion
-
-    // region Stream operations
 
     /**
      * Returns a {@link FastStream} containing all elements that pass
@@ -342,13 +350,16 @@ public interface FastStream<T> extends Iterable<T> {
      * @param max The maximum amount of elements to pass through, or {@code -1}.
      * @return The limited {@link FastStream}.
      */
-    default FastStream<T> limit(@Range (from = -1, to = Integer.MAX_VALUE) int max) {
+    default FastStream<T> limit(@Range(from = -1, to = Integer.MAX_VALUE) int max) {
         if (max == -1) return this;
         if (max <= 0) return empty();
 
         // TODO, special implementation if underlying stream is 'sorted'
         return new Sliced<>(this, 0, max);
     }
+    // endregion
+
+    // region Queries.
 
     /**
      * Returns a {@link FastStream} which will skip {@code n} number of elements.
@@ -356,14 +367,11 @@ public interface FastStream<T> extends Iterable<T> {
      * @param n The number of elements to skip.
      * @return The skipping {@link FastStream}.
      */
-    default FastStream<T> skip(@Range (from = 0, to = Integer.MAX_VALUE) int n) {
+    default FastStream<T> skip(@Range(from = 0, to = Integer.MAX_VALUE) int n) {
         if (n == 0) return this;
 
         return new Sliced<>(this, n, Integer.MAX_VALUE);
     }
-    // endregion
-
-    // region Queries.
 
     /**
      * Tests if any element in the {@link FastStream} matches the provided {@link Predicate}.
@@ -442,6 +450,9 @@ public interface FastStream<T> extends Iterable<T> {
     default int knownLength(boolean consumeToCalculate) {
         return -1;
     }
+    //endregion
+
+    // region Terminal operations
 
     /**
      * Evaluates the stream, counting the number of elements contained within.
@@ -465,9 +476,6 @@ public interface FastStream<T> extends Iterable<T> {
         forEach(cons);
         return cons.count;
     }
-    //endregion
-
-    // region Terminal operations
 
     /**
      * Returns the result of a folding operation applied to the {@link FastStream} contents.
@@ -477,7 +485,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @return The result of the fold operation. May be {@code null} if {@code identity} is null and the stream is empty.
      */
     @Nullable
-    @Contract ("!null,_ -> !null")
+    @Contract("!null,_ -> !null")
     default <U> U fold(@Nullable U identity, BiFunction<? super @Nullable U, ? super T, ? extends U> accumulator) {
         final class Cons implements Consumer<T> {
 
@@ -619,7 +627,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @return The first element in the stream, or {@code _default}.
      */
     @Nullable
-    @Contract ("!null -> !null")
+    @Contract("!null -> !null")
     default T firstOrDefault(@Nullable T _default) {
         return ColUtils.headOrDefault(this, _default);
     }
@@ -651,7 +659,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @return The last element in the stream, or {@code _default}.
      */
     @Nullable
-    @Contract ("!null -> !null")
+    @Contract("!null -> !null")
     default T lastOrDefault(@Nullable T _default) {
         return ColUtils.tailOrDefault(this, _default);
     }
@@ -678,7 +686,7 @@ public interface FastStream<T> extends Iterable<T> {
      * or contains more than one element.
      */
     @Nullable
-    @Contract ("!null->!null")
+    @Contract("!null->!null")
     default T onlyOrDefault(@Nullable T _default) {
         return ColUtils.onlyOrDefault(this, _default);
     }
@@ -709,6 +717,9 @@ public interface FastStream<T> extends Iterable<T> {
     default T maxByOrDefault(ToIntFunction<T> func) {
         return maxByOrDefault(func, null);
     }
+    // endregion
+
+    // region Collecting
 
     /**
      * Returns the element in the stream with the highest value returned by
@@ -719,7 +730,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @return The maximum value or {@code _default} if the stream is empty.
      */
     @Nullable
-    @Contract ("_,!null->!null")
+    @Contract("_,!null->!null")
     default T maxByOrDefault(ToIntFunction<T> func, @Nullable T _default) {
         final class Cons implements Consumer<T> {
 
@@ -740,9 +751,6 @@ public interface FastStream<T> extends Iterable<T> {
         forEach(cons);
         return cons.maxT;
     }
-    // endregion
-
-    // region Collecting
 
     /**
      * Collects this stream into an {@link ArrayList}.
@@ -762,7 +770,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @param check Call {@link #infer()} in this argument for flexible return inference.
      * @return The {@link ArrayList}.
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     default <R> List<R> toList(TypeCheck<R, ? super T> check) {
         return (List<R>) toList();
     }
@@ -784,7 +792,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @param check Call {@link #infer()} in this argument for flexible return inference.
      * @return The {@link LinkedList}.
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     default <R> LinkedList<R> toLinkedList(TypeCheck<R, ? super T> check) {
         return (LinkedList<R>) toLinkedList();
     }
@@ -794,7 +802,7 @@ public interface FastStream<T> extends Iterable<T> {
      *
      * @return The {@link ImmutableList}.
      */
-    
+
     default ImmutableList<T> toImmutableList() {
         int len = knownLength(true);
         ImmutableList.Builder<T> builder = len < 0 ? ImmutableList.builder() : ImmutableList.builderWithExpectedSize(len);
@@ -808,8 +816,8 @@ public interface FastStream<T> extends Iterable<T> {
      * @param check Call {@link #infer()} in this argument for flexible return inference.
      * @return The {@link ImmutableList}.
      */
-    @SuppressWarnings ("unchecked")
-    
+    @SuppressWarnings("unchecked")
+
     default <R> ImmutableList<R> toImmutableList(TypeCheck<R, ? super T> check) {
         return (ImmutableList<R>) toImmutableList();
     }
@@ -831,7 +839,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @param check Call {@link #infer()} in this argument for flexible return inference.
      * @return The {@link HashSet}.
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     default <R> HashSet<R> toSet(TypeCheck<R, ? super T> check) {
         return (HashSet<R>) toSet();
     }
@@ -853,7 +861,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @param check Call {@link #infer()} in this argument for flexible return inference.
      * @return The {@link LinkedHashSet}.
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     default <R> LinkedHashSet<R> toLinkedHashSet(TypeCheck<R, ? super T> check) {
         return (LinkedHashSet<R>) toLinkedHashSet();
     }
@@ -875,7 +883,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @param check Call {@link #infer()} in this argument for flexible return inference.
      * @return The {@link ImmutableSet}.
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     default <R> ImmutableSet<R> toImmutableSet(TypeCheck<R, ? super T> check) {
         return (ImmutableSet<R>) toImmutableSet();
     }
@@ -885,7 +893,7 @@ public interface FastStream<T> extends Iterable<T> {
      *
      * @return The {@link Object}[].
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     default Object[] toArray() {
         return toArray((T[]) new Object[0]);
     }
@@ -976,7 +984,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @param vFunc The {@link Function} to extracting the value.
      * @return The {@link ImmutableMap}.
      */
-    
+
     default <K, V> ImmutableMap<K, V> toImmutableMap(Function<? super T, ? extends K> kFunc, Function<? super T, ? extends V> vFunc) {
         return ImmutableMap.copyOf(toLinkedHashMap(kFunc, vFunc));
     }
@@ -989,7 +997,7 @@ public interface FastStream<T> extends Iterable<T> {
      * @param mergeFunc The {@link BinaryOperator} to resolve merge conflicts.
      * @return The {@link ImmutableMap}.
      */
-    
+
     default <K, V> ImmutableMap<K, V> toImmutableMap(Function<? super T, ? extends K> kFunc, Function<? super T, ? extends V> vFunc, BinaryOperator<V> mergeFunc) {
         return ImmutableMap.copyOf(toLinkedHashMap(kFunc, vFunc, mergeFunc));
     }
@@ -1028,6 +1036,9 @@ public interface FastStream<T> extends Iterable<T> {
         });
         return map;
     }
+    // endregion
+
+    // region Creation and Composition implementations.
 
     /**
      * Join all elements of this stream together into a {@link String},
@@ -1058,9 +1069,6 @@ public interface FastStream<T> extends Iterable<T> {
         forEach(cons);
         return cons.builder.toString();
     }
-    // endregion
-
-    // region Creation and Composition implementations.
 
     /**
      * Wraps a regular {@link Iterable} into a {@link FastStream}.
@@ -1265,6 +1273,9 @@ public interface FastStream<T> extends Iterable<T> {
             return len;
         }
     }
+    // endregion
+
+    // region Stream operation implementations.
 
     /**
      * A {@link FastStream} for an {@link Iterable} of concatenated {@link Iterable}s.
@@ -1320,9 +1331,6 @@ public interface FastStream<T> extends Iterable<T> {
             return len;
         }
     }
-    // endregion
-
-    // region Stream operation implementations.
 
     /**
      * A {@link FastStream} with a filtering function applied.
@@ -1459,12 +1467,11 @@ public interface FastStream<T> extends Iterable<T> {
     final class Distinct<T> implements FastStream<T> {
 
         private final FastStream<T> parent;
+        private int knownLength = -1;
 
         private Distinct(FastStream<T> parent) {
             this.parent = parent;
         }
-
-        private int knownLength = -1;
 
         @Override
         public Iterator<T> iterator() {
@@ -1532,13 +1539,13 @@ public interface FastStream<T> extends Iterable<T> {
         }
 
         @Override
-        @SuppressWarnings ("unchecked")
+        @SuppressWarnings("unchecked")
         public Iterator<V> iterator() {
             return ColUtils.iterator((V[]) values, 0, size);
         }
 
         @Override
-        @SuppressWarnings ("unchecked")
+        @SuppressWarnings("unchecked")
         public void forEach(Consumer<? super V> action) {
             for (int i = 0; i < size; i++) {
                 action.accept((V) values[i]);
@@ -1565,7 +1572,7 @@ public interface FastStream<T> extends Iterable<T> {
         }
 
         @Override
-        @SuppressWarnings ({ "unchecked", "SuspiciousSystemArraycopy" })
+        @SuppressWarnings({"unchecked", "SuspiciousSystemArraycopy"})
         public V[] toArray(V[] arr) {
             if (arr.length >= size) {
                 System.arraycopy(values, 0, arr, 0, size);
@@ -1780,6 +1787,7 @@ public interface FastStream<T> extends Iterable<T> {
             return parent.knownLength(consumeToCalculate);
         }
     }
+    // endregion
 
     /**
      * A {@link FastStream} with a min/max filter applied.
@@ -1846,25 +1854,20 @@ public interface FastStream<T> extends Iterable<T> {
             return Math.min(Math.max(pLen - min, 0), max);
         }
     }
-    // endregion
 
     // region Type Hax
     final class TypeCheck<T, S> {
 
-        private TypeCheck() { }
+        private TypeCheck() {
+        }
     }
-
-    /**
-     * Used to nudge Javac to perform looser inference on return types of some
-     * collecting functions provided in here.
-     */
-    static <T> TypeCheck<T, T> infer() { return null; }
     // endregion
 
     // region Internal.
     class Internal {
 
-        private Internal() { }
+        private Internal() {
+        }
 
         private static <T> int knownLength(Iterable<? extends T> itr, boolean consumeToCalculate) {
             if (itr instanceof Collection) return ((Collection<?>) itr).size();

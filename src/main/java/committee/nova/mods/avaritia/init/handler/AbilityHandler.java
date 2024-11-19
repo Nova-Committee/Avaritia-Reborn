@@ -77,7 +77,7 @@ public class AbilityHandler {
             flightInfo.wasFlyingGameMode = isFlyingGameMode;
             flightInfo.wasFlying = player.getAbilities().flying;
             flightInfo.wasFlyingAllowed = player.getAbilities().mayfly;
-            if (hasChest){
+            if (hasChest) {
                 List<MobEffectInstance> effects = Lists.newArrayList(player.getActiveEffects());
                 for (MobEffectInstance potion : Collections2.filter(effects, potion -> !potion.getEffect().isBeneficial())) {
                     player.removeEffect(potion.getEffect());
@@ -99,15 +99,15 @@ public class AbilityHandler {
     private static void handleHelmetStateChange(Player player, String key, boolean hasHelmet) {
         if (hasHelmet) {
             if (entitiesWithHelmets.contains(key)) {
-                    player.setAirSupply(300);
-                    player.getFoodData().setFoodLevel(20);
-                    player.getFoodData().setSaturation(20f);
-                    MobEffectInstance nv = player.getEffect(MobEffects.NIGHT_VISION);
-                    if (nv == null) {
-                        nv = new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 0, false, false);
-                        player.addEffect(nv);
-                    }
-                    nv.duration = 300;
+                player.setAirSupply(300);
+                player.getFoodData().setFoodLevel(20);
+                player.getFoodData().setSaturation(20f);
+                MobEffectInstance nv = player.getEffect(MobEffects.NIGHT_VISION);
+                if (nv == null) {
+                    nv = new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 0, false, false);
+                    player.addEffect(nv);
+                }
+                nv.duration = 300;
 
             } else {
                 entitiesWithHelmets.add(key);
@@ -157,14 +157,14 @@ public class AbilityHandler {
                 }
 
                 if (player.isSprinting()) {
-                    float f = player.getYRot() * ((float)Math.PI / 180F);
+                    float f = player.getYRot() * ((float) Math.PI / 180F);
                     player.setDeltaMovement(player.getDeltaMovement().add(-Mth.sin(f) * 0.2F, 0.0D, Mth.cos(f) * 0.2F));
                 }
 
             } else {
                 entitiesWithBoots.add(key);
             }
-        } else  {
+        } else {
             player.setMaxUpStep(0.6F);
             entitiesWithBoots.remove(key);
         }
@@ -215,14 +215,6 @@ public class AbilityHandler {
         entitiesWithBoots.remove(key);
     }
 
-
-    public static class FlightInfo {
-        public boolean hadFlightItem;
-        public boolean wasFlyingGameMode;
-        public boolean wasFlyingAllowed;
-        public boolean wasFlying;
-    }
-
     private static void clearFly(Player player) {
         entitiesWithFlight.remove(player.getGameProfile().getName() + ":" + player.level().isClientSide);
     }
@@ -247,6 +239,13 @@ public class AbilityHandler {
         if (player instanceof ServerPlayer serverPlayer) {
             serverPlayer.onUpdateAbilities();
         }
+    }
+
+    public static class FlightInfo {
+        public boolean hadFlightItem;
+        public boolean wasFlyingGameMode;
+        public boolean wasFlyingAllowed;
+        public boolean wasFlying;
     }
 
 }

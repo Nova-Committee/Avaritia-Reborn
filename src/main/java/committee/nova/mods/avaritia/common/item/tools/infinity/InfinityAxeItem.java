@@ -43,10 +43,12 @@ public class InfinityAxeItem extends AxeItem {
                 .fireResistant());
 
     }
+
     @Override
     public boolean isFoil(@NotNull ItemStack pStack) {
         return false;
     }
+
     @Override
     public boolean isDamageable(ItemStack stack) {
         return false;
@@ -81,7 +83,7 @@ public class InfinityAxeItem extends AxeItem {
             CompoundTag tags = stack.getOrCreateTag();
             tags.putBoolean("range", !tags.getBoolean("range"));
             player.swing(hand);
-            if(!pLevel.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(
+            if (!pLevel.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(
                     Component.translatable(tags.getBoolean("range") ? "tooltip.infinity_axe.type_2" : "tooltip.infinity_axe.type_1"
                     ), true);
             return InteractionResultHolder.success(stack);

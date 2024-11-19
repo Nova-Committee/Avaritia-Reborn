@@ -45,7 +45,8 @@ public abstract class SugarCaneBlockMixin implements IGrowingPlant {
     @Unique
     @Override
     public void performBonemeal(@NotNull ServerLevel pLevel, @NotNull RandomSource pRandom, @NotNull BlockPos pPos, @NotNull BlockState pState) {
-        if (pLevel.getBlockState(pPos.below(1)).is(ModBlocks.soul_farmland.get())) IGrowingPlant.super.performBonemeal(pLevel, pRandom, pPos, pState);
+        if (pLevel.getBlockState(pPos.below(1)).is(ModBlocks.soul_farmland.get()))
+            IGrowingPlant.super.performBonemeal(pLevel, pRandom, pPos, pState);
     }
 
     @Unique

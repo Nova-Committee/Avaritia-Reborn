@@ -23,6 +23,7 @@ public abstract class BaseTileEntityBlock extends BaseBlock implements EntityBlo
     public BaseTileEntityBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
+
     public BaseTileEntityBlock(Function<Properties, Properties> properties) {
         super(properties);
     }
@@ -30,6 +31,7 @@ public abstract class BaseTileEntityBlock extends BaseBlock implements EntityBlo
     public BaseTileEntityBlock(MapColor color, SoundType sound, float hardness, float resistance) {
         super(color, sound, hardness, resistance);
     }
+
     public BaseTileEntityBlock(SoundType sound, float hardness, float resistance) {
         super(sound, hardness, resistance);
     }

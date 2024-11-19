@@ -33,9 +33,9 @@ public class IngredientUtils {
     public void put(NormalizedSimpleStack stack, int amount) {
         if (this.isValid) {
             if (this.ingredientMap.containsKey(stack)) {
-                long newAmount = (long) this.ingredientMap.get(stack) + (long)amount;
+                long newAmount = (long) this.ingredientMap.get(stack) + (long) amount;
                 if (newAmount <= 2147483647L && newAmount >= -2147483648L) {
-                    this.ingredientMap.put(stack, (int)newAmount);
+                    this.ingredientMap.put(stack, (int) newAmount);
                 } else {
                     this.isValid = false;
                 }
@@ -48,12 +48,13 @@ public class IngredientUtils {
 
     public void put(NormalizedSimpleStack stack, long amount) {
         if (amount <= 2147483647L && amount >= -2147483648L) {
-            this.put(stack, (int)amount);
+            this.put(stack, (int) amount);
         } else {
             this.isValid = false;
         }
 
     }
+
     public void put(FluidStack stack) {
         this.put(NSSFluid.createFluid(stack), stack.getAmount());
     }

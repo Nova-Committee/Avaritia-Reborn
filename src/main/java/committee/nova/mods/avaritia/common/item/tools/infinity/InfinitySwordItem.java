@@ -50,7 +50,7 @@ public class InfinitySwordItem extends SwordItem implements IMultiFunction, Init
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity victim, LivingEntity livingEntity) {
         var level = livingEntity.level();
         var endlessDamage = ModConfig.isSwordAttackEndless.get();
-        if (!level.isClientSide){
+        if (!level.isClientSide) {
             if (victim instanceof EnderDragon dragon && livingEntity instanceof Player player) {
                 dragon.hurt(dragon.head, player.damageSources().source(ModDamageTypes.INFINITY, player, victim), endlessDamage ? Float.POSITIVE_INFINITY : ModToolTiers.INFINITY_SWORD.getAttackDamageBonus());
                 dragon.setHealth(0);//fix

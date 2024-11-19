@@ -168,7 +168,7 @@ public class ArrayUtils {
      * @param value Value to fill with.
      * @param <T>   What we are dealing with.
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     public static <T> T[] fill(T[] array, T value) {
         for (int i = 0; i < array.length; i++) {
             T newValue = value;
@@ -190,7 +190,7 @@ public class ArrayUtils {
      * @param check Called to decide if the value should be replaced.
      * @param <T>   What we are dealing with.
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     public static <T> void fillArray(T[] array, T value, Function<T, Boolean> check) {
         for (int i = 0; i < array.length; i++) {
             if (check.apply(array[i])) {
@@ -295,7 +295,7 @@ public class ArrayUtils {
      * @param <T>   The type.
      * @return The new array.
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     public static <T> T[] createNewArray(T[] array) {
         return createNewArray(array, array.length);
     }
@@ -308,7 +308,7 @@ public class ArrayUtils {
      * @param <T>    The type.
      * @return The new array.
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     public static <T> T[] createNewArray(T[] array, int length) {
         Class<? extends T[]> newType = (Class<? extends T[]>) array.getClass();
         T[] copy;
@@ -329,7 +329,7 @@ public class ArrayUtils {
      * @param <T>        The thing.
      * @return The new array.
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     public static <T> T[] newArray(Class<T> arrayClass, int length) {
         return (T[]) Array.newInstance(arrayClass, length);
     }

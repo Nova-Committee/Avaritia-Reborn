@@ -34,7 +34,7 @@ public class AbstractCraftTableBlock extends BaseBlock {
 
     @Override
     public MenuProvider getMenuProvider(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos) {
-        return new SimpleMenuProvider((i, inventory, player) -> new CraftingMenu(i, inventory, ContainerLevelAccess.create(pLevel, pPos)){
+        return new SimpleMenuProvider((i, inventory, player) -> new CraftingMenu(i, inventory, ContainerLevelAccess.create(pLevel, pPos)) {
             @Override
             public boolean stillValid(@NotNull Player playerIn) {
                 return true;

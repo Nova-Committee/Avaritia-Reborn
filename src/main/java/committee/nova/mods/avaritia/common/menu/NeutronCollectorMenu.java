@@ -26,14 +26,6 @@ public class NeutronCollectorMenu extends BaseMenu {
     private final ContainerData data;
 
 
-    public static NeutronCollectorMenu create(int windowId, Inventory playerInventory, FriendlyByteBuf buffer) {
-        return new NeutronCollectorMenu(ModMenus.neutron_collector.get(), windowId, playerInventory, buffer, new SimpleContainerData(10));
-    }
-
-    public static NeutronCollectorMenu create(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos, ContainerData data) {
-        return new NeutronCollectorMenu(ModMenus.neutron_collector.get(), windowId, playerInventory, inventory, pos, data);
-    }
-
     private NeutronCollectorMenu(MenuType<?> type, int id, Inventory playerInventory, FriendlyByteBuf buffer, ContainerData data) {
         this(type, id, playerInventory, BaseNeutronCollectorTile.createInventoryHandler(null), buffer.readBlockPos(), data);
     }
@@ -55,6 +47,13 @@ public class NeutronCollectorMenu extends BaseMenu {
         this.addDataSlots(data);
     }
 
+    public static NeutronCollectorMenu create(int windowId, Inventory playerInventory, FriendlyByteBuf buffer) {
+        return new NeutronCollectorMenu(ModMenus.neutron_collector.get(), windowId, playerInventory, buffer, new SimpleContainerData(10));
+    }
+
+    public static NeutronCollectorMenu create(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos, ContainerData data) {
+        return new NeutronCollectorMenu(ModMenus.neutron_collector.get(), windowId, playerInventory, inventory, pos, data);
+    }
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int slotNumber) {

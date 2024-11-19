@@ -9,12 +9,13 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 /**
-* InfinityGolem
-* @description
-* @author cnlimiter
-* @date 2024/4/5 11:24
-* @version 1.0
-*/
+ * InfinityGolem
+ *
+ * @author cnlimiter
+ * @version 1.0
+ * @description
+ * @date 2024/4/5 11:24
+ */
 public class InfinityGolem extends IronGolem {
     public InfinityGolem(EntityType<? extends IronGolem> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);

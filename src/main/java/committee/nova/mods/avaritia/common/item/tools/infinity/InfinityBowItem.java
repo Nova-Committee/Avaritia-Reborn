@@ -50,10 +50,12 @@ public class InfinityBowItem extends BowItem implements ITooltip, InitEnchantIte
                 .fireResistant()
         );
     }
+
     @Override
     public boolean isFoil(@NotNull ItemStack pStack) {
         return false;
     }
+
     @Override
     public boolean isDamageable(ItemStack stack) {
         return false;
@@ -71,14 +73,17 @@ public class InfinityBowItem extends BowItem implements ITooltip, InitEnchantIte
     public boolean isEnchantable(@NotNull ItemStack pStack) {
         return true;
     }
+
     @Override
     public int getEnchantmentValue(ItemStack stack) {
         return 99;
     }//附魔系数
+
     @Override
     public int getUseDuration(@NotNull ItemStack stack) {
         return 1200;
     }//使用时间
+
     @Override
     public @NotNull UseAnim getUseAnimation(@NotNull ItemStack pStack) {
         return UseAnim.BOW;
@@ -115,9 +120,9 @@ public class InfinityBowItem extends BowItem implements ITooltip, InitEnchantIte
             CompoundTag tags = itemstack.getOrCreateTag();
             tags.putBoolean("tracer", !tags.getBoolean("tracer"));
             player.swing(hand);
-            if(!level.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(
+            if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(
                     Component.translatable(tags.getBoolean("tracer") ? "tooltip.infinity_bow.type_2" : "tooltip.infinity_bow.type_1"
-                            ), true);
+                    ), true);
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
         }
         player.startUsingItem(hand);
@@ -144,7 +149,7 @@ public class InfinityBowItem extends BowItem implements ITooltip, InitEnchantIte
                 AbstractArrow arrowEntity;
 
                 if (stack.getOrCreateTag().getBoolean("tracer")) {//追踪模式
-                    if ((double)powerForTime >= 0.1D) {
+                    if ((double) powerForTime >= 0.1D) {
                         ArrowItem arrowitem = (ammoStack.getItem() instanceof ArrowItem arrowItem ? arrowItem : (ArrowItem) Items.ARROW);
                         arrowEntity = this.customTraceArrow(arrowitem.createArrow(level, ammoStack, player));
                         if (arrowEntity instanceof Arrow arrow2) {
@@ -159,7 +164,7 @@ public class InfinityBowItem extends BowItem implements ITooltip, InitEnchantIte
                             arrowEntity.setCritArrow(true);//蓄力满必暴击
                         }
 
-                        arrowEntity.setBaseDamage(arrowEntity.getBaseDamage() * (double)DAMAGE_MULTIPLIER);
+                        arrowEntity.setBaseDamage(arrowEntity.getBaseDamage() * (double) DAMAGE_MULTIPLIER);
                         addEnchant(stack, level, player, arrowEntity, powerForTime);
 
                     }
@@ -171,7 +176,7 @@ public class InfinityBowItem extends BowItem implements ITooltip, InitEnchantIte
                     if (draw == 1.0F) {
                         arrowEntity.setCritArrow(true);//蓄力满必暴击
                     }
-                    arrowEntity.setBaseDamage(arrowEntity.getBaseDamage() * (double)DAMAGE_MULTIPLIER);
+                    arrowEntity.setBaseDamage(arrowEntity.getBaseDamage() * (double) DAMAGE_MULTIPLIER);
                     addEnchant(stack, level, player, arrowEntity, powerForTime);
                 }
 
@@ -185,7 +190,7 @@ public class InfinityBowItem extends BowItem implements ITooltip, InitEnchantIte
     private void addEnchant(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity player, AbstractArrow arrowEntity, float powerForTime) {
         int j = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.POWER_ARROWS, stack);//力量箭矢
         if (j > 0) {
-            arrowEntity.setBaseDamage(arrowEntity.getBaseDamage() + (double)j * 0.5D + 0.5D);
+            arrowEntity.setBaseDamage(arrowEntity.getBaseDamage() + (double) j * 0.5D + 0.5D);
         }
 
         int k = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);

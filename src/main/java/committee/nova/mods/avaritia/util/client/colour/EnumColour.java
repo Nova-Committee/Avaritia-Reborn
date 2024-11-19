@@ -40,20 +40,11 @@ public enum EnumColour implements StringRepresentable {
     BLACK     ("black",      "forge:dyes/black",      "forge:wool/black",      "item.minecraft.firework_star.black",       0x1F1F1F);
     //@formatter:on
 
-    private final String name;
-    private final ResourceLocation dyeTagName;
-    private final ResourceLocation woolTagName;
-    private final String unlocalizedName;
-    private final int rgb;
-
     private static final ImmutableTable<EnumColour, EnumColour, EnumColour> mixMap;
-
     private static final Map<String, EnumColour> nameLookup = Arrays.stream(values())//
             .collect(Collectors.toMap(e -> e.name, Function.identity()));
-
     private static final Map<ResourceLocation, EnumColour> dyeTagLookup = Arrays.stream(values())//
             .collect(Collectors.toMap(e -> e.dyeTagName, Function.identity()));
-
     private static final Map<ResourceLocation, EnumColour> woolTagLookup = Arrays.stream(values())//
             .collect(Collectors.toMap(e -> e.woolTagName, Function.identity()));
 
@@ -86,12 +77,67 @@ public enum EnumColour implements StringRepresentable {
         mixMap = builder.build();
     }
 
+    private final String name;
+    private final ResourceLocation dyeTagName;
+    private final ResourceLocation woolTagName;
+    private final String unlocalizedName;
+    private final int rgb;
+
     EnumColour(String name, String dyeTagName, String woolTagName, String unlocalizedName, int rgb) {
         this.name = name;
         this.dyeTagName = new ResourceLocation(dyeTagName);
         this.woolTagName = new ResourceLocation(woolTagName);
         this.unlocalizedName = unlocalizedName;
         this.rgb = rgb;
+    }
+
+    public static EnumColour mix(EnumColour a, EnumColour b) {
+        if (a == b) {
+            return a;
+        }
+        return mixMap.get(a, b);
+    }
+
+    public static EnumColour fromWoolMeta(int id) {
+        return values()[id];
+    }
+
+    public static EnumColour fromDyeMeta(int id) {
+        return values()[15 - id];
+    }
+
+    public static EnumColour fromDyeTag(ResourceLocation tag) {
+        return dyeTagLookup.get(tag);
+    }
+
+    public static EnumColour fromWoolTag(ResourceLocation tag) {
+        return woolTagLookup.get(tag);
+    }
+
+    public static EnumColour fromDyeStack(ItemStack stack) {
+        return ForgeRegistries.ITEMS.getHolder(stack.getItem())
+                .flatMap(e -> e.getTagKeys()
+                        .map(TagKey::location)
+                        .map(dyeTagLookup::get)
+                        .filter(Objects::nonNull)
+                        .findFirst()
+                )
+                .orElse(null);
+    }
+
+    public static EnumColour fromWoolStack(ItemStack stack) {
+        return ForgeRegistries.ITEMS.getHolder(stack.getItem())
+                .flatMap(e -> e.getTagKeys()
+                        .map(TagKey::location)
+                        .map(woolTagLookup::get)
+                        .filter(Objects::nonNull)
+                        .findFirst()
+                )
+                .orElse(null);
+    }
+
+    public static EnumColour fromName(String name) {
+        return nameLookup.get(name);
     }
 
     @Override
@@ -165,54 +211,5 @@ public enum EnumColour implements StringRepresentable {
 
     public EnumColour mix(EnumColour b) {
         return mix(this, b);
-    }
-
-    public static EnumColour mix(EnumColour a, EnumColour b) {
-        if (a == b) {
-            return a;
-        }
-        return mixMap.get(a, b);
-    }
-
-    public static EnumColour fromWoolMeta(int id) {
-        return values()[id];
-    }
-
-    public static EnumColour fromDyeMeta(int id) {
-        return values()[15 - id];
-    }
-
-    public static EnumColour fromDyeTag(ResourceLocation tag) {
-        return dyeTagLookup.get(tag);
-    }
-
-    public static EnumColour fromWoolTag(ResourceLocation tag) {
-        return woolTagLookup.get(tag);
-    }
-
-    public static EnumColour fromDyeStack(ItemStack stack) {
-        return ForgeRegistries.ITEMS.getHolder(stack.getItem())
-                .flatMap(e -> e.getTagKeys()
-                        .map(TagKey::location)
-                        .map(dyeTagLookup::get)
-                        .filter(Objects::nonNull)
-                        .findFirst()
-                )
-                .orElse(null);
-    }
-
-    public static EnumColour fromWoolStack(ItemStack stack) {
-        return ForgeRegistries.ITEMS.getHolder(stack.getItem())
-                .flatMap(e -> e.getTagKeys()
-                        .map(TagKey::location)
-                        .map(woolTagLookup::get)
-                        .filter(Objects::nonNull)
-                        .findFirst()
-                )
-                .orElse(null);
-    }
-
-    public static EnumColour fromName(String name) {
-        return nameLookup.get(name);
     }
 }

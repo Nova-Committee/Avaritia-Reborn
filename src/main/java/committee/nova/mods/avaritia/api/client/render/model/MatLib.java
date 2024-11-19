@@ -47,18 +47,18 @@ public class MatLib {
         return matLib;
     }
 
-    @Nullable
-    public ModelMaterial getMaterial(String name) {
-        return materials.get(name);
-    }
-
     private static double[] parseDoubles(String s, String token) {
         String[] as = s.split(token);
         assert as.length < 4 : "Too many values, expected 4 max, Got: " + as.length;
-        double[] values = new double[] { 0, 0, 0, 1 };
+        double[] values = new double[]{0, 0, 0, 1};
         for (int i = 0; i < as.length; i++) {
             values[i] = Double.parseDouble(as[i]);
         }
         return values;
+    }
+
+    @Nullable
+    public ModelMaterial getMaterial(String name) {
+        return materials.get(name);
     }
 }

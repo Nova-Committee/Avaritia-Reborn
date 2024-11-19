@@ -742,7 +742,8 @@ public class ToolUtils {
 
     /**
      * 发射剑气
-     * @param stack 工具
+     *
+     * @param stack  工具
      * @param player 玩家
      */
     public static void shootBladeSlash(ItemStack stack, Player player) {

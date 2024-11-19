@@ -49,10 +49,12 @@ public class InfinityHoeItem extends HoeItem {
                 .fireResistant());
 
     }
+
     @Override
     public boolean isFoil(@NotNull ItemStack pStack) {
         return false;
     }
+
     @Override
     public boolean isDamageable(ItemStack stack) {
         return false;
@@ -81,7 +83,7 @@ public class InfinityHoeItem extends HoeItem {
             CompoundTag tags = stack.getOrCreateTag();
             tags.putBoolean("sow", !tags.getBoolean("sow"));
             player.swing(hand);
-            if(!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(
+            if (!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(
                     Component.translatable(tags.getBoolean("sow") ? "tooltip.infinity_hoe.type_2" : "tooltip.infinity_hoe.type_1"
                     ), true);
             return InteractionResultHolder.success(stack);

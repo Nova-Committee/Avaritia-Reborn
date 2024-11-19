@@ -25,7 +25,7 @@ public interface ISwitchable {
         ItemStack stack = player.getItemInHand(hand);
         CompoundTag tags = stack.getOrCreateTag();
         tags.putBoolean("active", !tags.getBoolean("active"));
-        if(!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(
+        if (!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(
                 tags.getBoolean("active") ? ModTooltips.ACTIVE.args(funcName).build() : ModTooltips.INACTIVE.args(funcName).build()
                 , true);
         player.swing(hand);

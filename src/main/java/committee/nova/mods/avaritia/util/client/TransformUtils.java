@@ -27,14 +27,13 @@ import java.util.Map;
  */
 public class TransformUtils {
 
-    private static final Transformation flipX = new Transformation(null, null, new Vector3f(-1, 1, 1), null);
-
     public static final PerspectiveModelState IDENTITY = PerspectiveModelState.IDENTITY;
     public static final PerspectiveModelState DEFAULT_BLOCK;
     public static final PerspectiveModelState DEFAULT_ITEM;
     public static final PerspectiveModelState DEFAULT_TOOL;
     public static final PerspectiveModelState DEFAULT_BOW;
     public static final PerspectiveModelState DEFAULT_HANDHELD_ROD;
+    private static final Transformation flipX = new Transformation(null, null, new Vector3f(-1, 1, 1), null);
 
     static {
         Map<ItemDisplayContext, Transformation> map;

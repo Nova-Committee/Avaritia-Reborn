@@ -38,6 +38,7 @@ public class EntityUtils {
 
         return findHitEntities(world.getEntities(exclude, searchArea, filter).stream(), startPos, endPos, padding);
     }
+
     public static Stream<EntityHitResult> findHitEntities(Stream<Entity> entities, Vec3 startPos, Vec3 endPos, Vec3 padding) {
 
         return entities.map(entity -> entity.getBoundingBox().inflate(padding.x(), padding.y(), padding.z()).clip(startPos, endPos).map(hitPos -> new EntityHitResult(entity, hitPos)).orElse(null))

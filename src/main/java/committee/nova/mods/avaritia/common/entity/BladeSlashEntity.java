@@ -23,10 +23,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BladeSlashEntity extends Projectile {
     public static float defaultSpeed = 2.0F;
-
+    public final float zRot;
     public float damage = ModConfig.bladeSlashDamage.get();
     public int duration = 5;
-    public final float zRot;
+
     public BladeSlashEntity(EntityType<? extends Projectile> type, Level worldIn) {
         super(type, worldIn);
         zRot = (worldIn.getRandom().nextFloat() - 0.5F) * 50;

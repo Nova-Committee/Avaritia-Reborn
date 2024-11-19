@@ -4,6 +4,7 @@ import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.client.render.tile.CompressedChestRenderer;
 import committee.nova.mods.avaritia.common.tile.CompressedChestTile;
 import committee.nova.mods.avaritia.common.tile.CompressorTile;
+import committee.nova.mods.avaritia.common.tile.InfinityChestTile;
 import committee.nova.mods.avaritia.common.tile.ModCraftTile;
 import committee.nova.mods.avaritia.common.tile.collector.BaseNeutronCollectorTile;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -44,18 +45,17 @@ public class ModTileEntities {
                     ModBlocks.dense_neutron_collector.get(),
                     ModBlocks.denser_neutron_collector.get(),
                     ModBlocks.densest_neutron_collector.get()
-    }
+            }
     );
     public static RegistryObject<BlockEntityType<CompressorTile>> compressor_tile = blockEntity("compressor_tile", CompressorTile::new, () -> new Block[]{ModBlocks.neutron_compressor.get()});
     public static RegistryObject<BlockEntityType<ModCraftTile>> mod_craft_tile = blockEntity("mod_craft_tile", ModCraftTile::new,
-        () -> new Block[]{
-                ModBlocks.sculk_crafting_table.get(),
-                ModBlocks.nether_crafting_table.get(),
-                ModBlocks.end_crafting_table.get(),
-                ModBlocks.extreme_crafting_table.get()
-    });
+            () -> new Block[]{
+                    ModBlocks.sculk_crafting_table.get(),
+                    ModBlocks.nether_crafting_table.get(),
+                    ModBlocks.end_crafting_table.get(),
+                    ModBlocks.extreme_crafting_table.get()
+            });
     public static RegistryObject<BlockEntityType<CompressedChestTile>> compressed_chest_tile = blockEntity("compressed_chest_tile", CompressedChestTile::new, () -> new Block[]{ModBlocks.compressed_chest.get()});
-
-
+    public static RegistryObject<BlockEntityType<InfinityChestTile>> infinity_chest_tile = blockEntity("infinity_chest_tile", InfinityChestTile::new, () -> new Block[]{ModBlocks.infinity_chest.get()});
 
 }

@@ -56,18 +56,18 @@ public class AvaritiaShaders {
     );
 
 
-    public static void onRegisterShaders(RegisterShadersEvent event){
+    public static void onRegisterShaders(RegisterShadersEvent event) {
         event.registerShader(CCShaderInstance.create(event.getResourceProvider(), new ResourceLocation(Static.MOD_ID, "cosmic"), DefaultVertexFormat.BLOCK), e -> {
-            cosmicShader = (CCShaderInstance)e;
+            cosmicShader = (CCShaderInstance) e;
             cosmicTime = Objects.requireNonNull(cosmicShader.getUniform("time"));
             cosmicYaw = Objects.requireNonNull(cosmicShader.getUniform("yaw"));
             cosmicPitch = Objects.requireNonNull(cosmicShader.getUniform("pitch"));
             cosmicExternalScale = Objects.requireNonNull(cosmicShader.getUniform("externalScale"));
             cosmicOpacity = Objects.requireNonNull(cosmicShader.getUniform("opacity"));
             cosmicUVs = Objects.requireNonNull(cosmicShader.getUniform("cosmicuvs"));
-            cosmicTime.set((float)renderTime + renderFrame);
+            cosmicTime.set((float) renderTime + renderFrame);
             cosmicShader.onApply(() -> {
-                cosmicTime.set((float)renderTime + renderFrame);
+                cosmicTime.set((float) renderTime + renderFrame);
             });
         });
     }

@@ -38,6 +38,7 @@ import java.util.List;
 public class CrystalHoeItem extends HoeItem implements ITooltip {
 
     private final String name;
+
     public CrystalHoeItem(String name) {
         super(ModToolTiers.CRYSTAL_PICKAXE, 1, 0F,
                 new Properties()
@@ -47,6 +48,7 @@ public class CrystalHoeItem extends HoeItem implements ITooltip {
         );
         this.name = name;
     }
+
     @Override
     public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);

@@ -34,6 +34,10 @@ public class Vertex5 implements Copyable<Vertex5> {
         this(new Vector3(x, y, z), new UV(u, v, tex));
     }
 
+    public Vertex5(Vertex5 vertex5) {
+        this(vertex5.vec.copy(), vertex5.uv.copy());
+    }
+
     public Vertex5 set(double x, double y, double z, double u, double v) {
         vec.set(x, y, z);
         uv.set(u, v);
@@ -56,10 +60,6 @@ public class Vertex5 implements Copyable<Vertex5> {
         vec.set(vert.vec);
         uv.set(vert.uv);
         return this;
-    }
-
-    public Vertex5(Vertex5 vertex5) {
-        this(vertex5.vec.copy(), vertex5.uv.copy());
     }
 
     @Override

@@ -17,6 +17,7 @@ public class BaseBlock extends Block {
     public BaseBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
+
     public BaseBlock(Function<Properties, Properties> properties) {
         super(properties.apply(Properties.of()));
     }

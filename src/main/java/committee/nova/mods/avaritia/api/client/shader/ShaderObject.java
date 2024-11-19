@@ -65,19 +65,6 @@ public interface ShaderObject {
     void onLink(int programId);
 
     /**
-     * Represents a Shader Type.
-     */
-    interface ShaderType {
-
-        /**
-         * The GL code used in {@link GL20#glCreateShader}.
-         *
-         * @return The code.
-         */
-        int getGLCode();
-    }
-
-    /**
      * Standard ShaderTypes.
      */
     enum StandardShaderType implements ShaderType {
@@ -100,5 +87,18 @@ public interface ShaderObject {
         public int getGLCode() {
             return glCode;
         }
+    }
+
+    /**
+     * Represents a Shader Type.
+     */
+    interface ShaderType {
+
+        /**
+         * The GL code used in {@link GL20#glCreateShader}.
+         *
+         * @return The code.
+         */
+        int getGLCode();
     }
 }

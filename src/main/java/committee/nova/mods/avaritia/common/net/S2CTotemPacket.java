@@ -24,10 +24,12 @@ import java.util.function.Supplier;
 public class S2CTotemPacket {
     private final ItemStack stack;
     private final int entityId;
+
     public S2CTotemPacket(FriendlyByteBuf buf) {
         this.stack = buf.readItem();
         this.entityId = buf.readInt();
     }
+
     public S2CTotemPacket(ItemStack stack, int entityId) {
         this.stack = stack;
         this.entityId = entityId;
@@ -38,7 +40,7 @@ public class S2CTotemPacket {
         buf.writeInt(msg.entityId);
     }
 
-    public static  void run(S2CTotemPacket msg, Supplier<NetworkEvent.Context> ctx) {
+    public static void run(S2CTotemPacket msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             playTotem(msg.stack, msg.entityId); //处理服务端发送给客户端的消息
         });
@@ -51,9 +53,9 @@ public class S2CTotemPacket {
         Minecraft instance = Minecraft.getInstance();
         ClientLevel world = instance.level;
 
-        if (world != null){
+        if (world != null) {
             Entity entity = world.getEntity(entityId);
-            if (entity != null){
+            if (entity != null) {
                 instance.particleEngine.createTrackingEmitter(entity, ParticleTypes.TOTEM_OF_UNDYING, 30);
                 world.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), SoundEvents.TOTEM_USE, entity.getSoundSource(), 1.0F, 1.0F, false);
                 instance.gameRenderer.displayItemActivation(stack);

@@ -35,8 +35,8 @@ public class ModRecipeSerializers {
     }
 
     @SubscribeEvent
-    public static void registerRecipeSerializers(RegisterEvent event){
-        if (event.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)){
+    public static void registerRecipeSerializers(RegisterEvent event) {
+        if (event.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
             CraftingHelper.register(InfinityCatalystCondition.Serializer.INSTANCE);
         }
     }

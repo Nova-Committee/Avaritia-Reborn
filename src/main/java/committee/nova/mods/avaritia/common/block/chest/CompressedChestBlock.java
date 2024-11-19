@@ -71,7 +71,7 @@ public class CompressedChestBlock extends ChestBlock {
     public void onPlace(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pOldState, boolean pMovedByPiston) {
         if (pLevel.isClientSide()) return;
         BlockEntity blockentity = pLevel.getBlockEntity(pPos);
-        CompoundTag chestTag,nameTag = null,countTag = null, nbtTag = null;
+        CompoundTag chestTag, nameTag = null, countTag = null, nbtTag = null;
         if (blockentity instanceof CompressedChestTile chestTile && chestTile.getChestTag() != null) {
             chestTag = chestTile.getChestTag();
             if (chestTag.contains("name")) nameTag = chestTag.getCompound("name");
@@ -104,20 +104,20 @@ public class CompressedChestBlock extends ChestBlock {
                 CompoundTag nameTag = new CompoundTag();
                 CompoundTag countTag = new CompoundTag();
                 CompoundTag nbtTag = new CompoundTag();
-                for(int i = 0; i < container.getContainerSize(); ++i) {
+                for (int i = 0; i < container.getContainerSize(); ++i) {
                     var item = container.getItem(i);
                     if (item.isEmpty()) continue;
                     stackCount++;
-                    nameTag.putString(String.valueOf(i),ForgeRegistries.ITEMS.getResourceKey(item.getItem()).get().location().toString());
-                    countTag.putInt(String.valueOf(i),item.getCount());
+                    nameTag.putString(String.valueOf(i), ForgeRegistries.ITEMS.getResourceKey(item.getItem()).get().location().toString());
+                    countTag.putInt(String.valueOf(i), item.getCount());
                     if (item.getTag() != null) {
                         nbtTag.put(String.valueOf(i), item.getTag());
                     }
                 }
-                chestTag.put("name",nameTag);
-                chestTag.put("count",countTag);
-                chestTag.put("nbt",nbtTag);
-                chestTag.putInt("stackCount",stackCount);
+                chestTag.put("name", nameTag);
+                chestTag.put("count", countTag);
+                chestTag.put("nbt", nbtTag);
+                chestTag.putInt("stackCount", stackCount);
             }
 
             if (blockentity instanceof CompressedChestTile chestTile) {
@@ -146,6 +146,6 @@ public class CompressedChestBlock extends ChestBlock {
         if (pStack.getTag() != null && pStack.getTag().contains("stackCount")) {
             stackCount = pStack.getTag().getInt("stackCount");
         }
-        pTooltip.add(Component.literal(String.format("%s/243",stackCount)));
+        pTooltip.add(Component.literal(String.format("%s/243", stackCount)));
     }
 }

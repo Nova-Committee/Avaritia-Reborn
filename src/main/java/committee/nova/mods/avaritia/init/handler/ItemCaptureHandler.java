@@ -19,8 +19,9 @@ import java.util.Set;
  */
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ItemCaptureHandler {
-    private static boolean doItemCapture = false;
     private static final Set<ItemStack> capturedDrops = new LinkedHashSet<>();
+    private static boolean doItemCapture = false;
+
     public static void enableItemCapture(boolean on) {
         doItemCapture = on;
     }

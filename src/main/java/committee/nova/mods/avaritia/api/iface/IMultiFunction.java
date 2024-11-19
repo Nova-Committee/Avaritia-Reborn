@@ -27,7 +27,7 @@ public interface IMultiFunction {
         ItemStack stack = player.getItemInHand(hand);
         CompoundTag tags = stack.getOrCreateTag();
         tags.putInt("avaritia_func", func.id());
-        if(!world.isClientSide && player instanceof ServerPlayer serverPlayer)
+        if (!world.isClientSide && player instanceof ServerPlayer serverPlayer)
             serverPlayer.sendSystemMessage(Component.translatable("tooltip.avaritia.switch").append(func.name()), true);
         player.swing(hand);
     }

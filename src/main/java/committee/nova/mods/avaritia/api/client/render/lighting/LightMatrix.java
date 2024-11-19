@@ -15,18 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 public class LightMatrix implements IVertexOperation {
 
     public static final int operationIndex = IVertexOperation.registerOperation();
-
-    public int computed = 0;
-    public float[][] ao = new float[13][4];
-    public int[][] brightness = new int[13][4];
-
-    public BlockAndTintGetter access;
-    public BlockPos pos = BlockPos.ZERO;
-
-    private int sampled = 0;
-    private final float[] aSamples = new float[27];
-    private final int[] bSamples = new int[27];
-
     /**
      * The 9 positions in the sample array for each side, sides >= 6 are centered on sample 13 (the block itself)
      */
@@ -57,6 +45,14 @@ public class LightMatrix implements IVertexOperation {
         0.5F, 1F, 0.8F, 0.8F, 0.6F, 0.6F,
         1F
     };
+    private final float[] aSamples = new float[27];
+    private final int[] bSamples = new int[27];
+    public int computed = 0;
+    public float[][] ao = new float[13][4];
+    public int[][] brightness = new int[13][4];
+    public BlockAndTintGetter access;
+    public BlockPos pos = BlockPos.ZERO;
+    private int sampled = 0;
 
     //@formatter:on
     /*static
@@ -80,6 +76,23 @@ public class LightMatrix implements IVertexOperation {
         }
         System.out.println(Arrays.deepToString(ssamplem));
     }*/
+
+    public static float interpAO(float a, float b, float c, float d) {
+        return (a + b + c + d) / 4F;
+    }
+
+    public static int interpBrightness(int a, int b, int c, int d) {
+        if (a == 0) {
+            a = d;
+        }
+        if (b == 0) {
+            b = d;
+        }
+        if (c == 0) {
+            c = d;
+        }
+        return (a + b + c + d) >> 2 & 0xFF00FF;
+    }
 
     public void locate(BlockAndTintGetter a, BlockPos bPos) {
         access = a;
@@ -130,23 +143,6 @@ public class LightMatrix implements IVertexOperation {
         sample(d);
         ao[s][q] = interpAO(aSamples[a], aSamples[b], aSamples[c], aSamples[d]) * sideao[s];
         brightness[s][q] = interpBrightness(bSamples[a], bSamples[b], bSamples[c], bSamples[d]);
-    }
-
-    public static float interpAO(float a, float b, float c, float d) {
-        return (a + b + c + d) / 4F;
-    }
-
-    public static int interpBrightness(int a, int b, int c, int d) {
-        if (a == 0) {
-            a = d;
-        }
-        if (b == 0) {
-            b = d;
-        }
-        if (c == 0) {
-            c = d;
-        }
-        return (a + b + c + d) >> 2 & 0xFF00FF;
     }
 
     @Override

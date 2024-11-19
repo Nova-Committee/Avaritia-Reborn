@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 public class CapHandler {
 
     @SubscribeEvent
-    public static void registerCaps(RegisterCapabilitiesEvent event){
+    public static void registerCaps(RegisterCapabilitiesEvent event) {
     }
 
     @SubscribeEvent

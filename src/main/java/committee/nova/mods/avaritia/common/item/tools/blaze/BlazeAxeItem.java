@@ -36,6 +36,7 @@ import java.util.List;
  */
 public class BlazeAxeItem extends AxeItem implements ITooltip, ISwitchable, InitEnchantItem {
     private final String name;
+
     public BlazeAxeItem(String name) {
         super(ModToolTiers.BLAZE_AXE, 0, 0f,
                 new Properties()
@@ -45,6 +46,7 @@ public class BlazeAxeItem extends AxeItem implements ITooltip, ISwitchable, Init
 
         this.name = name;
     }
+
     @Override
     public boolean isFoil(@NotNull ItemStack pStack) {
         return false;

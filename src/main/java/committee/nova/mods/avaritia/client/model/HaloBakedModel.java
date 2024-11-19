@@ -27,7 +27,7 @@ import java.util.Random;
  * Description:
  */
 
-public class HaloBakedModel extends WrappedItemModel{
+public class HaloBakedModel extends WrappedItemModel {
     private final Random random;
     private final BakedQuad haloQuad;
     private final boolean pulse;
@@ -37,30 +37,6 @@ public class HaloBakedModel extends WrappedItemModel{
         this.random = new Random();
         this.haloQuad = generateHaloQuad(sprite, size, color);
         this.pulse = pulse;
-    }
-
-    @Override
-    public void renderItem(ItemStack stack, ItemDisplayContext transformType, PoseStack pStack, MultiBufferSource source, int packedLight, int packedOverlay) {
-        if (transformType == ItemDisplayContext.GUI) {
-            Minecraft.getInstance().getItemRenderer()
-                    .renderQuadList(pStack, source.getBuffer(ItemBlockRenderTypes.getRenderType(stack, true)), List.of(this.haloQuad), stack, packedLight, packedOverlay);
-            if (this.pulse) {
-                pStack.pushPose();
-                double scale = random.nextDouble() * 0.15D + 0.95D;
-                double trans = (1.0D - scale) / 2.0D;
-                pStack.translate(trans, trans, 0.0D);
-                pStack.scale((float)scale, (float)scale, 1.0001F);
-                this.renderWrapped(stack, pStack, source, packedLight, packedOverlay, true, (e) -> new AlphaOverrideVertexConsumer(e, 0.6000000238418579D));
-                pStack.popPose();
-            }
-        }
-
-        this.renderWrapped(stack, pStack, source, packedLight, packedOverlay, true);
-    }
-
-    @Override
-    public PerspectiveModelState getModelState() {
-        return TransformUtils.DEFAULT_ITEM;
     }
 
     static BakedQuad generateHaloQuad(final TextureAtlasSprite sprite, final int size, final int color) {
@@ -87,10 +63,34 @@ public class HaloBakedModel extends WrappedItemModel{
     }
 
     static void putVertex(final Quad.Vertex vx, final double x, final double y, final double z, final double u, final double v) {
-        vx.vec[0] = (float)x;
-        vx.vec[1] = (float)y;
-        vx.vec[2] = (float)z;
-        vx.uv[0] = (float)u;
-        vx.uv[1] = (float)v;
+        vx.vec[0] = (float) x;
+        vx.vec[1] = (float) y;
+        vx.vec[2] = (float) z;
+        vx.uv[0] = (float) u;
+        vx.uv[1] = (float) v;
+    }
+
+    @Override
+    public void renderItem(ItemStack stack, ItemDisplayContext transformType, PoseStack pStack, MultiBufferSource source, int packedLight, int packedOverlay) {
+        if (transformType == ItemDisplayContext.GUI) {
+            Minecraft.getInstance().getItemRenderer()
+                    .renderQuadList(pStack, source.getBuffer(ItemBlockRenderTypes.getRenderType(stack, true)), List.of(this.haloQuad), stack, packedLight, packedOverlay);
+            if (this.pulse) {
+                pStack.pushPose();
+                double scale = random.nextDouble() * 0.15D + 0.95D;
+                double trans = (1.0D - scale) / 2.0D;
+                pStack.translate(trans, trans, 0.0D);
+                pStack.scale((float) scale, (float) scale, 1.0001F);
+                this.renderWrapped(stack, pStack, source, packedLight, packedOverlay, true, (e) -> new AlphaOverrideVertexConsumer(e, 0.6000000238418579D));
+                pStack.popPose();
+            }
+        }
+
+        this.renderWrapped(stack, pStack, source, packedLight, packedOverlay, true);
+    }
+
+    @Override
+    public PerspectiveModelState getModelState() {
+        return TransformUtils.DEFAULT_ITEM;
     }
 }

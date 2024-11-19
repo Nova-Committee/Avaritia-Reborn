@@ -66,6 +66,28 @@ public class Matrix4 extends Transformation {
         set(stack);
     }
 
+    public static Vector3 gluProject(Vector3 obj, Matrix4 modelMatrix, Matrix4 projMatrix, IntBuffer viewport) {
+        Vector4f o = new Vector4f((float) obj.x, (float) obj.y, (float) obj.z, 1.0F);
+        modelMatrix.multMatrix(o);
+        projMatrix.multMatrix(o);
+
+        if (o.w() == 0) {
+            return Vector3.ZERO.copy();
+        }
+        o.w = (1.0F / o.w()) * 0.5F;
+
+        o.x = o.x() * o.w() + 0.5F;
+        o.y = o.y() * o.w() + 0.5F;
+        o.z = o.z() * o.w() + 0.5F;
+
+        Vector3 winPos = new Vector3();
+        winPos.z = o.z();
+
+        winPos.x = o.x() * viewport.get(viewport.position() + 2) + viewport.get(viewport.position() + 0);
+        winPos.y = o.y() * viewport.get(viewport.position() + 3) + viewport.get(viewport.position() + 1);
+        return winPos;
+    }
+
     public Matrix4 setIdentity() {
         m00 = m11 = m22 = m33 = 1;
         m01 = m02 = m03 = m10 = m12 = m13 = m20 = m21 = m23 = m30 = m31 = m32 = 0;
@@ -115,6 +137,7 @@ public class Matrix4 extends Transformation {
 
         return this;
     }
+    //endregion
 
     public Matrix4 transpose() {
         double n00 = m00;
@@ -153,7 +176,6 @@ public class Matrix4 extends Transformation {
 
         return this;
     }
-    //endregion
 
     //region Rotate
     public Matrix4 rotate(double angle, Vector3 axis) {
@@ -202,12 +224,12 @@ public class Matrix4 extends Transformation {
 
         return this;
     }
+    //endregion
 
     public Matrix4 rotate(Rotation rotation) {
         rotation.apply(this);
         return this;
     }
-    //endregion
 
     //region Multiply
     public Matrix4 leftMultiply(Matrix4 mat) {
@@ -295,6 +317,7 @@ public class Matrix4 extends Transformation {
         vec.y = y;
         vec.z = z;
     }
+    //endregion
 
     public void multMatrix(Vector4f vec) {
         double x = m00 * vec.x() + m01 * vec.y() + m02 * vec.z() + m03 * vec.w();
@@ -304,7 +327,6 @@ public class Matrix4 extends Transformation {
 
         vec.set((float) x, (float) y, (float) z, (float) w);
     }
-    //endregion
 
     //region Set
     public Matrix4 set(Matrix4 mat) {
@@ -415,6 +437,7 @@ public class Matrix4 extends Transformation {
     public Matrix4 set(PoseStack stack) {
         return set(stack.last().pose());
     }
+    //endregion
 
     public Matrix4 set(Matrix4f mat) {
         m00 = mat.m00();
@@ -436,7 +459,6 @@ public class Matrix4 extends Transformation {
 
         return this;
     }
-    //endregion
 
     @Override
     public Matrix4 copy() {
@@ -533,28 +555,6 @@ public class Matrix4 extends Transformation {
         mat.m33((float) m33);
         mat.transpose();
         return mat;
-    }
-
-    public static Vector3 gluProject(Vector3 obj, Matrix4 modelMatrix, Matrix4 projMatrix, IntBuffer viewport) {
-        Vector4f o = new Vector4f((float) obj.x, (float) obj.y, (float) obj.z, 1.0F);
-        modelMatrix.multMatrix(o);
-        projMatrix.multMatrix(o);
-
-        if (o.w() == 0) {
-            return Vector3.ZERO.copy();
-        }
-        o.w = (1.0F / o.w()) * 0.5F;
-
-        o.x = o.x() * o.w() + 0.5F;
-        o.y = o.y() * o.w() + 0.5F;
-        o.z = o.z() * o.w() + 0.5F;
-
-        Vector3 winPos = new Vector3();
-        winPos.z = o.z();
-
-        winPos.x = o.x() * viewport.get(viewport.position() + 2) + viewport.get(viewport.position() + 0);
-        winPos.y = o.y() * viewport.get(viewport.position() + 3) + viewport.get(viewport.position() + 1);
-        return winPos;
     }
 
     @Override

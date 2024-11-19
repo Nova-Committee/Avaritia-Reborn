@@ -24,7 +24,7 @@ import static committee.nova.mods.avaritia.util.SneakyUtils.unsafeCast;
  * @date 2024/6/7 上午3:11
  */
 public class ColUtils {
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     public static <T> T[] slice(T[] arr, int from, int until) {
         int low = Math.max(from, 0);
         int high = Math.min(Math.max(until, 0), arr.length);
@@ -57,7 +57,7 @@ public class ColUtils {
      */
     @Nullable
     @Deprecated
-    @ScheduledForRemoval (inVersion = "0.5.0")
+    @ScheduledForRemoval(inVersion = "0.5.0")
     public static <T> T maxBy(Iterable<T> col, ToIntFunction<T> func) {
         return maxByOrDefault(col, func, null);
     }
@@ -86,7 +86,7 @@ public class ColUtils {
      * @return The max element or the default value.
      */
     @Nullable
-    @Contract ("_,_,!null -> !null")
+    @Contract("_,_,!null -> !null")
     public static <T> T maxByOrDefault(Iterable<T> col, ToIntFunction<T> func, @Nullable T default_) {
         int max = Integer.MIN_VALUE;
         T maxT = null;
@@ -208,7 +208,7 @@ public class ColUtils {
      * @return The first element, or the default.
      */
     @Nullable
-    @Contract ("_,!null -> !null")
+    @Contract("_,!null -> !null")
     public static <T> T headOrDefault(Iterable<T> col, @Nullable T _default) {
         class Cons implements Consumer<T> {
 
@@ -277,7 +277,7 @@ public class ColUtils {
      * @return The last element, or the default.
      */
     @Nullable
-    @Contract ("_,!null -> !null")
+    @Contract("_,!null -> !null")
     public static <T> T tailOrDefault(Iterable<T> col, @Nullable T _default) {
         class Cons implements Consumer<T> {
 
@@ -669,7 +669,7 @@ public class ColUtils {
      * @return The Iterable.
      */
     @Deprecated
-    @ScheduledForRemoval (inVersion = "0.5.0")
+    @ScheduledForRemoval(inVersion = "0.5.0")
     public static <E> Iterable<E> iterable(Stream<E> stream) {
         return stream::iterator;
     }
@@ -681,7 +681,7 @@ public class ColUtils {
      * @return The Stream.
      */
     @Deprecated
-    @ScheduledForRemoval (inVersion = "0.5.0")
+    @ScheduledForRemoval(inVersion = "0.5.0")
     public static <E> Stream<E> stream(Iterable<E> iter) {
         return StreamSupport.stream(iter.spliterator(), false);
     }
@@ -693,13 +693,13 @@ public class ColUtils {
      * @return The Parallel Stream.
      */
     @Deprecated
-    @ScheduledForRemoval (inVersion = "0.5.0")
+    @ScheduledForRemoval(inVersion = "0.5.0")
     public static <E> Stream<E> parallelStream(Iterable<E> iter) {
         return StreamSupport.stream(iter.spliterator(), true);
     }
 
     @Deprecated
-    @ScheduledForRemoval (inVersion = "0.5.0")
+    @ScheduledForRemoval(inVersion = "0.5.0")
     @Nullable
     public static <T> T onlyOrDefault(Stream<T> stream) {
         return onlyOrDefault(stream, null);
@@ -714,9 +714,9 @@ public class ColUtils {
      * @return The first element or the default.
      */
     @Deprecated
-    @ScheduledForRemoval (inVersion = "0.5.0")
+    @ScheduledForRemoval(inVersion = "0.5.0")
     @Nullable
-    @Contract ("_,!null -> !null")
+    @Contract("_,!null -> !null")
     public static <T> T onlyOrDefault(Stream<T> stream, @Nullable T _default) {
         return onlyOrDefault(iterable(stream), _default);
     }
@@ -742,7 +742,7 @@ public class ColUtils {
      * @return The first element or the default.
      */
     @Nullable
-    @Contract ("_,!null -> !null")
+    @Contract("_,!null -> !null")
     public static <T> T onlyOrDefault(Iterable<T> iterable, @Nullable T _default) {
         final class Cons implements Consumer<T> {
 
@@ -776,7 +776,7 @@ public class ColUtils {
      * @throws IllegalArgumentException If the {@link Stream} contains no or more than one element.
      */
     @Deprecated
-    @ScheduledForRemoval (inVersion = "0.5.0")
+    @ScheduledForRemoval(inVersion = "0.5.0")
     public static <T> T only(Stream<T> stream) {
         return only(iterable(stream));
     }
@@ -825,8 +825,8 @@ public class ColUtils {
     /**
      * Return an iterator for an array slice.
      *
-     * @param arr The array to iterate.
-     * @param from The offset in the array.
+     * @param arr   The array to iterate.
+     * @param from  The offset in the array.
      * @param until The end offset in the array.
      * @return The {@link Iterator}.
      */
@@ -860,7 +860,7 @@ public class ColUtils {
      * @param array The array to reverse.
      */
     public static <T> void reverse(T[] array) {
-        for (int i = 0, j = array.length-1; i < j; i++, j--) {
+        for (int i = 0, j = array.length - 1; i < j; i++, j--) {
             T temp = array[i];
             array[i] = array[j];
             array[j] = temp;

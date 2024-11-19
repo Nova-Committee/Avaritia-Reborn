@@ -17,7 +17,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -59,12 +58,12 @@ public class MatterClusterItem extends Item {
         LinkedList<ItemStack> clusters = new LinkedList<>();
         LinkedList<ItemStack> stacks = new LinkedList<>(input);
 
-        while(!stacks.isEmpty()) {
+        while (!stacks.isEmpty()) {
             SimpleContainer clusterInventory = new SimpleContainer(512);
             int totalInserted = 0;
 
             ItemStack cluster;
-            while(!stacks.isEmpty() && totalInserted < CAPACITY) {
+            while (!stacks.isEmpty() && totalInserted < CAPACITY) {
                 cluster = stacks.poll();
                 int remainder = ContainerUtils.insertItem(clusterInventory, cluster, false);
                 totalInserted += cluster.getCount() - remainder;
@@ -149,7 +148,7 @@ public class MatterClusterItem extends Item {
     }
 
     private static void readItemStacksFromTag(ItemStack[] items, ListTag tagList) {
-        for(int i = 0; i < tagList.size(); ++i) {
+        for (int i = 0; i < tagList.size(); ++i) {
             items[i] = ItemStack.of(tagList.getCompound(i));
         }
     }

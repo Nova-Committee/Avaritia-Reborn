@@ -129,7 +129,7 @@ public class CompressedChestRenderer<T extends BlockEntity & LidBlockEntity> imp
     }
 
     private void render(PoseStack pPoseStack, VertexConsumer pConsumer, ModelPart pLidPart, ModelPart pLockPart, ModelPart pBottomPart, float pLidAngle, int pPackedLight, int pPackedOverlay) {
-        pLidPart.xRot = -(pLidAngle * ((float)Math.PI / 2F));
+        pLidPart.xRot = -(pLidAngle * ((float) Math.PI / 2F));
         pLockPart.xRot = pLidPart.xRot;
         pLidPart.render(pPoseStack, pConsumer, pPackedLight, pPackedOverlay);
         pLockPart.render(pPoseStack, pConsumer, pPackedLight, pPackedOverlay);

@@ -34,6 +34,7 @@ import java.util.List;
 public class CrystalAxeItem extends AxeItem implements ITooltip {
 
     private final String name;
+
     public CrystalAxeItem(String name) {
         super(ModToolTiers.CRYSTAL_PICKAXE, 1, 0F,
                 new Properties()
@@ -63,13 +64,13 @@ public class CrystalAxeItem extends AxeItem implements ITooltip {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if (entity instanceof ServerPlayer serverPlayer && !serverPlayer.level().isClientSide()){
+        if (entity instanceof ServerPlayer serverPlayer && !serverPlayer.level().isClientSide()) {
             serverPlayer.getCooldowns().addCooldown(serverPlayer.getUseItem().getItem(), 1200);
             serverPlayer.stopUsingItem();
             if (serverPlayer.getOffhandItem().getItem() instanceof ShieldItem) {
                 serverPlayer.getOffhandItem().setDamageValue(serverPlayer.getOffhandItem().getDamageValue() / 2);
             }
-            serverPlayer.level().broadcastEntityEvent(serverPlayer, (byte)30);
+            serverPlayer.level().broadcastEntityEvent(serverPlayer, (byte) 30);
         }
         return super.onLeftClickEntity(stack, player, entity);
     }

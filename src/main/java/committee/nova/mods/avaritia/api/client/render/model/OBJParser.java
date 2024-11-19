@@ -36,83 +36,6 @@ public class OBJParser {
     }
 
     /**
-     * Set the {@link ResourceProvider} used to locate assets.
-     *
-     * @param provider The {@link ResourceProvider}.
-     * @return The same parser.
-     */
-    public OBJParser provider(ResourceProvider provider) {
-        this.provider = provider;
-        return this;
-    }
-
-    /**
-     * Set the {@link VertexFormat.Mode} to parse the OBJ model into.
-     *
-     * @param mode The mode.
-     * @return The same parser.
-     */
-    public OBJParser vertexMode(VertexFormat.Mode mode) {
-        if (mode != VertexFormat.Mode.TRIANGLES && mode != VertexFormat.Mode.QUADS) {
-            throw new IllegalStateException("Only Quads and Triangles are supported.");
-        }
-        vertexMode = mode;
-        return this;
-    }
-
-    /**
-     * Overload of {@link #vertexMode(VertexFormat.Mode)} passing {@link VertexFormat.Mode#QUADS}.
-     *
-     * @return The same parser.
-     */
-    public OBJParser quads() {
-        return vertexMode(VertexFormat.Mode.QUADS);
-    }
-
-    /**
-     * Set the coordinate system transformation to apply during parsing.
-     *
-     * @param coordSystem The coordinate transform.
-     * @return The same parser.
-     */
-    public OBJParser coordSystem(@Nullable Transformation coordSystem) {
-        this.coordSystem = coordSystem;
-        return this;
-    }
-
-    /**
-     * Overload of {@link #coordSystem(Transformation)} specifying the {@link SwapYZ}
-     * coordinate system transformation.
-     *
-     * @return The same parser.
-     */
-    public OBJParser swapYZ() {
-        return coordSystem(new SwapYZ());
-    }
-
-    /**
-     * Sets the parser to ignore MTL definitions and usages within the OBJ.
-     *
-     * @return The same parser.
-     */
-    public OBJParser ignoreMtl() {
-        ignoreMtl = true;
-        return this;
-    }
-
-    /**
-     * Actually perform the parsing.
-     *
-     * @return The parsed models.
-     */
-    public Map<String, CCModel> parse() {
-        if (provider == null) {
-            provider = Minecraft.getInstance().getResourceManager();
-        }
-        return parse(provider, location, vertexMode, coordSystem, ignoreMtl);
-    }
-
-    /**
      * Parse an OBJ model into a named map of {@link CCModel}s.
      *
      * @param provider    The {@link ResourceProvider} to locate assets.
@@ -123,7 +46,8 @@ public class OBJParser {
      * @return The parsed models.
      */
     public static Map<String, CCModel> parse(ResourceProvider provider, ResourceLocation loc, VertexFormat.Mode vertexMode, @Nullable Transformation coordSystem, boolean ignoreMtl) {
-        if (vertexMode != VertexFormat.Mode.QUADS && vertexMode != VertexFormat.Mode.TRIANGLES) throw new IllegalStateException("Only Quads and Triangles are supported.");
+        if (vertexMode != VertexFormat.Mode.QUADS && vertexMode != VertexFormat.Mode.TRIANGLES)
+            throw new IllegalStateException("Only Quads and Triangles are supported.");
 
         Map<String, CCModel> builtModels = new HashMap<>();
 
@@ -224,7 +148,8 @@ public class OBJParser {
 
     private static Vector3 parseVec3(String s, int line) {
         double[] doubles = parseDoubles(s, " ");
-        if (doubles.length < 3) throw new IllegalStateException("Expected x, y and z component. Line " + line + " " + s);
+        if (doubles.length < 3)
+            throw new IllegalStateException("Expected x, y and z component. Line " + line + " " + s);
 
         return new Vector3(doubles);
     }
@@ -308,5 +233,82 @@ public class OBJParser {
             path = "";
         }
         return new ResourceLocation(other.getNamespace(), path + "/" + resource);
+    }
+
+    /**
+     * Set the {@link ResourceProvider} used to locate assets.
+     *
+     * @param provider The {@link ResourceProvider}.
+     * @return The same parser.
+     */
+    public OBJParser provider(ResourceProvider provider) {
+        this.provider = provider;
+        return this;
+    }
+
+    /**
+     * Set the {@link VertexFormat.Mode} to parse the OBJ model into.
+     *
+     * @param mode The mode.
+     * @return The same parser.
+     */
+    public OBJParser vertexMode(VertexFormat.Mode mode) {
+        if (mode != VertexFormat.Mode.TRIANGLES && mode != VertexFormat.Mode.QUADS) {
+            throw new IllegalStateException("Only Quads and Triangles are supported.");
+        }
+        vertexMode = mode;
+        return this;
+    }
+
+    /**
+     * Overload of {@link #vertexMode(VertexFormat.Mode)} passing {@link VertexFormat.Mode#QUADS}.
+     *
+     * @return The same parser.
+     */
+    public OBJParser quads() {
+        return vertexMode(VertexFormat.Mode.QUADS);
+    }
+
+    /**
+     * Set the coordinate system transformation to apply during parsing.
+     *
+     * @param coordSystem The coordinate transform.
+     * @return The same parser.
+     */
+    public OBJParser coordSystem(@Nullable Transformation coordSystem) {
+        this.coordSystem = coordSystem;
+        return this;
+    }
+
+    /**
+     * Overload of {@link #coordSystem(Transformation)} specifying the {@link SwapYZ}
+     * coordinate system transformation.
+     *
+     * @return The same parser.
+     */
+    public OBJParser swapYZ() {
+        return coordSystem(new SwapYZ());
+    }
+
+    /**
+     * Sets the parser to ignore MTL definitions and usages within the OBJ.
+     *
+     * @return The same parser.
+     */
+    public OBJParser ignoreMtl() {
+        ignoreMtl = true;
+        return this;
+    }
+
+    /**
+     * Actually perform the parsing.
+     *
+     * @return The parsed models.
+     */
+    public Map<String, CCModel> parse() {
+        if (provider == null) {
+            provider = Minecraft.getInstance().getResourceManager();
+        }
+        return parse(provider, location, vertexMode, coordSystem, ignoreMtl);
     }
 }

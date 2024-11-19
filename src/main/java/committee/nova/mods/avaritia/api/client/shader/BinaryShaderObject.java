@@ -63,7 +63,7 @@ public class BinaryShaderObject extends NamedShaderObject implements ResourceMan
             ByteBuffer sourceBuffer = BufferUtils.createByteBuffer(source.length).order(ByteOrder.nativeOrder());
             sourceBuffer.put(source);
             sourceBuffer.flip();
-            GL46.glShaderBinary(new int[] { shaderId }, binaryType.getGLCode(), sourceBuffer);
+            GL46.glShaderBinary(new int[]{shaderId}, binaryType.getGLCode(), sourceBuffer);
 
             specializationCallback.accept(constantCache);
             GL46.glSpecializeShader(shaderId, entryPoint, constantCache.getIndices(), constantCache.getValues());

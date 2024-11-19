@@ -50,6 +50,14 @@ public class Quat implements Copyable<Quat> {
         s = d;
     }
 
+    public static Quat aroundAxis(double ax, double ay, double az, double angle) {
+        return new Quat().setAroundAxis(ax, ay, az, angle);
+    }
+
+    public static Quat aroundAxis(Vector3 axis, double angle) {
+        return aroundAxis(axis.x, axis.y, axis.z, angle);
+    }
+
     public Quat set(Quat quat) {
         x = quat.x;
         y = quat.y;
@@ -66,14 +74,6 @@ public class Quat implements Copyable<Quat> {
         s = d;
 
         return this;
-    }
-
-    public static Quat aroundAxis(double ax, double ay, double az, double angle) {
-        return new Quat().setAroundAxis(ax, ay, az, angle);
-    }
-
-    public static Quat aroundAxis(Vector3 axis, double angle) {
-        return aroundAxis(axis.x, axis.y, axis.z, angle);
     }
 
     public Quat setAroundAxis(double ax, double ay, double az, double angle) {

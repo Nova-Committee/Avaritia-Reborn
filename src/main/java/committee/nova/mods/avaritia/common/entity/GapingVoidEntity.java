@@ -85,10 +85,6 @@ public class GapingVoidEntity extends Entity {
         this.setUser(shooter);
     }
 
-    public void setUser(LivingEntity user) {
-        this.user = user;
-    }
-
     public static double getVoidScale(double age) {
         double life = age / (double) maxLifetime;
 
@@ -104,6 +100,10 @@ public class GapingVoidEntity extends Entity {
     private static double ease(double in) {
         double t = in - 1;
         return Math.sqrt(1 - t * t);
+    }
+
+    public void setUser(LivingEntity user) {
+        this.user = user;
     }
 
     public int getAge() {

@@ -35,6 +35,7 @@ import java.util.List;
  */
 public class BlazeShovelItem extends ShovelItem implements ITooltip, ISwitchable, InitEnchantItem {
     private final String name;
+
     public BlazeShovelItem(String name) {
         super(ModToolTiers.BLAZE_SHOVEL, 0, 0f,
                 new Properties()
@@ -44,6 +45,7 @@ public class BlazeShovelItem extends ShovelItem implements ITooltip, ISwitchable
 
         this.name = name;
     }
+
     @Override
     public boolean isFoil(@NotNull ItemStack pStack) {
         return false;
@@ -66,13 +68,13 @@ public class BlazeShovelItem extends ShovelItem implements ITooltip, ISwitchable
         var level = pContext.getLevel();
         var blockpos = pContext.getClickedPos();
         var blockstate = level.getBlockState(blockpos);
-        if (blockstate.is(Blocks.GRAVEL)){
+        if (blockstate.is(Blocks.GRAVEL)) {
             level.setBlockAndUpdate(blockpos, Blocks.NETHERRACK.defaultBlockState());
             return InteractionResult.SUCCESS;
-        } else if (blockstate.is(Blocks.SAND)){
+        } else if (blockstate.is(Blocks.SAND)) {
             level.setBlockAndUpdate(blockpos, Blocks.SOUL_SAND.defaultBlockState());
             return InteractionResult.SUCCESS;
-        } else if (blockstate.is(Blocks.DIRT)){
+        } else if (blockstate.is(Blocks.DIRT)) {
             level.setBlockAndUpdate(blockpos, Blocks.SOUL_SOIL.defaultBlockState());
             return InteractionResult.SUCCESS;
         } else return super.useOn(pContext);

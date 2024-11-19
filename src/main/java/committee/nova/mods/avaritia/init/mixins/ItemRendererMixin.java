@@ -28,11 +28,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
 
-    @Shadow @Final private Minecraft minecraft;
     @Unique
     ItemStack avaritia$stack;
     @Unique
     VertexConsumer avaritia$vertexConsumer;
+    @Shadow
+    @Final
+    private Minecraft minecraft;
 
     @Inject(
             method = "render",

@@ -17,10 +17,12 @@ import org.jetbrains.annotations.NotNull;
  */
 public class NeutronRingScreen extends BaseContainerScreen<NeutronRingMenu> {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(Static.MOD_ID, "textures/gui/neutron_ring.png");
+
     public NeutronRingScreen(NeutronRingMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle, BACKGROUND,256, 276, 256, 276);
+        super(pMenu, pPlayerInventory, pTitle, BACKGROUND, 256, 276, 256, 276);
         this.inventoryLabelY = this.imageHeight - 94;
     }
+
     @Override
     protected void renderBg(@NotNull GuiGraphics guiGraphics, float v, int i, int i1) {
         this.renderDefaultBg(guiGraphics);

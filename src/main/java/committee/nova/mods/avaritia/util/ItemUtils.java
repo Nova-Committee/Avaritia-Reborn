@@ -170,6 +170,7 @@ public class ItemUtils {
             }
         }
     }
+
     public static void removeEnchant(ItemStack stack, Enchantment pEnchantment) {
         if (!stack.getOrCreateTag().contains("Enchantments", Tag.TAG_LIST)) {
             stack.getOrCreateTag().put("Enchantments", new ListTag());

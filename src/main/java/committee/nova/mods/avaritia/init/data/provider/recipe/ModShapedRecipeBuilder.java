@@ -163,10 +163,10 @@ public class ModShapedRecipeBuilder extends CraftingRecipeBuilder implements Rec
 
     @Override
     public @NotNull Item getResult() {
-        if (this.result != null){
+        if (this.result != null) {
             return this.result.asItem();
         }
-        if (this.result2 != null){
+        if (this.result2 != null) {
             return Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(this.result2));
         }
         return Items.AIR;
@@ -188,8 +188,8 @@ public class ModShapedRecipeBuilder extends CraftingRecipeBuilder implements Rec
             Set<Character> set = Sets.newHashSet(this.key.keySet());
             set.remove(' ');
 
-            for(String s : this.rows) {
-                for(int i = 0; i < s.length(); ++i) {
+            for (String s : this.rows) {
+                for (int i = 0; i < s.length(); ++i) {
                     char c0 = s.charAt(i);
                     if (!this.key.containsKey(c0) && c0 != ' ') {
                         throw new IllegalStateException("Pattern in recipe " + resourceLocation + " uses undefined symbol '" + c0 + "'");
@@ -247,28 +247,29 @@ public class ModShapedRecipeBuilder extends CraftingRecipeBuilder implements Rec
 
             JsonArray jsonarray = new JsonArray();
 
-            for(String s : this.pattern) {
+            for (String s : this.pattern) {
                 jsonarray.add(s);
             }
 
             pJson.add("pattern", jsonarray);
             JsonObject jsonobject = new JsonObject();
 
-            for(Map.Entry<Character, Ingredient> entry : this.key.entrySet()) {
+            for (Map.Entry<Character, Ingredient> entry : this.key.entrySet()) {
                 jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
             }
 
             pJson.add("key", jsonobject);
             JsonObject jsonobject1 = new JsonObject();
 
-            if (this.result != null) jsonobject1.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(this.result.asItem())).toString());
+            if (this.result != null)
+                jsonobject1.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(this.result.asItem())).toString());
             if (this.result2 != null) jsonobject1.addProperty("item", this.result2.toString());
 
             if (this.count > 1) {
                 jsonobject1.addProperty("count", this.count);
             }
 
-            if (!this.nbt.isEmpty()){
+            if (!this.nbt.isEmpty()) {
                 jsonobject1.addProperty("nbt", this.nbt.toString());
             }
 

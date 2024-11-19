@@ -24,7 +24,7 @@ public class ItemQuadBakery {
     }
 
     public static List<BakedQuad> bakeItem(ModelState state, TextureAtlasSprite... sprites) {
-       // LambdaUtils.checkArgument(sprites, "Sprites must not be Null or empty!", ArrayUtils::isNullOrContainsNull);
+        // LambdaUtils.checkArgument(sprites, "Sprites must not be Null or empty!", ArrayUtils::isNullOrContainsNull);
 
         List<BakedQuad> quads = new LinkedList<>();
         for (int i = 0; i < sprites.length; i++) {

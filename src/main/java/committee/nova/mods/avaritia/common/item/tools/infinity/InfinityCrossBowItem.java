@@ -62,104 +62,9 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
                 .fireResistant()
         );
     }
-    @Override
-    public boolean isFoil(@NotNull ItemStack pStack) {
-        return false;
-    }
-    @Override
-    public boolean isDamageable(ItemStack stack) {
-        return false;
-    }
-    @Override
-    public boolean isEnchantable(@NotNull ItemStack pStack) {
-        return true;
-    }
-    @Override
-    public int getEnchantmentValue(ItemStack stack) {
-        return 99;
-    }
-    @Override
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack pStack) {
-        return UseAnim.BOW;
-    }
-
-    @Nullable
-    @Override
-    public Entity createEntity(Level level, Entity location, ItemStack stack) {
-        return ImmortalItemEntity.create(ModEntities.IMMORTAL.get(), level, location.getX(), location.getY(), location.getZ(), stack);
-    }
-
-    @Override
-    public boolean hasCustomEntity(ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
-        return getChargeTime() + 3; //使用时间
-    }
 
     public static int getChargeTime() {
         return 25 - 5 * 3;//快速装填3
-    }
-
-    @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        if (isCharged(itemstack)) { //弹药以装填
-            fireProjectiles(level, player, itemstack, getSpeed(itemstack), 1.0F);
-            setCharged(itemstack, false);
-            return InteractionResultHolder.consume(itemstack);
-        } else if (!findArrow(player).isEmpty()) { //玩家有弹药
-            if (!isCharged(itemstack)) {
-                this.isLoadingStart = false;
-                this.isLoadingMiddle = false;
-                player.startUsingItem(hand);
-            }
-            return InteractionResultHolder.consume(itemstack);
-        }else if (findArrow(player).isEmpty() && !isCharged(itemstack)){ //无弹药依然触发装填
-            this.isLoadingStart = false;
-            this.isLoadingMiddle = false;
-            player.startUsingItem(hand);
-            return InteractionResultHolder.consume(itemstack);
-        } else {
-            return InteractionResultHolder.fail(itemstack);
-        }
-    }
-
-    @Override
-    public void onUseTick(Level pLevel, @NotNull LivingEntity pLivingEntity, @NotNull ItemStack pStack, int pCount) {
-        if (!pLevel.isClientSide) {
-            int i = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.QUICK_CHARGE, pStack);
-            SoundEvent soundevent = this.getSoundEvent(i);
-            SoundEvent soundevent1 = i == 0 ? SoundEvents.CROSSBOW_LOADING_MIDDLE : null;
-            float f = (float)(pStack.getUseDuration() - pCount) / (float)getChargeTime();
-            if (f < 0.2F) {
-                this.isLoadingStart = false;
-                this.isLoadingMiddle = false;
-            }
-
-            if (f >= 0.2F && !this.isLoadingStart) {
-                this.isLoadingStart = true;
-                pLevel.playSound(null, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), soundevent, SoundSource.PLAYERS, 0.5F, 1.0F);
-            }
-
-            if (f >= 0.5F && soundevent1 != null && !this.isLoadingMiddle) {
-                this.isLoadingMiddle = true;
-                pLevel.playSound(null, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), soundevent1, SoundSource.PLAYERS, 0.5F, 1.0F);
-            }
-        }
-    }
-
-    @Override
-    public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {
-        int i = this.getUseDuration(stack) - count;
-        float f = getCharge(i, stack);
-        if (f >= 1.0F && !isCharged(stack) && hasAmmo(entity, stack)) {
-            setCharged(stack, true);
-            SoundSource soundcategory = entity instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-            entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.CROSSBOW_LOADING_END, soundcategory, 1.0F, 1.0F / (entity.random.nextFloat() * 0.5F + 1.0F) + 0.2F);
-        }
     }
 
     /**
@@ -173,7 +78,7 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
             ItemStack heldAmmo = getHeldAmmo(player, ARROWS);
             if (!heldAmmo.isEmpty()) return heldAmmo;
             else {
-                for (NonNullList<ItemStack> e : player.getInventory().compartments){
+                for (NonNullList<ItemStack> e : player.getInventory().compartments) {
                     for (ItemStack stack1 : e) {
                         if (stack1.is(Items.ARROW)) return stack1;
                         if (stack1.getItem() == Items.FIREWORK_ROCKET) return stack1;
@@ -195,6 +100,7 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
 
     /**
      * 获取弹药速度
+     *
      * @param stack 弩
      * @return 速度
      */
@@ -206,11 +112,11 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
         List<ItemStack> list = getChargedProjectiles(stack);
         float[] afloat = getRandomSoundPitches(shooter.random); //声音大小
 
-        for(int i = 0; i < list.size(); ++i) {
+        for (int i = 0; i < list.size(); ++i) {
             ItemStack itemstack = list.get(i);
             boolean flag = shooter instanceof Player player && player.isCreative();
             if (!itemstack.isEmpty()) {
-                if (list.size() <= 3){
+                if (list.size() <= 3) {
                     if (i == 0) {
                         fireProjectile(worldIn, shooter, stack, itemstack, afloat[i], flag, velocityIn, inaccuracyIn, 0.0F);
                     } else if (i == 1) {
@@ -233,12 +139,13 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
 
     /**
      * 获取箭矢散射角度
-     * @param i 箭矢序数
+     *
+     * @param i    箭矢序数
      * @param flag 是否偏向左边
      * @return 角度
      */
-    private static float getArrowAngle(int i, boolean flag){
-        return flag ?  -(45f - i * 4.5f): (i - 10) * 4.5f;
+    private static float getArrowAngle(int i, boolean flag) {
+        return flag ? -(45f - i * 4.5f) : (i - 10) * 4.5f;
     }
 
     private static float[] getRandomSoundPitches(RandomSource rand) {
@@ -251,9 +158,9 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
         return 1.0F / (rand.nextFloat() * 0.5F + 1.8F) + f;
     }
 
-
     /**
      * 获取装填的弹药
+     *
      * @param pCrossbowStack 弩
      * @return 弹药列表
      */
@@ -298,17 +205,17 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
             boolean flag = pAmmoStack.is(Items.FIREWORK_ROCKET);
             Projectile projectile;
             if (flag) {
-                projectile = new FireworkRocketEntity(pLevel, pAmmoStack, pShooter, pShooter.getX(), pShooter.getEyeY() - (double)0.15F, pShooter.getZ(), true);
+                projectile = new FireworkRocketEntity(pLevel, pAmmoStack, pShooter, pShooter.getX(), pShooter.getEyeY() - (double) 0.15F, pShooter.getZ(), true);
             } else {
                 projectile = createArrow(pLevel, pShooter, pCrossbowStack, pAmmoStack);
-                ((AbstractArrow)projectile).pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                ((AbstractArrow) projectile).pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
             }
 
             if (pShooter instanceof CrossbowAttackMob crossbowattackmob) {
                 crossbowattackmob.shootCrossbowProjectile(Objects.requireNonNull(crossbowattackmob.getTarget()), pCrossbowStack, projectile, pProjectileAngle);
             } else {
                 Vec3 vec31 = pShooter.getUpVector(1.0F);
-                Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(pProjectileAngle * ((float)Math.PI / 180F), vec31.x, vec31.y, vec31.z);
+                Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(pProjectileAngle * ((float) Math.PI / 180F), vec31.x, vec31.y, vec31.z);
                 Vec3 vec3 = pShooter.getViewVector(1.0F);
                 Vector3f vector3f = vec3.toVector3f().rotate(quaternionf);
                 projectile.shoot(vector3f.x(), vector3f.y(), vector3f.z(), pVelocity, pInaccuracy);
@@ -322,13 +229,13 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
     //创建投掷物实体
     private static AbstractArrow createArrow(Level worldIn, LivingEntity shooter, ItemStack crossbow, ItemStack ammo) {
         AbstractArrow arrow = null;
-        if (ammo.isEmpty()){ //弹药为空发射普通箭矢
+        if (ammo.isEmpty()) { //弹药为空发射普通箭矢
             ItemStack stack = new ItemStack(Items.ARROW);
-            ArrowItem arrowitem = (ArrowItem)(stack.getItem() instanceof ArrowItem ? stack.getItem() : Items.ARROW);
+            ArrowItem arrowitem = (ArrowItem) (stack.getItem() instanceof ArrowItem ? stack.getItem() : Items.ARROW);
             arrow = arrowitem.createArrow(worldIn, ammo, shooter);
             arrow.setBaseDamage(20);
             arrow.setPierceLevel((byte) 2);
-        }else {
+        } else {
             arrow = HeavenSubArrowEntity.create(worldIn, shooter.getX(), shooter.getY(), shooter.getZ());
             arrow.setOwner(shooter);
             arrow.setPierceLevel((byte) 5);
@@ -342,18 +249,9 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
         return arrow;
     }
 
-    private SoundEvent getSoundEvent(int enchantmentLevel) {
-        return switch (enchantmentLevel) {
-            case 1 -> SoundEvents.CROSSBOW_QUICK_CHARGE_1;
-            case 2 -> SoundEvents.CROSSBOW_QUICK_CHARGE_2;
-            case 3 -> SoundEvents.CROSSBOW_QUICK_CHARGE_3;
-            default -> SoundEvents.CROSSBOW_LOADING_START;
-        };
-    }
-
     //使用程度
     private static float getCharge(int useTime, ItemStack stack) {
-        float f = (float)useTime / (float)getChargeTime();
+        float f = (float) useTime / (float) getChargeTime();
         if (f > 1.0F) {
             f = 1.0F;
         }
@@ -368,7 +266,7 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
                 (itemstack.is(ItemTags.ARROWS) || itemstack.getItem() == Items.FIREWORK_ROCKET ? 3 : 21);
         ItemStack itemstack1 = itemstack.copy();
 
-        for(int k = 0; k < j; ++k) {
+        for (int k = 0; k < j; ++k) {
             if (k > 0) {
                 itemstack = itemstack1.copy();
             }
@@ -388,11 +286,12 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
 
     /**
      * 消耗库存弹药
-     * @param living 实体
-     * @param stack 弩
+     *
+     * @param living    实体
+     * @param stack     弩
      * @param itemStack 弹药
-     * @param flag0 弹药数量是否超过一
-     * @param flag1 是否创造模式
+     * @param flag0     弹药数量是否超过一
+     * @param flag1     是否创造模式
      * @return true
      */
     private static boolean deleteStack(LivingEntity living, ItemStack stack, ItemStack itemStack, boolean flag0, boolean flag1) {
@@ -425,6 +324,115 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
         projectile.save(compoundnbt1);
         listnbt.add(compoundnbt1);
         compoundnbt.put("ChargedProjectiles", listnbt);
+    }
+
+    @Override
+    public boolean isFoil(@NotNull ItemStack pStack) {
+        return false;
+    }
+
+    @Override
+    public boolean isDamageable(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean isEnchantable(@NotNull ItemStack pStack) {
+        return true;
+    }
+
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return 99;
+    }
+
+    @Override
+    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack pStack) {
+        return UseAnim.BOW;
+    }
+
+    @Nullable
+    @Override
+    public Entity createEntity(Level level, Entity location, ItemStack stack) {
+        return ImmortalItemEntity.create(ModEntities.IMMORTAL.get(), level, location.getX(), location.getY(), location.getZ(), stack);
+    }
+
+    @Override
+    public boolean hasCustomEntity(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public int getUseDuration(@NotNull ItemStack stack) {
+        return getChargeTime() + 3; //使用时间
+    }
+
+    @Override
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (isCharged(itemstack)) { //弹药以装填
+            fireProjectiles(level, player, itemstack, getSpeed(itemstack), 1.0F);
+            setCharged(itemstack, false);
+            return InteractionResultHolder.consume(itemstack);
+        } else if (!findArrow(player).isEmpty()) { //玩家有弹药
+            if (!isCharged(itemstack)) {
+                this.isLoadingStart = false;
+                this.isLoadingMiddle = false;
+                player.startUsingItem(hand);
+            }
+            return InteractionResultHolder.consume(itemstack);
+        } else if (findArrow(player).isEmpty() && !isCharged(itemstack)) { //无弹药依然触发装填
+            this.isLoadingStart = false;
+            this.isLoadingMiddle = false;
+            player.startUsingItem(hand);
+            return InteractionResultHolder.consume(itemstack);
+        } else {
+            return InteractionResultHolder.fail(itemstack);
+        }
+    }
+
+    @Override
+    public void onUseTick(Level pLevel, @NotNull LivingEntity pLivingEntity, @NotNull ItemStack pStack, int pCount) {
+        if (!pLevel.isClientSide) {
+            int i = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.QUICK_CHARGE, pStack);
+            SoundEvent soundevent = this.getSoundEvent(i);
+            SoundEvent soundevent1 = i == 0 ? SoundEvents.CROSSBOW_LOADING_MIDDLE : null;
+            float f = (float) (pStack.getUseDuration() - pCount) / (float) getChargeTime();
+            if (f < 0.2F) {
+                this.isLoadingStart = false;
+                this.isLoadingMiddle = false;
+            }
+
+            if (f >= 0.2F && !this.isLoadingStart) {
+                this.isLoadingStart = true;
+                pLevel.playSound(null, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), soundevent, SoundSource.PLAYERS, 0.5F, 1.0F);
+            }
+
+            if (f >= 0.5F && soundevent1 != null && !this.isLoadingMiddle) {
+                this.isLoadingMiddle = true;
+                pLevel.playSound(null, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), soundevent1, SoundSource.PLAYERS, 0.5F, 1.0F);
+            }
+        }
+    }
+
+    @Override
+    public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {
+        int i = this.getUseDuration(stack) - count;
+        float f = getCharge(i, stack);
+        if (f >= 1.0F && !isCharged(stack) && hasAmmo(entity, stack)) {
+            setCharged(stack, true);
+            SoundSource soundcategory = entity instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
+            entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.CROSSBOW_LOADING_END, soundcategory, 1.0F, 1.0F / (entity.random.nextFloat() * 0.5F + 1.0F) + 0.2F);
+        }
+    }
+
+    private SoundEvent getSoundEvent(int enchantmentLevel) {
+        return switch (enchantmentLevel) {
+            case 1 -> SoundEvents.CROSSBOW_QUICK_CHARGE_1;
+            case 2 -> SoundEvents.CROSSBOW_QUICK_CHARGE_2;
+            case 3 -> SoundEvents.CROSSBOW_QUICK_CHARGE_3;
+            default -> SoundEvents.CROSSBOW_LOADING_START;
+        };
     }
 
 

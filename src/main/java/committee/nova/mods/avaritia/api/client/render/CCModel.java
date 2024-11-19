@@ -37,6 +37,196 @@ public class CCModel implements IVertexSource, Copyable<CCModel> {
         vp = vertexMode == VertexFormat.Mode.QUADS ? 4 : 3;
     }
 
+    public static CCModel quadModel(int numVerts) {
+        return newModel(VertexFormat.Mode.QUADS, numVerts);
+    }
+
+    public static CCModel triModel(int numVerts) {
+        return newModel(VertexFormat.Mode.TRIANGLES, numVerts);
+    }
+
+    public static CCModel newModel(VertexFormat.Mode vertexMode, int numVerts) {
+        CCModel model = newModel(vertexMode);
+        model.verts = new Vertex5[numVerts];
+        return model;
+    }
+
+    public static CCModel newModel(VertexFormat.Mode vertexMode) {
+        return new CCModel(vertexMode);
+    }
+
+    public static CCModel createModel(List<Vector3> verts, List<Vector3> uvs, List<Vector3> normals, VertexFormat.Mode vertexMode, List<int[]> polys) {
+        int vp = vertexMode == VertexFormat.Mode.QUADS ? 4 : 3;
+        if (polys.size() < vp || polys.size() % vp != 0) {
+            throw new IllegalArgumentException("Invalid number of vertices for model: " + polys.size());
+        }
+
+        boolean hasNormals = polys.get(0)[2] > 0;
+        CCModel model = CCModel.newModel(vertexMode, polys.size());
+        if (hasNormals) {
+            model.getOrAllocate(NormalAttribute.attributeKey);
+        }
+
+        for (int i = 0; i < polys.size(); i++) {
+            int[] ai = polys.get(i);
+            Vector3 vert = verts.get(ai[0] - 1).copy();
+            Vector3 uv = ai[1] <= 0 ? new Vector3() : uvs.get(ai[1] - 1).copy();
+            if (ai[2] > 0 != hasNormals) {
+                throw new IllegalArgumentException("Normals are an all or nothing deal here.");
+            }
+
+            model.verts[i] = new Vertex5(vert, uv.x, uv.y);
+            if (hasNormals) {
+                model.normals()[i] = normals.get(ai[2] - 1).copy();
+            }
+        }
+
+        return model;
+    }
+
+    /**
+     * Copies a range of vertices and attributes form one model to another.
+     * <p>
+     * This will deeply copy all vertex data and attributes.
+     * {@link ModelMaterial} attributes will only be copied to the destination model
+     * if the provided {@code srcpos} and {@code destpos} are {@code 0}.
+     *
+     * @param src     The source model.
+     * @param srcpos  The index in the source model to copy from.
+     * @param dst     The destination model.
+     * @param destpos The index in the destination model to copy to.
+     * @param length  The number of vertices to copy.
+     */
+    public static void copy(CCModel src, int srcpos, CCModel dst, int destpos, int length) {
+        for (int k = 0; k < length; k++) {
+            dst.verts[destpos + k] = src.verts[srcpos + k].copy();
+        }
+
+        for (int i = 0; i < src.attributes.size(); i++) {
+            if (src.attributes.get(i) != null) {
+                AttributeKey<?> key = AttributeKeyRegistry.getAttributeKey(i);
+                dst.allocateAttr(key);
+                dst.attributes.set(i, key.copyRange(
+                        unsafeCast(src.attributes.get(i)),
+                        srcpos,
+                        unsafeCast(dst.getOrAllocate(key)),
+                        destpos,
+                        length
+                ));
+            }
+        }
+    }
+
+    /**
+     * Generate models rotated to the other 5 sides of the block
+     *
+     * @param models An array of 6 models
+     * @param side   The side of this model
+     * @param point  The rotation point
+     */
+    public static void generateSidedModels(CCModel[] models, int side, Vector3 point) {
+        for (int s = 0; s < 6; s++) {
+            if (s == side) {
+                continue;
+            }
+
+            models[s] = models[side].sidedCopy(side, s, point);
+        }
+    }
+
+    /**
+     * Generate models rotated to the other 3 horizontal of the block
+     *
+     * @param models An array of 4 models
+     * @param side   The side of this model
+     * @param point  The rotation point
+     */
+    public static void generateSidedModelsH(CCModel[] models, int side, Vector3 point) {
+        for (int s = 2; s < 6; s++) {
+            if (s == side) {
+                continue;
+            }
+
+            models[s] = models[side].sidedCopy(side, s, point);
+        }
+    }
+
+    /**
+     * Generates copies of faces with clockwise vertices
+     *
+     * @return The model
+     */
+    public static CCModel generateBackface(CCModel src, int srcpos, CCModel dst, int destpos, int length) {
+        int vp = src.vp;
+        if (srcpos % vp != 0 || destpos % vp != 0 || length % vp != 0) {
+            throw new IllegalArgumentException("Vertices do not align with polygons");
+        }
+
+        int[][] o = new int[][]{{0, 0}, {1, vp - 1}, {2, vp - 2}, {3, vp - 3}};
+        for (int i = 0; i < length; i++) {
+            int b = (i / vp) * vp;
+            int d = i % vp;
+            int di = destpos + b + o[d][1];
+            int si = srcpos + b + o[d][0];
+            dst.verts[di] = src.verts[si].copy();
+            for (int a = 0; a < src.attributes.size(); a++) {
+                if (src.attributes.get(a) != null) {
+                    AttributeKey<?> key = AttributeKeyRegistry.getAttributeKey(a);
+                    dst.attributes.set(a, key.copyRange(
+                            unsafeCast(src.attributes.get(a)),
+                            si,
+                            unsafeCast(dst.getOrAllocate(key)),
+                            di,
+                            1
+                    ));
+                }
+            }
+
+            if (dst.normals() != null && dst.normals()[di] != null) {
+                dst.normals()[di].negate();
+            }
+        }
+        return dst;
+    }
+
+    /**
+     * Combines the given models together.
+     * <p>
+     * This will deeply copy all vertices and attributes.
+     * The returned model will have the {@link ModelMaterial}
+     * of the first provided Model.
+     *
+     * @param models The Models.
+     * @return The combined model.
+     */
+    public static CCModel combine(Collection<CCModel> models) {
+        if (models.isEmpty()) {
+            return null;
+        }
+
+        int numVerts = 0;
+        VertexFormat.Mode vertexMode = null;
+        for (CCModel model : models) {
+            if (vertexMode == null) {
+                vertexMode = model.vertexMode;
+            }
+            if (vertexMode != model.vertexMode) {
+                throw new IllegalArgumentException("Cannot combine models with different vertex modes");
+            }
+
+            numVerts += model.verts.length;
+        }
+
+        CCModel c_model = newModel(vertexMode, numVerts);
+        int i = 0;
+        for (CCModel model : models) {
+            copy(model, 0, c_model, i, model.verts.length);
+            i += model.verts.length;
+        }
+
+        return c_model;
+    }
+
     public Vector3[] normals() {
         return getAttribute(NormalAttribute.attributeKey);
     }
@@ -488,53 +678,6 @@ public class CCModel implements IVertexSource, Copyable<CCModel> {
         state.render();
     }
 
-    public static CCModel quadModel(int numVerts) {
-        return newModel(VertexFormat.Mode.QUADS, numVerts);
-    }
-
-    public static CCModel triModel(int numVerts) {
-        return newModel(VertexFormat.Mode.TRIANGLES, numVerts);
-    }
-
-    public static CCModel newModel(VertexFormat.Mode vertexMode, int numVerts) {
-        CCModel model = newModel(vertexMode);
-        model.verts = new Vertex5[numVerts];
-        return model;
-    }
-
-    public static CCModel newModel(VertexFormat.Mode vertexMode) {
-        return new CCModel(vertexMode);
-    }
-
-    public static CCModel createModel(List<Vector3> verts, List<Vector3> uvs, List<Vector3> normals, VertexFormat.Mode vertexMode, List<int[]> polys) {
-        int vp = vertexMode == VertexFormat.Mode.QUADS ? 4 : 3;
-        if (polys.size() < vp || polys.size() % vp != 0) {
-            throw new IllegalArgumentException("Invalid number of vertices for model: " + polys.size());
-        }
-
-        boolean hasNormals = polys.get(0)[2] > 0;
-        CCModel model = CCModel.newModel(vertexMode, polys.size());
-        if (hasNormals) {
-            model.getOrAllocate(NormalAttribute.attributeKey);
-        }
-
-        for (int i = 0; i < polys.size(); i++) {
-            int[] ai = polys.get(i);
-            Vector3 vert = verts.get(ai[0] - 1).copy();
-            Vector3 uv = ai[1] <= 0 ? new Vector3() : uvs.get(ai[1] - 1).copy();
-            if (ai[2] > 0 != hasNormals) {
-                throw new IllegalArgumentException("Normals are an all or nothing deal here.");
-            }
-
-            model.verts[i] = new Vertex5(vert, uv.x, uv.y);
-            if (hasNormals) {
-                model.normals()[i] = normals.get(ai[2] - 1).copy();
-            }
-        }
-
-        return model;
-    }
-
     /**
      * Brings the UV coordinates of each face closer to the center UV by d.
      * Useful for fixing texture seams
@@ -565,113 +708,8 @@ public class CCModel implements IVertexSource, Copyable<CCModel> {
         return copy().apply(new TransformationList(sideRotations[side1].inverse(), sideRotations[side2]).at(point));
     }
 
-    /**
-     * Copies a range of vertices and attributes form one model to another.
-     * <p>
-     * This will deeply copy all vertex data and attributes.
-     * {@link ModelMaterial} attributes will only be copied to the destination model
-     * if the provided {@code srcpos} and {@code destpos} are {@code 0}.
-     *
-     * @param src     The source model.
-     * @param srcpos  The index in the source model to copy from.
-     * @param dst     The destination model.
-     * @param destpos The index in the destination model to copy to.
-     * @param length  The number of vertices to copy.
-     */
-    public static void copy(CCModel src, int srcpos, CCModel dst, int destpos, int length) {
-        for (int k = 0; k < length; k++) {
-            dst.verts[destpos + k] = src.verts[srcpos + k].copy();
-        }
-
-        for (int i = 0; i < src.attributes.size(); i++) {
-            if (src.attributes.get(i) != null) {
-                AttributeKey<?> key = AttributeKeyRegistry.getAttributeKey(i);
-                dst.allocateAttr(key);
-                dst.attributes.set(i, key.copyRange(
-                        unsafeCast(src.attributes.get(i)),
-                        srcpos,
-                        unsafeCast(dst.getOrAllocate(key)),
-                        destpos,
-                        length
-                ));
-            }
-        }
-    }
-
-    /**
-     * Generate models rotated to the other 5 sides of the block
-     *
-     * @param models An array of 6 models
-     * @param side   The side of this model
-     * @param point  The rotation point
-     */
-    public static void generateSidedModels(CCModel[] models, int side, Vector3 point) {
-        for (int s = 0; s < 6; s++) {
-            if (s == side) {
-                continue;
-            }
-
-            models[s] = models[side].sidedCopy(side, s, point);
-        }
-    }
-
-    /**
-     * Generate models rotated to the other 3 horizontal of the block
-     *
-     * @param models An array of 4 models
-     * @param side   The side of this model
-     * @param point  The rotation point
-     */
-    public static void generateSidedModelsH(CCModel[] models, int side, Vector3 point) {
-        for (int s = 2; s < 6; s++) {
-            if (s == side) {
-                continue;
-            }
-
-            models[s] = models[side].sidedCopy(side, s, point);
-        }
-    }
-
     public CCModel backfacedCopy() {
         return generateBackface(this, 0, copy(), 0, verts.length);
-    }
-
-    /**
-     * Generates copies of faces with clockwise vertices
-     *
-     * @return The model
-     */
-    public static CCModel generateBackface(CCModel src, int srcpos, CCModel dst, int destpos, int length) {
-        int vp = src.vp;
-        if (srcpos % vp != 0 || destpos % vp != 0 || length % vp != 0) {
-            throw new IllegalArgumentException("Vertices do not align with polygons");
-        }
-
-        int[][] o = new int[][] { { 0, 0 }, { 1, vp - 1 }, { 2, vp - 2 }, { 3, vp - 3 } };
-        for (int i = 0; i < length; i++) {
-            int b = (i / vp) * vp;
-            int d = i % vp;
-            int di = destpos + b + o[d][1];
-            int si = srcpos + b + o[d][0];
-            dst.verts[di] = src.verts[si].copy();
-            for (int a = 0; a < src.attributes.size(); a++) {
-                if (src.attributes.get(a) != null) {
-                    AttributeKey<?> key = AttributeKeyRegistry.getAttributeKey(a);
-                    dst.attributes.set(a, key.copyRange(
-                            unsafeCast(src.attributes.get(a)),
-                            si,
-                            unsafeCast(dst.getOrAllocate(key)),
-                            di,
-                            1
-                    ));
-                }
-            }
-
-            if (dst.normals() != null && dst.normals()[di] != null) {
-                dst.normals()[di].negate();
-            }
-        }
-        return dst;
     }
 
     /**
@@ -741,44 +779,6 @@ public class CCModel implements IVertexSource, Copyable<CCModel> {
         }
 
         return this;
-    }
-
-    /**
-     * Combines the given models together.
-     * <p>
-     * This will deeply copy all vertices and attributes.
-     * The returned model will have the {@link ModelMaterial}
-     * of the first provided Model.
-     *
-     * @param models The Models.
-     * @return The combined model.
-     */
-    public static CCModel combine(Collection<CCModel> models) {
-        if (models.isEmpty()) {
-            return null;
-        }
-
-        int numVerts = 0;
-        VertexFormat.Mode vertexMode = null;
-        for (CCModel model : models) {
-            if (vertexMode == null) {
-                vertexMode = model.vertexMode;
-            }
-            if (vertexMode != model.vertexMode) {
-                throw new IllegalArgumentException("Cannot combine models with different vertex modes");
-            }
-
-            numVerts += model.verts.length;
-        }
-
-        CCModel c_model = newModel(vertexMode, numVerts);
-        int i = 0;
-        for (CCModel model : models) {
-            copy(model, 0, c_model, i, model.verts.length);
-            i += model.verts.length;
-        }
-
-        return c_model;
     }
 
     public CCModel twoFacedCopy() {

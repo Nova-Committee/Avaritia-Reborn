@@ -22,9 +22,8 @@ import java.util.function.Predicate;
  */
 public class InventoryUtils {
     /**
-     *
      * @param itemInv 有容器的物品
-     * @param stack 需要存入的物品
+     * @param stack   需要存入的物品
      * @return 存入完返回的剩余物品
      */
     public static ItemStack tryInsert(ItemStack itemInv, ItemStack stack) {
@@ -83,7 +82,6 @@ public class InventoryUtils {
     }
 
     /**
-     *
      * @param player 玩家
      * @param action 匹配的物品
      * @return 所以给定物品的slot
@@ -101,11 +99,9 @@ public class InventoryUtils {
     public static ItemStack findInInv(Player player, Inventory playerInventory, Item item) {
         if (player.getMainHandItem().getItem() == item) {
             return player.getMainHandItem();
-        }
-        else if (player.getOffhandItem().getItem() == item) {
+        } else if (player.getOffhandItem().getItem() == item) {
             return player.getOffhandItem();
-        }
-        else {
+        } else {
             for (int x = 0; x < playerInventory.getContainerSize(); x++) {
                 ItemStack stack = playerInventory.getItem(x);
                 if (stack.getItem() == item) {

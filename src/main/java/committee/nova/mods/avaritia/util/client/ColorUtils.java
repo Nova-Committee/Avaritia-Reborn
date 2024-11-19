@@ -18,8 +18,8 @@ public class ColorUtils {
         if (hsv[0] == -1.0F) {
             rgb[0] = rgb[1] = rgb[2] = hsv[2];
         } else {
-            int i = (int)Math.floor((double)hsv[0]);
-            float f = hsv[0] - (float)i;
+            int i = (int) Math.floor((double) hsv[0]);
+            float f = hsv[0] - (float) i;
             if (i % 2 == 0) {
                 f = 1.0F - f;
             }
@@ -68,8 +68,8 @@ public class ColorUtils {
         if (saturation == 0) {
             r = g = b = (int) (brightness * 255.0f + 0.5f);
         } else {
-            float h = (hue - (float)Math.floor(hue)) * 6.0f;
-            float f = h - (float)java.lang.Math.floor(h);
+            float h = (hue - (float) Math.floor(hue)) * 6.0f;
+            float f = h - (float) java.lang.Math.floor(h);
             float p = brightness * (1.0f - saturation);
             float q = brightness * (1.0f - saturation * f);
             float t = brightness * (1.0f - (saturation * (1.0f - f)));

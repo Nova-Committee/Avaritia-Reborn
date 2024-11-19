@@ -33,7 +33,7 @@ import java.util.function.BiFunction;
  * Description:
  */
 
-public class EternalSingularityCraftRecipe implements ISpecialRecipe{
+public class EternalSingularityCraftRecipe implements ISpecialRecipe {
     private static boolean ingredientsLoaded = false;
     private final ResourceLocation recipeId;
     public NonNullList<Ingredient> inputs = NonNullList.create();
@@ -99,6 +99,7 @@ public class EternalSingularityCraftRecipe implements ISpecialRecipe{
     public @NotNull ItemStack assemble(@NotNull Container inv, @NotNull RegistryAccess p_267052_) {
         return new ItemStack(ModItems.eternal_singularity.get());
     }
+
     @Override
     public boolean matches(IItemHandler inventory) {
         var ingredients = this.getIngredients();
@@ -115,7 +116,7 @@ public class EternalSingularityCraftRecipe implements ISpecialRecipe{
             }
         }
 
-        return !ingredients.isEmpty() &&  matched == this.inputs.size() && RecipeMatcher.findMatches(inputs, this.inputs) != null;
+        return !ingredients.isEmpty() && matched == this.inputs.size() && RecipeMatcher.findMatches(inputs, this.inputs) != null;
     }
 
     @Override
@@ -167,6 +168,7 @@ public class EternalSingularityCraftRecipe implements ISpecialRecipe{
         }
 
         @Override
-        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull EternalSingularityCraftRecipe recipe) {}
+        public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull EternalSingularityCraftRecipe recipe) {
+        }
     }
 }

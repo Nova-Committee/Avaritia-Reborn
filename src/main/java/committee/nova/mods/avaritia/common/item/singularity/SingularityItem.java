@@ -33,6 +33,7 @@ public class SingularityItem extends Item implements IColored {
     public SingularityItem(Function<Properties, Properties> properties) {
         super(properties.apply(new Properties().rarity(ModRarities.UNCOMMON)));
     }
+
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
         var singularity = SingularityUtils.getSingularity(stack);

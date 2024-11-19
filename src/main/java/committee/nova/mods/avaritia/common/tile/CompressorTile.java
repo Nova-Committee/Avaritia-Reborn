@@ -11,9 +11,7 @@ import committee.nova.mods.avaritia.util.lang.Localizable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -28,15 +26,15 @@ import org.jetbrains.annotations.Nullable;
  * Date: 2022/4/2 17:39
  * Version: 1.0
  */
-public class CompressorTile extends BaseInventoryTileEntity implements MenuProvider {
+public class CompressorTile extends BaseInventoryTileEntity {
     private final BaseItemStackHandler inventory;
     private final BaseItemStackHandler recipeInventory;
+    private final SimpleContainerData data = new SimpleContainerData(1);
     private CompressorRecipe recipe;
     private ItemStack materialStack = ItemStack.EMPTY;
     private int materialCount;
     private int progress;
     private boolean ejecting = false;
-    private final SimpleContainerData data = new SimpleContainerData(1);
 
     public CompressorTile(BlockPos pos, BlockState state) {
         super(ModTileEntities.compressor_tile.get(), pos, state);
@@ -166,7 +164,7 @@ public class CompressorTile extends BaseInventoryTileEntity implements MenuProvi
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int windowId, @NotNull Inventory playerInventory, @NotNull Player player) {
+    public AbstractContainerMenu createMenu(int windowId, @NotNull Inventory playerInventory) {
         return CompressorMenu.create(windowId, playerInventory, this.inventory, this.getBlockPos());
     }
 

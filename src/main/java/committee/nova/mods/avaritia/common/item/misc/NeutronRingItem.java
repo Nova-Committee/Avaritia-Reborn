@@ -33,6 +33,13 @@ public class NeutronRingItem extends ResourceItem {
         super(ModRarities.EPIC, "neutron_ring", true, new Properties().stacksTo(1));
     }
 
+    private static ItemStackHandler getInventory(ItemStack bag) {
+        if (bag.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent()) {
+            return (ItemStackHandler) bag.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().orElseThrow();
+        }
+        return null;
+    }
+
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level worldIn, @NotNull Player playerIn, @NotNull InteractionHand handIn) {
         if (!worldIn.isClientSide && !playerIn.isCrouching()) {
@@ -47,12 +54,5 @@ public class NeutronRingItem extends ResourceItem {
     @Override
     public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new RingWrapper(stack, nbt);
-    }
-
-    private static ItemStackHandler getInventory(ItemStack bag) {
-        if (bag.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent()) {
-            return (ItemStackHandler) bag.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().orElseThrow();
-        }
-        return null;
     }
 }

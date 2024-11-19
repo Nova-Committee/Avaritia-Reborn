@@ -24,6 +24,7 @@ public class C2SJEIGhostPacket {
         this.slotIndex = buf.readInt();
         this.stack = buf.readItem();
     }
+
     public C2SJEIGhostPacket(int slotIndex, ItemStack stack) {
         this.slotIndex = slotIndex;
         this.stack = stack;
@@ -39,8 +40,7 @@ public class C2SJEIGhostPacket {
             ServerPlayer player = ctx.get().getSender();
             if (player != null && msg.slotIndex >= 0 && msg.slotIndex < player.containerMenu.slots.size()
                     && player.containerMenu.getSlot(msg.slotIndex) instanceof ModCraftRecipeSlot f
-            )
-            {
+            ) {
                 f.set(msg.stack);
             }
         });

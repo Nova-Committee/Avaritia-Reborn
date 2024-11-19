@@ -99,7 +99,7 @@ public class InfinityPickaxeItem extends PickaxeItem implements InitEnchantItem 
             CompoundTag tags = stack.getOrCreateTag();
             tags.putBoolean("hammer", !tags.getBoolean("hammer"));
             player.swing(hand);
-            if(!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(
+            if (!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(
                     Component.translatable(tags.getBoolean("hammer") ? "tooltip.infinity_pickaxe.type_2" : "tooltip.infinity_pickaxe.type_1"
                     ), true);
             return InteractionResultHolder.success(stack);

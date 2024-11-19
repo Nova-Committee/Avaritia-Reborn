@@ -135,11 +135,11 @@ public class Vector3 implements Copyable<Vector3> {
     }
 
     public double[] toArrayD() {
-        return new double[] { x, y, z };
+        return new double[]{x, y, z};
     }
 
     public float[] toArrayF() {
-        return new float[] { (float) x, (float) y, (float) z };
+        return new float[]{(float) x, (float) y, (float) z};
     }
 
     public Vector3 set(double x1, double y1, double z1) {

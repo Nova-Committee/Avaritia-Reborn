@@ -23,19 +23,18 @@ public class Static {
     public static final String MOD_ID = "avaritia";
 
     public static final Logger LOGGER = LogManager.getLogger();
+    public static final GameProfile avaritiaFakePlayer = new GameProfile(UUID.fromString("32283731-bbef-487c-bb69-c7e32f84ed27"), "[Avaritia]");
 
     public static ResourceLocation rl(String path) {
         return new ResourceLocation(MOD_ID, path);
     }
-
-    public static final GameProfile avaritiaFakePlayer = new GameProfile(UUID.fromString("32283731-bbef-487c-bb69-c7e32f84ed27"), "[Avaritia]");
 
     public static boolean isLoad(String name) {
         return ModList.get().isLoaded(name);
     }
 
     public static Ingredient getIngredient(String modid, String name) {
-       return Ingredient.fromValues(Stream.of(new RawValue(new ResourceLocation(modid, name))));
+        return Ingredient.fromValues(Stream.of(new RawValue(new ResourceLocation(modid, name))));
     }
 
     public static Item getItem(String modid, String name) {

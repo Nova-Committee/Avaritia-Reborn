@@ -49,7 +49,7 @@ public interface StreamableIterable<T> extends Iterable<T> {
      * @param itr The {@link Iterable} to wrap.
      * @return The {@link StreamableIterable}
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     static <T> StreamableIterable<T> of(Iterable<? extends T> itr) {
         if (itr instanceof StreamableIterable) return (StreamableIterable<T>) itr;
 
@@ -286,7 +286,7 @@ public interface StreamableIterable<T> extends Iterable<T> {
      * In the event <code>-1<</code> is supplied, the same {@link StreamableIterable} will be provided.
      * In the event <code>0</code> is supplied, an empty {@link StreamableIterable} will be provided.
      */
-    default StreamableIterable<T> limit(@Range (from = -1, to = Integer.MAX_VALUE) int max) {
+    default StreamableIterable<T> limit(@Range(from = -1, to = Integer.MAX_VALUE) int max) {
         // No point doing filtering.
         if (max == -1) return this;
         if (max == 0) return Collections::emptyIterator;
@@ -311,7 +311,7 @@ public interface StreamableIterable<T> extends Iterable<T> {
      * @return A wrapped {@link StreamableIterable} with the max filter applied.
      * In the event <code>0</code> is supplied, the same {@link StreamableIterable} will be provided.
      */
-    default StreamableIterable<T> skip(@Range (from = 0, to = Integer.MAX_VALUE) int n) {
+    default StreamableIterable<T> skip(@Range(from = 0, to = Integer.MAX_VALUE) int n) {
         if (n == 0) return this;
 
         return () -> new AbstractIterator<T>() {
@@ -363,9 +363,9 @@ public interface StreamableIterable<T> extends Iterable<T> {
      * @deprecated Remains for ABI compat.
      */
     @Nullable
-    @Contract ("!null,_ -> !null")
+    @Contract("!null,_ -> !null")
     @Deprecated
-    @ScheduledForRemoval (inVersion = "0.5.0")
+    @ScheduledForRemoval(inVersion = "0.5.0")
     default T fold(@Nullable T identity, BinaryOperator<@Nullable T> accumulator) {
         return fold(identity, (BiFunction<@Nullable T, T, T>) accumulator);
     }
@@ -378,7 +378,7 @@ public interface StreamableIterable<T> extends Iterable<T> {
      * @return The result.
      */
     @Nullable
-    @Contract ("!null,_ -> !null")
+    @Contract("!null,_ -> !null")
     default <U> U fold(@Nullable U identity, BiFunction<? super @Nullable U, ? super T, ? extends U> accumulator) {
         U ret = identity;
         for (T t : this) {

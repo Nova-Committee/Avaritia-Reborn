@@ -38,6 +38,13 @@ public class GapingVoidRender extends EntityRenderer<GapingVoidEntity> {
         super(context);
     }
 
+    public static Colour getColour(final double age, final double a) {
+        final double l = age / 186.0;
+        double f = Math.max(0.0, (l - 0.95) / 0.050000000000000044);
+        f = Math.max(f, 1.0 - l * 30.0);
+        return new ColourRGBA(f, f, f, a);
+    }
+
     @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull GapingVoidEntity p_114482_) {
         return VOID;
@@ -60,17 +67,17 @@ public class GapingVoidRender extends EntityRenderer<GapingVoidEntity> {
             halocoord *= 1.0 + close * close * close * close * 1.5;
         }
         stack.pushPose();
-        stack.mulPose(Axis.YP.rotationDegrees((float)(Math.atan2(dx, dz) * 57.29577951308232)));
-        stack.mulPose(Axis.XP.rotationDegrees((float)(Math.atan2(Math.sqrt(dx * dx + dz * dz), dy) * 57.29577951308232 + 90.0)));
+        stack.mulPose(Axis.YP.rotationDegrees((float) (Math.atan2(dx, dz) * 57.29577951308232)));
+        stack.mulPose(Axis.XP.rotationDegrees((float) (Math.atan2(Math.sqrt(dx * dx + dz * dz), dy) * 57.29577951308232 + 90.0)));
         stack.pushPose();
-        stack.mulPose(Axis.XP.rotationDegrees( 90.0f));
+        stack.mulPose(Axis.XP.rotationDegrees(90.0f));
         final TransformingVertexConsumer cons = new TransformingVertexConsumer(buf.getBuffer(RenderType.create("avaritia:void_halo", DefaultVertexFormat.POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, 256, RenderType.CompositeState.builder().setShaderState(RenderType.POSITION_COLOR_TEX_SHADER).setTextureState(new RenderStateShard.TextureStateShard(Static.rl("textures/entity/void_halo.png"), false, false)).setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY).setWriteMaskState(RenderType.COLOR_WRITE).createCompositeState(false))), stack);
         cons.vertex(-halocoord, 0.0, -halocoord).color(colour.r, colour.g, colour.b, colour.a).uv(0.0f, 0.0f).endVertex();
         cons.vertex(-halocoord, 0.0, halocoord).color(colour.r, colour.g, colour.b, colour.a).uv(0.0f, 1.0f).endVertex();
         cons.vertex(halocoord, 0.0, halocoord).color(colour.r, colour.g, colour.b, colour.a).uv(1.0f, 1.0f).endVertex();
         cons.vertex(halocoord, 0.0, -halocoord).color(colour.r, colour.g, colour.b, colour.a).uv(1.0f, 0.0f).endVertex();
         stack.popPose();
-        stack.scale((float)scale, (float)scale, (float)scale);
+        stack.scale((float) scale, (float) scale, (float) scale);
         final CCRenderState cc = CCRenderState.instance();
         cc.reset();
         cc.bind(RenderType.create("avaritia:void_hemisphere", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES, 256, RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENTITY_SHADOW_SHADER).setTextureState(new RenderStateShard.TextureStateShard(GapingVoidRender.VOID, false, false)).setCullState(RenderType.NO_CULL).createCompositeState(false)), buf, stack);
@@ -78,13 +85,6 @@ public class GapingVoidRender extends EntityRenderer<GapingVoidEntity> {
         new OBJParser(Static.rl("models/hemisphere.obj")).parse().get("model").render(cc);
         stack.popPose();
 
-    }
-
-    public static Colour getColour(final double age, final double a) {
-        final double l = age / 186.0;
-        double f = Math.max(0.0, (l - 0.95) / 0.050000000000000044);
-        f = Math.max(f, 1.0 - l * 30.0);
-        return new ColourRGBA(f, f, f, a);
     }
 
 }

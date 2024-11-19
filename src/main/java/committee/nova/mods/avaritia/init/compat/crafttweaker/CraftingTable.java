@@ -34,10 +34,6 @@ import java.util.stream.Collectors;
 @ZenRegister
 public class CraftingTable implements IRecipeManager<ISpecialRecipe> {
     private static final CraftingTable INSTANCE = new CraftingTable();
-    @Override
-    public RecipeType<ISpecialRecipe> getRecipeType() {
-        return ModRecipeTypes.EXTREME_CRAFT_RECIPE.get();
-    }
 
     @ZenCodeType.Method
     public static void addShaped(String name, int tier, IItemStack output, IIngredient[][] inputs) {
@@ -109,5 +105,10 @@ public class CraftingTable implements IRecipeManager<ISpecialRecipe> {
         return Arrays.stream(ingredients)
                 .map(IIngredient::asVanillaIngredient)
                 .collect(Collectors.toCollection(NonNullList::create));
+    }
+
+    @Override
+    public RecipeType<ISpecialRecipe> getRecipeType() {
+        return ModRecipeTypes.EXTREME_CRAFT_RECIPE.get();
     }
 }

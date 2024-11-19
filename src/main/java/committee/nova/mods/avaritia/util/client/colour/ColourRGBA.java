@@ -22,26 +22,6 @@ public class ColourRGBA extends Colour {
         super(colour);
     }
 
-    @Override
-    public int pack() {
-        return pack(this);
-    }
-
-    @Override
-    public float[] packArray() {
-        return new float[] { (r & 0xFF) / 255f, (g & 0xFF) / 255f, (b & 0xFF) / 255f, (a & 0xFF) / 255f };
-    }
-
-    @Override
-    public Colour copy() {
-        return new ColourRGBA(this);
-    }
-
-    @Override
-    public Colour set(int colour) {
-        return set(new ColourRGBA(colour));
-    }
-
     public static int pack(Colour colour) {
         return (colour.r & 0xFF) << 24 | (colour.g & 0xFF) << 16 | (colour.b & 0xFF) << 8 | (colour.a & 0xFF);
     }
@@ -65,5 +45,25 @@ public class ColourRGBA extends Colour {
         int g = (int) ((c >> 16 & 0xFF) * f);
         int b = (int) ((c >> 8 & 0xFF) * f);
         return r << 24 | g << 16 | b << 8 | c & 0xFF;
+    }
+
+    @Override
+    public int pack() {
+        return pack(this);
+    }
+
+    @Override
+    public float[] packArray() {
+        return new float[]{(r & 0xFF) / 255f, (g & 0xFF) / 255f, (b & 0xFF) / 255f, (a & 0xFF) / 255f};
+    }
+
+    @Override
+    public Colour copy() {
+        return new ColourRGBA(this);
+    }
+
+    @Override
+    public Colour set(int colour) {
+        return set(new ColourRGBA(colour));
     }
 }

@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class InfinityChestScreen extends BaseContainerScreen<InfinityChestMenu> {
     private float scrollOffs;
+
     public InfinityChestScreen(InfinityChestMenu container, Inventory inventory, Component title, ResourceLocation bgTexture, int bgWidth, int bgHeight) {
         super(container, inventory, title, bgTexture, bgWidth, bgHeight);
     }
@@ -28,24 +29,24 @@ public class InfinityChestScreen extends BaseContainerScreen<InfinityChestMenu> 
 
     @Override
     public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
-      if (!this.canScroll()) {
-         return false;
-      } else {
-         this.scrollOffs = this.menu.subtractInputFromScroll(this.scrollOffs, pDelta);
-         this.menu.scrollTo(this.scrollOffs);
-         return true;
-      }
-   }
+        if (!this.canScroll()) {
+            return false;
+        } else {
+            this.scrollOffs = this.menu.subtractInputFromScroll(this.scrollOffs, pDelta);
+            this.menu.scrollTo(this.scrollOffs);
+            return true;
+        }
+    }
 
-   @Override
-   public void resize(@NotNull Minecraft pMinecraft, int pWidth, int pHeight) {
-      int i = this.menu.getRowIndexForScroll(this.scrollOffs);
-      this.init(pMinecraft, pWidth, pHeight);
-      this.scrollOffs = this.menu.getScrollForRowIndex(i);
-      this.menu.scrollTo(this.scrollOffs);
-   }
+    @Override
+    public void resize(@NotNull Minecraft pMinecraft, int pWidth, int pHeight) {
+        int i = this.menu.getRowIndexForScroll(this.scrollOffs);
+        this.init(pMinecraft, pWidth, pHeight);
+        this.scrollOffs = this.menu.getScrollForRowIndex(i);
+        this.menu.scrollTo(this.scrollOffs);
+    }
 
     private boolean canScroll() {
-      return this.menu.canScroll();
-   }
+        return this.menu.canScroll();
+    }
 }

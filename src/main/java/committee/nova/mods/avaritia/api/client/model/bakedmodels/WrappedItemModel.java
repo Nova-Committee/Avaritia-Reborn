@@ -40,14 +40,14 @@ import java.util.function.Predicate;
  */
 public abstract class WrappedItemModel implements PerspectiveModel {
 
+    private static final ItemModelGenerator ITEM_MODEL_GENERATOR = new ItemModelGenerator();
+    private static final FaceBakery FACE_BAKERY = new FaceBakery();
     protected BakedModel wrapped;
     protected ModelState parentState;
     @Nullable
     protected LivingEntity entity;
     @Nullable
     protected ClientLevel world;
-    private static final ItemModelGenerator ITEM_MODEL_GENERATOR = new ItemModelGenerator();
-    private static final FaceBakery FACE_BAKERY = new FaceBakery();
     protected ItemOverrides overrideList;
 
     public WrappedItemModel(BakedModel wrapped) {
@@ -55,7 +55,7 @@ public abstract class WrappedItemModel implements PerspectiveModel {
             @Override
             public BakedModel resolve(final @NotNull BakedModel originalModel, final @NotNull ItemStack stack, final ClientLevel world, final LivingEntity entity, final int seed) {
                 WrappedItemModel.this.entity = entity;
-                WrappedItemModel.this.world = ((world == null) ? ((entity == null) ? null : ((ClientLevel)entity.level())) : null);
+                WrappedItemModel.this.world = ((world == null) ? ((entity == null) ? null : ((ClientLevel) entity.level())) : null);
                 if (WrappedItemModel.this.isCosmic()) {
                     return WrappedItemModel.this.wrapped.getOverrides().resolve(originalModel, stack, world, entity, seed);
                 }

@@ -34,39 +34,21 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CachedFormat {
 
-    private static final Map<VertexFormat, CachedFormat> formatCache = new ConcurrentHashMap<>();
     public static final CachedFormat BLOCK = new CachedFormat(DefaultVertexFormat.BLOCK);
-
-    /**
-     * Lookup or create the CachedFormat for a given VertexFormat.
-     *
-     * @param format The format to lookup.
-     * @return The CachedFormat.
-     */
-    public static CachedFormat lookup(VertexFormat format) {
-        //Hotwire the common one.
-        if (format == DefaultVertexFormat.BLOCK) {
-            return BLOCK;
-        }
-        return formatCache.computeIfAbsent(format, CachedFormat::new);
-    }
-
+    private static final Map<VertexFormat, CachedFormat> formatCache = new ConcurrentHashMap<>();
     public final VertexFormat format;
-
     public final boolean hasPosition;
     public final boolean hasNormal;
     public final boolean hasColor;
     public final boolean hasUV;
     public final boolean hasOverlay;
     public final boolean hasLightMap;
-
     public final int positionIndex;
     public final int normalIndex;
     public final int colorIndex;
     public final int uvIndex;
     public final int overlayIndex;
     public final int lightMapIndex;
-
     public final int elementCount;
 
     /**
@@ -158,6 +140,20 @@ public class CachedFormat {
         this.uvIndex = uvIndex;
         this.overlayIndex = overlayIndex;
         this.lightMapIndex = lightMapIndex;
+    }
+
+    /**
+     * Lookup or create the CachedFormat for a given VertexFormat.
+     *
+     * @param format The format to lookup.
+     * @return The CachedFormat.
+     */
+    public static CachedFormat lookup(VertexFormat format) {
+        //Hotwire the common one.
+        if (format == DefaultVertexFormat.BLOCK) {
+            return BLOCK;
+        }
+        return formatCache.computeIfAbsent(format, CachedFormat::new);
     }
 
     @Override

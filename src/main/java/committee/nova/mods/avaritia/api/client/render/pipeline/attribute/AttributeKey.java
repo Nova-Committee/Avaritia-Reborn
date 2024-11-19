@@ -21,9 +21,9 @@ import static committee.nova.mods.avaritia.util.SneakyUtils.unsafeCast;
  */
 public abstract class AttributeKey<T> {
 
-    private final String name;
     public final int attributeKeyIndex;
     public final int operationIndex;
+    private final String name;
 
     public AttributeKey(String name) {
         this.name = name;

@@ -43,10 +43,12 @@ public class InfinityShovelItem extends ShovelItem {
                 .fireResistant());
 
     }
+
     @Override
     public boolean isFoil(@NotNull ItemStack pStack) {
         return false;
     }
+
     @Override
     public boolean isDamageable(ItemStack stack) {
         return false;
@@ -83,14 +85,14 @@ public class InfinityShovelItem extends ShovelItem {
             CompoundTag tags = stack.getOrCreateTag();
             tags.putBoolean("destroyer", !tags.getBoolean("destroyer"));
             player.swing(hand);
-            if(!pLevel.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(
+            if (!pLevel.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(
                     Component.translatable(tags.getBoolean("destroyer") ? "tooltip.infinity_shovel.type_2" : "tooltip.infinity_shovel.type_1"
                     ), true);
             return InteractionResultHolder.success(stack);
         }
 
         //右键发射发射终望珍珠,冷却20s
-        if (stack.getOrCreateTag().contains("destroyer") && stack.getOrCreateTag().getBoolean("destroyer")){
+        if (stack.getOrCreateTag().contains("destroyer") && stack.getOrCreateTag().getBoolean("destroyer")) {
             ToolUtils.pearlAttack(player, ModItems.endest_pearl.get().getDefaultInstance(), pLevel);//
             player.getCooldowns().addCooldown(stack.getItem(), 200);
         }

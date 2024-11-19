@@ -49,6 +49,7 @@ public class HeavenSubArrowEntity extends Arrow {
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
+
     @Override
     protected float getWaterInertia() {
         return 0.99F;

@@ -28,14 +28,16 @@ public class ResourceReloadHandler {
     }
 
 
-    private record SingularityResourceReloadListener(ReloadableServerResources serverResources) implements ResourceManagerReloadListener {
+    private record SingularityResourceReloadListener(
+            ReloadableServerResources serverResources) implements ResourceManagerReloadListener {
         @Override
         public void onResourceManagerReload(@NotNull ResourceManager manager) {
             SingularityRegistryHandler.getInstance().onResourceManagerReload(serverResources.getConditionContext());
         }
     }
 
-    private record RegisterRecipesReloadListener(ReloadableServerResources serverResources) implements ResourceManagerReloadListener {
+    private record RegisterRecipesReloadListener(
+            ReloadableServerResources serverResources) implements ResourceManagerReloadListener {
         @Override
         public void onResourceManagerReload(@NotNull ResourceManager manager) {
             MinecraftForge.EVENT_BUS.post(new RegisterRecipesEvent(serverResources.getRecipeManager()));

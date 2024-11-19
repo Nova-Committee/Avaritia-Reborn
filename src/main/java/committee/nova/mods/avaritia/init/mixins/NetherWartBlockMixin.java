@@ -51,7 +51,8 @@ public abstract class NetherWartBlockMixin implements BonemealableBlock {
 
     @Override
     public void performBonemeal(@NotNull ServerLevel pLevel, @NotNull RandomSource pRandom, @NotNull BlockPos pPos, @NotNull BlockState pState) {
-        if (pLevel.getBlockState(pPos.below(1)).is(ModBlocks.soul_farmland.get())) this.avaritia$growCrops(pLevel, pPos, pState);
+        if (pLevel.getBlockState(pPos.below(1)).is(ModBlocks.soul_farmland.get()))
+            this.avaritia$growCrops(pLevel, pPos, pState);
     }
 
     @Unique

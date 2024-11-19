@@ -33,7 +33,7 @@ public class InternalRecipeHandler {
 
         var infinity_catalyst = (InfinityCatalystCraftRecipe) event.getRecipe(Static.rl("infinity_catalyst"));
 
-        if (infinity_catalyst.getGroup().equals("default")){
+        if (infinity_catalyst.getGroup().equals("default")) {
             allSingularities.stream()
                     .filter(singularity -> singularity.getIngredient() != Ingredient.EMPTY)
                     .limit(81)

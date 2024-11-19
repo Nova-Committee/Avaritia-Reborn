@@ -4,6 +4,7 @@ import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.common.block.ResourceBlock;
 import committee.nova.mods.avaritia.common.block.cake.EndlessCakeBlock;
 import committee.nova.mods.avaritia.common.block.chest.CompressedChestBlock;
+import committee.nova.mods.avaritia.common.block.chest.InfinityChestBlock;
 import committee.nova.mods.avaritia.common.block.collector.BaseNeutronCollectorBlock;
 import committee.nova.mods.avaritia.common.block.compressor.CompressorBlock;
 import committee.nova.mods.avaritia.common.block.craft.CompressedCraftTableBlock;
@@ -40,6 +41,7 @@ public class ModBlocks {
     public static RegistryObject<Block> crystal_matrix = block("crystal_matrix", ResourceBlock::new, ModRarities.RARE);
     public static RegistryObject<Block> blaze_cube_block = block("blaze_cube_block", ResourceBlock::new, ModRarities.RARE);
     public static RegistryObject<Block> compressed_chest = block("compressed_chest", CompressedChestBlock::new, ModRarities.RARE);
+    public static RegistryObject<Block> infinity_chest = block("infinity_chest", InfinityChestBlock::new, ModRarities.LEGEND);
     public static RegistryObject<Block> soul_farmland = block("soul_farmland", SoulFarmLandBlock::new, ModRarities.RARE);
 
     //MACHINE

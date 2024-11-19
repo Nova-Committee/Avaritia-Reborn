@@ -12,6 +12,7 @@ import java.util.Map;
  * is composed of multiple {@link Transformation}s.
  * <p>
  * Created by covers1624 on 9/7/22.
+ *
  * @see committee.nova.mods.avaritia.util.client.TransformUtils
  */
 public class PerspectiveModelState implements ModelState {

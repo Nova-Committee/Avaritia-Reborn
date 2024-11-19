@@ -38,14 +38,14 @@ public class AvaritiaClient {
     public static final ModelLayerLocation COMPRESSED_CHEST_RIGHT = new ModelLayerLocation(Static.rl("compressed_chest_right"), "main");
 
     @SubscribeEvent
-    public static void clientSetUp(FMLClientSetupEvent event){
+    public static void clientSetUp(FMLClientSetupEvent event) {
         ModEntities.onClientSetup();
         ModMenus.onClientSetup();
         ModTileEntities.onClientSetup();
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onRegisterShaders(RegisterShadersEvent event){
+    public static void onRegisterShaders(RegisterShadersEvent event) {
         AvaritiaShaders.onRegisterShaders(event);//注册着色器
     }
 
@@ -84,7 +84,7 @@ public class AvaritiaClient {
 
     private static void addLayer(final EntityRenderersEvent.AddLayers e, final String s) {
         final LivingEntityRenderer entityRenderer = e.getSkin(s);
-        entityRenderer.addLayer(new InfinityArmorModel.PlayerRender((RenderLayerParent<Player, PlayerModel<Player>>)entityRenderer));
+        entityRenderer.addLayer(new InfinityArmorModel.PlayerRender((RenderLayerParent<Player, PlayerModel<Player>>) entityRenderer));
     }
 
     public static int getCurrentRainbowColor() {

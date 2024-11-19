@@ -69,6 +69,31 @@ public enum UniformType {
         this.size = size;
     }
 
+    @Nullable
+    public static UniformType parse(String s) {
+        s = s.toLowerCase(Locale.ROOT);
+
+        // Handle vanilla Matrix names
+        switch (s) {
+            case "matrix2x2" -> {
+                return MAT2;
+            }
+            case "matrix3x3" -> {
+                return MAT3;
+            }
+            case "matrix4x4" -> {
+                return MAT4;
+            }
+        }
+        for (UniformType value : VALUES) {
+            String n = value.name().toLowerCase(Locale.ROOT);
+            if (n.equals(s)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
     public Carrier getCarrier() {
         return carrier;
     }
@@ -92,25 +117,6 @@ public enum UniformType {
             case MAT4 -> Uniform.UT_MAT4;
             default -> -1;
         };
-    }
-
-    @Nullable
-    public static UniformType parse(String s) {
-        s = s.toLowerCase(Locale.ROOT);
-
-        // Handle vanilla Matrix names
-        switch (s) {
-            case "matrix2x2" -> { return MAT2; }
-            case "matrix3x3" -> { return MAT3; }
-            case "matrix4x4" -> { return MAT4; }
-        }
-        for (UniformType value : VALUES) {
-            String n = value.name().toLowerCase(Locale.ROOT);
-            if (n.equals(s)) {
-                return value;
-            }
-        }
-        return null;
     }
 
     public enum Carrier {

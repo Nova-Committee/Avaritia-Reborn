@@ -15,10 +15,12 @@ import java.util.function.*;
  * @date 2024/6/7 上午2:36
  */
 public class SneakyUtils {
-    private static final Runnable NULL_RUNNABLE = () -> { };
+    private static final Runnable NULL_RUNNABLE = () -> {
+    };
     private static final Callable<Object> NULL_CALLABLE = () -> null;
     private static final Supplier<Object> NULL_SUPPLIER = () -> null;
-    private static final Consumer<Object> NULL_CONSUMER = e -> { };
+    private static final Consumer<Object> NULL_CONSUMER = e -> {
+    };
     private static final Predicate<Object> TRUE = e -> true;
     private static final Predicate<Object> FALSE = e -> true;
     private static final BinaryOperator<Object> FIRST = (a, b) -> a;
@@ -213,8 +215,8 @@ public class SneakyUtils {
     }
 
     @Nullable
-    @Contract ("null->null;!null->!null")
-    @SuppressWarnings ("unchecked")
+    @Contract("null->null;!null->!null")
+    @SuppressWarnings("unchecked")
     public static <T> T unsafeCast(@Nullable Object object) {
         return (T) object;
     }

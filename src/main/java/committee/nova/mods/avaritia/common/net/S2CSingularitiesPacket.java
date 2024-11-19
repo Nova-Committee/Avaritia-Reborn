@@ -18,14 +18,10 @@ import java.util.function.Supplier;
 public class S2CSingularitiesPacket {
 
     private final List<Singularity> singularities;
+
     public S2CSingularitiesPacket(List<Singularity> singularities) {
         this.singularities = singularities;
     }
-
-    public List<Singularity> getSingularities() {
-        return this.singularities;
-    }
-
 
     public S2CSingularitiesPacket(FriendlyByteBuf buf) {
         this.singularities = SingularityRegistryHandler.getInstance().readFromBuffer(buf);
@@ -41,5 +37,9 @@ public class S2CSingularitiesPacket {
         });
 
         ctx.get().setPacketHandled(true);
+    }
+
+    public List<Singularity> getSingularities() {
+        return this.singularities;
     }
 }

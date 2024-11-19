@@ -42,6 +42,7 @@ import java.util.List;
  */
 public class BlazeHoeItem extends HoeItem implements ITooltip, ISwitchable, InitEnchantItem {
     private final String name;
+
     public BlazeHoeItem(String name) {
         super(ModToolTiers.BLAZE_HOE, 0, 0f,
                 new Properties()
@@ -52,6 +53,7 @@ public class BlazeHoeItem extends HoeItem implements ITooltip, ISwitchable, Init
 
         this.name = name;
     }
+
     @Override
     public boolean isFoil(@NotNull ItemStack pStack) {
         return false;
@@ -85,11 +87,11 @@ public class BlazeHoeItem extends HoeItem implements ITooltip, ISwitchable, Init
         var blockpos = pContext.getClickedPos();
         var blockstate = level.getBlockState(blockpos);
         var player = pContext.getPlayer();
-        if (blockstate.is(Blocks.SOUL_SAND)){
+        if (blockstate.is(Blocks.SOUL_SAND)) {
             level.setBlockAndUpdate(blockpos, Blocks.SOUL_SOIL.defaultBlockState());
             level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
             return InteractionResult.SUCCESS;
-        } else if (blockstate.is(Blocks.SOUL_SOIL)){
+        } else if (blockstate.is(Blocks.SOUL_SOIL)) {
             level.setBlockAndUpdate(blockpos, ModBlocks.soul_farmland.get().defaultBlockState());
             level.playSound(player, blockpos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
             return InteractionResult.SUCCESS;

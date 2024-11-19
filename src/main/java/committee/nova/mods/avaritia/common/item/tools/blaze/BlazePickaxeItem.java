@@ -36,6 +36,7 @@ import java.util.List;
  */
 public class BlazePickaxeItem extends PickaxeItem implements ITooltip, ISwitchable, InitEnchantItem {
     private final String name;
+
     public BlazePickaxeItem(String name) {
         super(ModToolTiers.BLAZE_PICKAXE, 0, 0f,
                 new Properties()
@@ -45,6 +46,7 @@ public class BlazePickaxeItem extends PickaxeItem implements ITooltip, ISwitchab
 
         this.name = name;
     }
+
     @Override
     public boolean isFoil(@NotNull ItemStack pStack) {
         return false;

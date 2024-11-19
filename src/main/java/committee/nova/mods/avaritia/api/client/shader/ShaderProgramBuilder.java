@@ -105,7 +105,8 @@ public class ShaderProgramBuilder {
 
         public ShaderObjectBuilder uniform(String name, UniformType type) {
             UniformPair uniform = allUniforms.get(name);
-            if (uniform != null && uniform.type() != type) throw new IllegalArgumentException("Uniform with name '" + name + "' already exists with a different type: " + uniform.type());
+            if (uniform != null && uniform.type() != type)
+                throw new IllegalArgumentException("Uniform with name '" + name + "' already exists with a different type: " + uniform.type());
 
             if (uniform == null) {
                 uniform = new UniformPair(name, type);
@@ -117,7 +118,8 @@ public class ShaderProgramBuilder {
 
         protected ShaderObject build() {
             if (type == null) throw new IllegalStateException("Type not set.");
-            if (simpleSource == null && assetSource == null) throw new IllegalStateException("SimpleSource or AssetSource not set.");
+            if (simpleSource == null && assetSource == null)
+                throw new IllegalStateException("SimpleSource or AssetSource not set.");
             if (simpleSource != null) return new SimpleShaderObject(name, type, uniforms.values(), simpleSource);
 
             return new AssetShaderObject(name, type, uniforms.values(), assetSource);

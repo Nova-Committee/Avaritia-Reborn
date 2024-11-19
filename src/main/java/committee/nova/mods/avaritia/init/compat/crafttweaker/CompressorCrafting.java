@@ -26,10 +26,6 @@ import org.openzen.zencode.java.ZenCodeType;
 public class CompressorCrafting implements IRecipeManager<ICompressorRecipe> {
     private static final CompressorCrafting INSTANCE = new CompressorCrafting();
 
-    @Override
-    public RecipeType<ICompressorRecipe> getRecipeType() {
-        return ModRecipeTypes.COMPRESSOR_RECIPE.get();
-    }
     @ZenCodeType.Method
     public static void addRecipe(String name, IIngredient input, IItemStack output, int inputCount, int timeCost) {
         var id = CraftTweakerConstants.rl(INSTANCE.fixRecipeName(name));
@@ -41,5 +37,10 @@ public class CompressorCrafting implements IRecipeManager<ICompressorRecipe> {
     @ZenCodeType.Method
     public static void remove(IItemStack stack) {
         CraftTweakerAPI.apply(new ActionRemoveRecipe<>(INSTANCE, recipe -> recipe.getResultItem(RegistryAccess.EMPTY).is(stack.getInternal().getItem())));
+    }
+
+    @Override
+    public RecipeType<ICompressorRecipe> getRecipeType() {
+        return ModRecipeTypes.COMPRESSOR_RECIPE.get();
     }
 }

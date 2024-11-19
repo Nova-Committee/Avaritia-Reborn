@@ -33,8 +33,8 @@ import java.util.function.BiFunction;
  * Version: 1.0
  */
 public class ShapelessTableCraftingRecipe implements ISpecialRecipe, ITierRecipe {
-    private final ResourceLocation recipeId;
     public final NonNullList<Ingredient> inputs;
+    private final ResourceLocation recipeId;
     private final ItemStack output;
     private final int tier;
     private BiFunction<Integer, ItemStack, ItemStack> transformers;
@@ -48,6 +48,13 @@ public class ShapelessTableCraftingRecipe implements ISpecialRecipe, ITierRecipe
         this.inputs = inputs;
         this.output = output;
         this.tier = tier;
+    }
+
+    private static int getTierFromSize(int size) {
+        return size < 10 ? 1
+                : size < 26 ? 2
+                : size < 50 ? 3
+                : 4;
     }
 
     @Override
@@ -152,13 +159,6 @@ public class ShapelessTableCraftingRecipe implements ISpecialRecipe, ITierRecipe
     @Override
     public boolean hasRequiredTier() {
         return this.tier > 0;
-    }
-
-    private static int getTierFromSize(int size) {
-        return size < 10 ? 1
-                : size < 26 ? 2
-                : size < 50 ? 3
-                : 4;
     }
 
     public void setTransformers(BiFunction<Integer, ItemStack, ItemStack> transformers) {

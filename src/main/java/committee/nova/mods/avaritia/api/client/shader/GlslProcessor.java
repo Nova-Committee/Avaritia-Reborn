@@ -32,17 +32,14 @@ import java.util.regex.Pattern;
  * <p>
  * Created by covers1624 on 22/3/22.
  */
-@SuppressWarnings ("ALL")
+@SuppressWarnings("ALL")
 public class GlslProcessor {
 
-    private static Logger LOGGER = LogManager.getLogger();
-
     private static final boolean DEBUG = Boolean.getBoolean("ccl.glsl_processor.debug");
-
     private static final Pattern VERSION_PATTERN = Pattern.compile("^#version (.*)$");
     // Matches #moj_import with <> or ""
     private static final Pattern IMPORT_PATTERN = Pattern.compile("^#moj_import (?>(?><(.*)>)|(?>\"(.*)\"))$");
-
+    private static Logger LOGGER = LogManager.getLogger();
     private final ResourceProvider resourceProvider;
     private final ResourceLocation shader;
 

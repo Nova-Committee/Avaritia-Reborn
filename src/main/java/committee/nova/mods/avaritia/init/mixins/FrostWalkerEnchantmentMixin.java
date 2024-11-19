@@ -9,6 +9,7 @@ package committee.nova.mods.avaritia.init.mixins;
  * @date 2024/4/5 21:57
  * from https://github.com/Nova-Committee/FrostRideable/blob/Forge/1.20.1/src/main/java/committee/nova/frostrideable/mixin/MixinFrostWalkerEnchantment.java
  */
+
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;

@@ -6,20 +6,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings ("ForLoopReplaceableByForEach")
+@SuppressWarnings("ForLoopReplaceableByForEach")
 public class CCRenderPipeline {
 
     private final CCRenderState renderState;
     @Deprecated
     private final PipelineBuilder builder;
-
-    @Deprecated//Hack removed.
-    public boolean forceFormatAttributes = true;
-
     private final List<VertexAttribute<?>> attribs = new ArrayList<>();
     private final List<IVertexOperation> ops = new ArrayList<>();
     private final List<PipelineNode> nodes = new ArrayList<>();
     private final List<IVertexOperation> sorted = new ArrayList<>();
+    @Deprecated//Hack removed.
+    public boolean forceFormatAttributes = true;
     private PipelineNode loading;
 
     public CCRenderPipeline(CCRenderState renderState) {

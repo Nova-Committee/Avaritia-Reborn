@@ -38,7 +38,7 @@ public class ModCraftTableBlock extends BaseTileEntityBlock {
     public @NotNull InteractionResult use(@NotNull BlockState pState, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand p_60507_, @NotNull BlockHitResult p_60508_) {
         if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
             var tile = level.getBlockEntity(pos);
-            if (tile instanceof ModCraftTile table){
+            if (tile instanceof ModCraftTile table) {
                 NetworkHooks.openScreen(serverPlayer, table, pos);
             }
         }

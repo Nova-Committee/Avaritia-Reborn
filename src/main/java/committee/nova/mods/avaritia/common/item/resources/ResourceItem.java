@@ -3,8 +3,6 @@ package committee.nova.mods.avaritia.common.item.resources;
 import committee.nova.mods.avaritia.api.iface.ITooltip;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -28,7 +26,7 @@ public class ResourceItem extends Item implements ITooltip {
     private final String name;
     private final boolean needsTooltip;
 
-    public ResourceItem(Rarity rarity, String registryName, boolean needsTooltip){
+    public ResourceItem(Rarity rarity, String registryName, boolean needsTooltip) {
         this(rarity, registryName, needsTooltip, new Properties());
     }
 

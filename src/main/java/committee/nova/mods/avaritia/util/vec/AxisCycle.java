@@ -2,7 +2,7 @@ package committee.nova.mods.avaritia.util.vec;
 
 public class AxisCycle {
 
-    public static Transformation[] cycles = new Transformation[] {
+    public static Transformation[] cycles = new Transformation[]{
             RedundantTransformation.INSTANCE,
             new VariableTransformation(new Matrix4(0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1)) {
                 @Override

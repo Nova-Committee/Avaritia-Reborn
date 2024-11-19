@@ -37,8 +37,8 @@ import org.jetbrains.annotations.NotNull;
 public class CompressedChestTile extends ChestBlockEntity {
 
     protected final int SIZE = 243;
-    protected CompoundTag chestTag;
     private final ContainerOpenersCounter openersCounter;
+    protected CompoundTag chestTag;
 
     protected CompressedChestTile(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
         super(blockEntityType, pos, blockState);
@@ -60,9 +60,9 @@ public class CompressedChestTile extends ChestBlockEntity {
 
             @Override
             protected boolean isOwnContainer(@NotNull Player pPlayer) {
-                if( pPlayer.containerMenu instanceof CompressedChestMenu chestMenu) {
+                if (pPlayer.containerMenu instanceof CompressedChestMenu chestMenu) {
                     Container container = chestMenu.getContainer();
-                    return container == CompressedChestTile.this || container instanceof CompoundContainer && ((CompoundContainer)container).contains(CompressedChestTile.this);
+                    return container == CompressedChestTile.this || container instanceof CompoundContainer && ((CompoundContainer) container).contains(CompressedChestTile.this);
                 } else {
                     return false;
                 }
@@ -73,6 +73,22 @@ public class CompressedChestTile extends ChestBlockEntity {
 
     public CompressedChestTile(BlockPos pos, BlockState blockState) {
         this(ModTileEntities.compressed_chest_tile.get(), pos, blockState);
+    }
+
+    static void playSound(Level pLevel, BlockPos pPos, BlockState pState, SoundEvent pSound) {
+        ChestType chesttype = pState.getValue(ChestBlock.TYPE);
+        if (chesttype != ChestType.LEFT) {
+            double d0 = (double) pPos.getX() + 0.5;
+            double d1 = (double) pPos.getY() + 0.5;
+            double d2 = (double) pPos.getZ() + 0.5;
+            if (chesttype == ChestType.RIGHT) {
+                Direction direction = ChestBlock.getConnectedDirection(pState);
+                d0 += (double) direction.getStepX() * 0.5;
+                d2 += (double) direction.getStepZ() * 0.5;
+            }
+
+            pLevel.playSound(null, d0, d1, d2, pSound, SoundSource.BLOCKS, 0.5F, pLevel.random.nextFloat() * 0.1F + 0.9F);
+        }
     }
 
     @Override
@@ -89,7 +105,6 @@ public class CompressedChestTile extends ChestBlockEntity {
     protected @NotNull AbstractContainerMenu createMenu(int pContainerId, @NotNull Inventory pInventory) {
         return new CompressedChestMenu(ModMenus.GENERIC_9x27.get(), pContainerId, pInventory, this, 9);
     }
-
 
     @Override
     public void startOpen(@NotNull Player pPlayer) {
@@ -117,22 +132,6 @@ public class CompressedChestTile extends ChestBlockEntity {
     protected void signalOpenCount(Level pLevel, BlockPos pPos, BlockState pState, int pEventId, int pEventParam) {
         Block block = pState.getBlock();
         pLevel.blockEvent(pPos, block, 1, pEventParam);
-    }
-
-    static void playSound(Level pLevel, BlockPos pPos, BlockState pState, SoundEvent pSound) {
-        ChestType chesttype = pState.getValue(ChestBlock.TYPE);
-        if (chesttype != ChestType.LEFT) {
-            double d0 = (double)pPos.getX() + 0.5;
-            double d1 = (double)pPos.getY() + 0.5;
-            double d2 = (double)pPos.getZ() + 0.5;
-            if (chesttype == ChestType.RIGHT) {
-                Direction direction = ChestBlock.getConnectedDirection(pState);
-                d0 += (double)direction.getStepX() * 0.5;
-                d2 += (double)direction.getStepZ() * 0.5;
-            }
-
-            pLevel.playSound(null, d0, d1, d2, pSound, SoundSource.BLOCKS, 0.5F, pLevel.random.nextFloat() * 0.1F + 0.9F);
-        }
     }
 
     public CompoundTag getChestTag() {

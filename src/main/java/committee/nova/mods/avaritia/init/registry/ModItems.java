@@ -11,7 +11,6 @@ import committee.nova.mods.avaritia.common.item.resources.ResourceItem;
 import committee.nova.mods.avaritia.common.item.resources.StarFuelItem;
 import committee.nova.mods.avaritia.common.item.singularity.EternalSingularityItem;
 import committee.nova.mods.avaritia.common.item.singularity.SingularityItem;
-import committee.nova.mods.avaritia.common.item.misc.NeutronHorseArmorItem;
 import committee.nova.mods.avaritia.common.item.tools.blaze.*;
 import committee.nova.mods.avaritia.common.item.tools.crystal.*;
 import committee.nova.mods.avaritia.common.item.tools.infinity.*;
@@ -76,7 +75,7 @@ public class ModItems {
      * Resource
      */
     //fire
-    public static RegistryObject<Item> blaze_cube = item("blaze_cube",  (s) -> new ResourceItem(ModRarities.UNCOMMON, s, true));
+    public static RegistryObject<Item> blaze_cube = item("blaze_cube", (s) -> new ResourceItem(ModRarities.UNCOMMON, s, true));
     //wind
     public static RegistryObject<Item> diamond_lattice = item("diamond_lattice", (s) -> new ResourceItem(ModRarities.UNCOMMON, s, true));
     public static RegistryObject<Item> crystal_matrix_ingot = item("crystal_matrix_ingot", (s) -> new ResourceItem(ModRarities.RARE, s, true));

@@ -40,22 +40,22 @@ import java.util.Random;
  */
 public class InfinityArmorModel extends HumanoidModel<Player> {
 
-    private final ResourceLocation eyeTex = Static.rl("textures/models/infinity_armor_eyes.png");
-    private final ResourceLocation wingTex = Static.rl("textures/models/infinity_armor_wing.png");;
-    private final ResourceLocation wingGlowTex = Static.rl("textures/models/infinity_armor_wingglow.png");;
+    public static ResourceLocation MASK = Static.rl("models/infinity_armor_mask");
+    public static ResourceLocation MASK_INV = Static.rl("models/infinity_armor_mask_inv");
+    ;
+    public static ResourceLocation WING = Static.rl("models/infinity_armor_mask_wings");
+    ;
     private static boolean modelRender;
     private static boolean playerFlying;
     private static boolean player;
     private static boolean legs = true;
+    private final ResourceLocation eyeTex = Static.rl("textures/models/infinity_armor_eyes.png");
+    private final ResourceLocation wingTex = Static.rl("textures/models/infinity_armor_wing.png");
+    private final ResourceLocation wingGlowTex = Static.rl("textures/models/infinity_armor_wingglow.png");
     private final Minecraft mc;
     private final MultiBufferSource bufferSource;
     private final Random random;
     private final HumanoidModel<Player> humanoidModel;
-
-    public static ResourceLocation MASK = Static.rl("models/infinity_armor_mask");
-    public static ResourceLocation MASK_INV = Static.rl( "models/infinity_armor_mask_inv");
-    public static ResourceLocation WING = Static.rl( "models/infinity_armor_mask_wings");
-
 
 
     public InfinityArmorModel(ModelPart pRoot, final int x) {
@@ -66,34 +66,12 @@ public class InfinityArmorModel extends HumanoidModel<Player> {
         this.humanoidModel = new HumanoidModel<>(createMesh(new CubeDeformation(0.0f), 0.0f).getRoot().bake(64, 64));
     }
 
-    public InfinityArmorModel(ModelPart pRoot){
+    public InfinityArmorModel(ModelPart pRoot) {
         super(pRoot);
         this.mc = Minecraft.getInstance();
         this.bufferSource = this.mc.renderBuffers().bufferSource();
         this.random = new Random();
         this.humanoidModel = new HumanoidModel<>(createMesh(new CubeDeformation(0.0f), 0.0f).getRoot().bake(64, 64));
-    }
-
-    private RenderType glow(final ResourceLocation tex) {
-        return RenderType.create("", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 0, RenderType.CompositeState.builder()
-                .setShaderState(RenderType.POSITION_COLOR_TEX_LIGHTMAP_SHADER)
-                .setTextureState(new RenderStateShard.TextureStateShard(tex, false, false))
-                .setTransparencyState(RenderType.LIGHTNING_TRANSPARENCY)
-                .setCullState(RenderType.NO_CULL)
-                .setLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING)
-                .createCompositeState(true));
-    }
-
-    private RenderType mask(final ResourceLocation tex) {
-        return RenderType.create("", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 0, RenderType.CompositeState.builder()
-                .setShaderState(new RenderStateShard.ShaderStateShard(() -> AvaritiaShaders.cosmicShader))
-                .setTextureState(new RenderStateShard.TextureStateShard(tex, false, false))
-                .setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
-                .setLightmapState(RenderType.LIGHTMAP)
-                .setWriteMaskState(RenderStateShard.COLOR_WRITE)
-                .setCullState(RenderType.NO_CULL)
-                .setLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING)
-                .createCompositeState(true));
     }
 
     private static RenderType mask2(final ResourceLocation tex) {
@@ -121,13 +99,38 @@ public class InfinityArmorModel extends HumanoidModel<Player> {
         p.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0f, 0.0f, -2.0f, 4.0f, 12.0f, 4.0f, deformation), PartPose.offset(-1.9f, 12.0f + f, 0.0f));
         p.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0f, 0.0f, -2.0f, 4.0f, 12.0f, 4.0f, deformation), PartPose.offset(1.9f, 12.0f + f, 0.0f));
         if (islegs) {
-            p.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 16 + legoffset).addBox(-4.0f, 0.0f, -2.0f, 8.0f, 12.0f, 4.0f, new CubeDeformation(0.5f)), PartPose.offset(0.0f, (float)(0 + heightoffset), 0.0f));
-            p.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(0, 16 + legoffset).addBox(-2.0f, 0.0f, -2.0f, 4.0f, 12.0f, 4.0f, new CubeDeformation(0.5f)), PartPose.offset(-1.9f, (float)(12 + heightoffset), 0.0f));
-            p.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(0, 16 + legoffset).mirror().addBox(-2.0f, 0.0f, -2.0f, 4.0f, 12.0f, 4.0f, new CubeDeformation(0.5f)), PartPose.offset(1.9f, (float)(12 + heightoffset), 0.0f));
+            p.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 16 + legoffset).addBox(-4.0f, 0.0f, -2.0f, 8.0f, 12.0f, 4.0f, new CubeDeformation(0.5f)), PartPose.offset(0.0f, (float) (0 + heightoffset), 0.0f));
+            p.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(0, 16 + legoffset).addBox(-2.0f, 0.0f, -2.0f, 4.0f, 12.0f, 4.0f, new CubeDeformation(0.5f)), PartPose.offset(-1.9f, (float) (12 + heightoffset), 0.0f));
+            p.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(0, 16 + legoffset).mirror().addBox(-2.0f, 0.0f, -2.0f, 4.0f, 12.0f, 4.0f, new CubeDeformation(0.5f)), PartPose.offset(1.9f, (float) (12 + heightoffset), 0.0f));
         }
         return meshDefinition;
     }
 
+    public static Material material(final ResourceLocation t) {
+        return new Material(InventoryMenu.BLOCK_ATLAS, t);
+    }
+
+    private RenderType glow(final ResourceLocation tex) {
+        return RenderType.create("", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 0, RenderType.CompositeState.builder()
+                .setShaderState(RenderType.POSITION_COLOR_TEX_LIGHTMAP_SHADER)
+                .setTextureState(new RenderStateShard.TextureStateShard(tex, false, false))
+                .setTransparencyState(RenderType.LIGHTNING_TRANSPARENCY)
+                .setCullState(RenderType.NO_CULL)
+                .setLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING)
+                .createCompositeState(true));
+    }
+
+    private RenderType mask(final ResourceLocation tex) {
+        return RenderType.create("", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 0, RenderType.CompositeState.builder()
+                .setShaderState(new RenderStateShard.ShaderStateShard(() -> AvaritiaShaders.cosmicShader))
+                .setTextureState(new RenderStateShard.TextureStateShard(tex, false, false))
+                .setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
+                .setLightmapState(RenderType.LIGHTMAP)
+                .setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                .setCullState(RenderType.NO_CULL)
+                .setLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING)
+                .createCompositeState(true));
+    }
 
     private LayerDefinition rebuildWings() {
         final MeshDefinition m = new MeshDefinition();
@@ -177,8 +180,8 @@ public class InfinityArmorModel extends HumanoidModel<Player> {
             AvaritiaShaders.cosmicExternalScale.set(25.0f);
         } else {
             AvaritiaShaders.cosmicExternalScale.set(1.0f);
-            AvaritiaShaders.cosmicYaw.set((float)(this.mc.player.getYRot() * 2.0f * 3.141592653589793 / 360.0));
-            AvaritiaShaders.cosmicPitch.set(-(float)(this.mc.player.getXRot() * 2.0f * 3.141592653589793 / 360.0));
+            AvaritiaShaders.cosmicYaw.set((float) (this.mc.player.getYRot() * 2.0f * 3.141592653589793 / 360.0));
+            AvaritiaShaders.cosmicPitch.set(-(float) (this.mc.player.getXRot() * 2.0f * 3.141592653589793 / 360.0));
         }
 
         pPoseStack.pushPose();
@@ -197,7 +200,7 @@ public class InfinityArmorModel extends HumanoidModel<Player> {
         if (InfinityArmorModel.modelRender && !InfinityArmorModel.player) {
             this.bodyPartsOver().forEach(t -> t.render(pPoseStack, material(MASK_INV).buffer(this.bufferSource, InfinityArmorModel::mask2), pPackedLight, pPackedOverlay, pRed, pGreen, pBlue, pAlpha));
         }
-        this.bodyParts().forEach(t -> t.render(pPoseStack, this.vertex(this.glow(this.eyeTex)), pPackedLight, pPackedOverlay, 0.84f, 1.0f, 0.95f, (float)(pulse_mag_sqr * 0.5)));
+        this.bodyParts().forEach(t -> t.render(pPoseStack, this.vertex(this.glow(this.eyeTex)), pPackedLight, pPackedOverlay, 0.84f, 1.0f, 0.95f, (float) (pulse_mag_sqr * 0.5)));
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
@@ -209,10 +212,10 @@ public class InfinityArmorModel extends HumanoidModel<Player> {
         if (InfinityArmorModel.modelRender) {
             this.hat.render(pPoseStack, this.vertex(RenderType.create("", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 0,
                     RenderType.CompositeState.builder()
-                    .setShaderState(RenderType.POSITION_COLOR_TEX_SHADER)
-                    .setTextureState(new RenderStateShard.TextureStateShard(this.eyeTex, false, false))
-                    .setCullState(RenderType.NO_CULL)
-                    .createCompositeState(true))), pPackedLight, pPackedOverlay, col[0], col[1], col[2], 1.0f);
+                            .setShaderState(RenderType.POSITION_COLOR_TEX_SHADER)
+                            .setTextureState(new RenderStateShard.TextureStateShard(this.eyeTex, false, false))
+                            .setCullState(RenderType.NO_CULL)
+                            .createCompositeState(true))), pPackedLight, pPackedOverlay, col[0], col[1], col[2], 1.0f);
         }
         pPoseStack.popPose();
 
@@ -224,7 +227,7 @@ public class InfinityArmorModel extends HumanoidModel<Player> {
             model.renderToBufferWing(pPoseStack, this.mc.renderBuffers().bufferSource().getBuffer(RenderType.armorCutoutNoCull(this.wingTex)), pPackedLight, pPackedOverlay, pRed, pGreen, pBlue, pAlpha);
             Static.LOGGER.info(material(WING));
             model.renderToBufferWing(pPoseStack, material(WING).buffer(this.bufferSource, this::mask), pPackedLight, pPackedOverlay, pRed, pGreen, pBlue, pAlpha);
-            model.renderToBufferWing(pPoseStack, this.mc.renderBuffers().bufferSource().getBuffer(this.glow(this.wingGlowTex)), pPackedLight, pPackedOverlay, 0.84f, 1.0f, 0.95f, (float)(pulse_mag_sqr * 0.5));
+            model.renderToBufferWing(pPoseStack, this.mc.renderBuffers().bufferSource().getBuffer(this.glow(this.wingGlowTex)), pPackedLight, pPackedOverlay, 0.84f, 1.0f, 0.95f, (float) (pulse_mag_sqr * 0.5));
             pPoseStack.popPose();
         }
     }
@@ -246,7 +249,7 @@ public class InfinityArmorModel extends HumanoidModel<Player> {
         }
         if (e instanceof Player) {
             InfinityArmorModel.player = true;
-            if (hasChest && ((Player)e).getAbilities().flying) {
+            if (hasChest && ((Player) e).getAbilities().flying) {
                 InfinityArmorModel.playerFlying = true;
             }
         }
@@ -257,10 +260,6 @@ public class InfinityArmorModel extends HumanoidModel<Player> {
 
     public VertexConsumer vertex(final RenderType t) {
         return this.bufferSource.getBuffer(t);
-    }
-
-    public static Material material(final ResourceLocation t) {
-        return new Material(InventoryMenu.BLOCK_ATLAS, t);
     }
 
     @Override
@@ -295,14 +294,13 @@ public class InfinityArmorModel extends HumanoidModel<Player> {
         this.copyPartAngles(from.rightLeg, to.rightLeg);
     }
 
-    public static class PlayerRender extends RenderLayer<Player, PlayerModel<Player>>
-    {
-        public Iterable<ModelPart> playerParts() {
-            return ImmutableList.of((this.getParentModel()).head, (this.getParentModel()).hat, (this.getParentModel()).body, (this.getParentModel()).leftArm, this.getParentModel().rightArm, (this.getParentModel()).leftLeg, (this.getParentModel()).rightLeg);
-        }
-
+    public static class PlayerRender extends RenderLayer<Player, PlayerModel<Player>> {
         public PlayerRender(final RenderLayerParent<Player, PlayerModel<Player>> t) {
             super(t);
+        }
+
+        public Iterable<ModelPart> playerParts() {
+            return ImmutableList.of((this.getParentModel()).head, (this.getParentModel()).hat, (this.getParentModel()).body, (this.getParentModel()).leftArm, this.getParentModel().rightArm, (this.getParentModel()).leftLeg, (this.getParentModel()).rightLeg);
         }
 
         @Override

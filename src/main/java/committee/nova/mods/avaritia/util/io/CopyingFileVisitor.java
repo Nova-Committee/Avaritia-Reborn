@@ -1,7 +1,6 @@
 package committee.nova.mods.avaritia.util.io;
 
 
-
 import committee.nova.mods.avaritia.util.SneakyUtils;
 
 import java.io.IOException;

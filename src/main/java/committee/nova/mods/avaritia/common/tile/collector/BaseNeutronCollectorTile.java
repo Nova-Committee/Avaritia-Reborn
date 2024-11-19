@@ -10,9 +10,7 @@ import committee.nova.mods.avaritia.util.lang.Localizable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.Item;
@@ -29,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
  * Date: 2022/4/2 13:55
  * Version: 1.0
  */
-public class BaseNeutronCollectorTile extends BaseInventoryTileEntity implements MenuProvider {
+public class BaseNeutronCollectorTile extends BaseInventoryTileEntity {
 
 
     public final BaseItemStackHandler inventory;
@@ -109,7 +107,7 @@ public class BaseNeutronCollectorTile extends BaseInventoryTileEntity implements
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int windowId, @NotNull Inventory playerInventory, @NotNull Player player) {
+    public AbstractContainerMenu createMenu(int windowId, @NotNull Inventory playerInventory) {
         return NeutronCollectorMenu.create(windowId, playerInventory, this.inventory, this.getBlockPos(), data);
     }
 

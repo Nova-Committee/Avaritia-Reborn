@@ -28,7 +28,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -186,18 +185,18 @@ public class InfinityHandler {
                 player.setHealth(player.getMaxHealth());
             }
             ItemStack totem = ToolUtils.getPlayerTotemItem(player);
-            if (!totem.isEmpty()){
+            if (!totem.isEmpty()) {
                 NetworkHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new S2CTotemPacket(totem, player.getId()));
 
                 player.removeAllEffects();
                 int damage = totem.getUseDuration();
-                if (damage == 9){ //最后一次
+                if (damage == 9) { //最后一次
                     player.setHealth(player.getMaxHealth());
                     player.addEffect(new MobEffectInstance(MobEffects.JUMP, 800, 1));
                     player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 800, 1));
                     ToolUtils.aoeAttack(player, 8, 1000.0f, false, false);//触发无尽图腾后对附近造成伤害
                     player.displayClientMessage(Component.translatable("tooltip.avaritia.totem_break"), false);
-                }else {
+                } else {
                     player.setHealth(10.0F);
                 }
                 player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 2600, 4));
@@ -248,7 +247,7 @@ public class InfinityHandler {
                 } else {
                     int skulls = 0;
 
-                    for (var drop : event.getDrops()){
+                    for (var drop : event.getDrops()) {
                         ItemStack stack = drop.getItem();
                         if (stack.is(Items.WITHER_SKELETON_SKULL)) {
                             if (stack.getDamageValue() == 1) {
@@ -281,9 +280,10 @@ public class InfinityHandler {
         BlockState state = event.getState();
         if (
                 (tool.is(ModItems.blaze_axe.get()) || tool.is(ModItems.blaze_pickaxe.get()) || tool.is(ModItems.blaze_shovel.get()))
-                && tool.getItem() instanceof ISwitchable
+                        && tool.getItem() instanceof ISwitchable
         ) {
-            if (((ISwitchable)tool.getItem()).isActive(tool)) ToolUtils.melting(block, state, world, pos, player, tool, event);
+            if (((ISwitchable) tool.getItem()).isActive(tool))
+                ToolUtils.melting(block, state, world, pos, player, tool, event);
         }
     }
 

@@ -18,7 +18,7 @@ import java.util.List;
  * Date: 2022/3/31 10:36
  * Version: 1.0
  */
-public class ModCreativeModeTabs{
+public class ModCreativeModeTabs {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Static.MOD_ID);
     private static final List<RegistryObject<Item>> DONT_INCLUDE = List.of();
 

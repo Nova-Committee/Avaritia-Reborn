@@ -65,15 +65,16 @@ import java.util.Set;
 
 public class TraceArrowEntity extends AbstractArrow {
     private static final EntityDataAccessor<Integer> ID_EFFECT_COLOR = SynchedEntityData.defineId(TraceArrowEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> SPECTRAL_TIME = SynchedEntityData.defineId(TraceArrowEntity.class, EntityDataSerializers.INT);;
+    private static final EntityDataAccessor<Integer> SPECTRAL_TIME = SynchedEntityData.defineId(TraceArrowEntity.class, EntityDataSerializers.INT);
+    ;
     private static final EntityDataAccessor<Integer> JUMP_COUNT = SynchedEntityData.defineId(TraceArrowEntity.class, EntityDataSerializers.INT);
-    private Potion potion;
     private final Set<MobEffectInstance> effects;
+    private final Entity owner = this.getOwner() == null ? this : this.getOwner();
+    private Potion potion;
     private boolean fixedColor;
     private LivingEntity homingTarget;
     private Vec3 seekOrigin;
     private int homingTime;
-    private final Entity owner = this.getOwner() == null ? this : this.getOwner();
 
     public TraceArrowEntity(EntityType<? extends AbstractArrow> entityType, Level world) {
         super(entityType, world);
@@ -102,6 +103,11 @@ public class TraceArrowEntity extends AbstractArrow {
         this.homingTime = 0;
     }
 
+    public static int getCustomColor(ItemStack p_191508_0_) {
+        CompoundTag compoundnbt = p_191508_0_.getTag();
+        return compoundnbt != null && compoundnbt.contains("CustomPotionColor", 99) ? compoundnbt.getInt("CustomPotionColor") : -1;
+    }
+
     public void setSpectral(int spectralTime) {
         this.entityData.set(SPECTRAL_TIME, spectralTime);
     }
@@ -110,12 +116,12 @@ public class TraceArrowEntity extends AbstractArrow {
         return this.entityData.get(SPECTRAL_TIME);
     }
 
-    public void setJumpCount(int jumpCount) {
-        this.entityData.set(JUMP_COUNT, jumpCount);
-    }
-
     public int getJumpCount() {
         return this.entityData.get(JUMP_COUNT);
+    }
+
+    public void setJumpCount(int jumpCount) {
+        this.entityData.set(JUMP_COUNT, jumpCount);
     }
 
     @Override
@@ -131,7 +137,7 @@ public class TraceArrowEntity extends AbstractArrow {
                 this.makeParticle(2);
             }
         } else if (this.inGround && this.inGroundTime != 0 && !this.effects.isEmpty() && this.inGroundTime >= 600) {
-            this.level().broadcastEntityEvent(this, (byte)0);
+            this.level().broadcastEntityEvent(this, (byte) 0);
             this.potion = Potions.EMPTY;
             this.effects.clear();
             this.entityData.set(ID_EFFECT_COLOR, -1);
@@ -153,8 +159,8 @@ public class TraceArrowEntity extends AbstractArrow {
         Vec3 vector3d = this.getDeltaMovement();
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
             double f = vector3d.horizontalDistance();
-            this.setYRot((float)(Mth.atan2(vector3d.x, vector3d.z) * 57.2957763671875D));
-            this.setXRot((float)(Mth.atan2(vector3d.y, f) * 57.2957763671875D));
+            this.setYRot((float) (Mth.atan2(vector3d.x, vector3d.z) * 57.2957763671875D));
+            this.setXRot((float) (Mth.atan2(vector3d.y, f) * 57.2957763671875D));
             this.yRotO = this.getYRot();
             this.xRotO = this.getXRot();
         }
@@ -201,16 +207,16 @@ public class TraceArrowEntity extends AbstractArrow {
                 vector3d3 = raytraceresult.getLocation();
             }
 
-            while(!this.isRemoved()) {
+            while (!this.isRemoved()) {
                 EntityHitResult entityraytraceresult = this.findHitEntity(vector3d2, vector3d3);
                 if (entityraytraceresult != null) {
                     raytraceresult = entityraytraceresult;
                 }
 
                 if (raytraceresult != null && raytraceresult.getType() == HitResult.Type.ENTITY) {
-                    Entity entity = ((EntityHitResult)raytraceresult).getEntity();
+                    Entity entity = ((EntityHitResult) raytraceresult).getEntity();
                     Entity entity1 = this.getOwner();
-                    if (entity instanceof Player && entity1 instanceof Player && !((Player)entity1).canHarmPlayer((Player)entity)) {
+                    if (entity instanceof Player && entity1 instanceof Player && !((Player) entity1).canHarmPlayer((Player) entity)) {
                         raytraceresult = null;
                         entityraytraceresult = null;
                     }
@@ -233,8 +239,8 @@ public class TraceArrowEntity extends AbstractArrow {
             double d4 = vector3d.y;
             double d0 = vector3d.z;
             if (this.isCritArrow()) {
-                for(int i = 0; i < 4; ++i) {
-                    this.level().addParticle(ParticleTypes.CRIT, this.getX() + d3 * (double)i / 4.0D, this.getY() + d4 * (double)i / 4.0D, this.getZ() + d0 * (double)i / 4.0D, -d3, -d4 + 0.2D, -d0);
+                for (int i = 0; i < 4; ++i) {
+                    this.level().addParticle(ParticleTypes.CRIT, this.getX() + d3 * (double) i / 4.0D, this.getY() + d4 * (double) i / 4.0D, this.getZ() + d0 * (double) i / 4.0D, -d3, -d4 + 0.2D, -d0);
                 }
             }
 
@@ -243,18 +249,18 @@ public class TraceArrowEntity extends AbstractArrow {
             double d2 = this.getZ() + d0;
             double f1 = vector3d.horizontalDistance();
             if (flag) {
-                this.setYRot((float)(Mth.atan2(-d3, -d0) * 57.2957763671875D));
+                this.setYRot((float) (Mth.atan2(-d3, -d0) * 57.2957763671875D));
             } else {
-                this.setYRot((float)(Mth.atan2(d3, d0) * 57.2957763671875D));
+                this.setYRot((float) (Mth.atan2(d3, d0) * 57.2957763671875D));
             }
 
-            this.setXRot((float)(Mth.atan2(d4, f1) * 57.2957763671875D));
+            this.setXRot((float) (Mth.atan2(d4, f1) * 57.2957763671875D));
             this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
             this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
             float f2 = 0.99F;
             float f3 = 0.05F;
             if (this.isInWater()) {
-                for(int j = 0; j < 4; ++j) {
+                for (int j = 0; j < 4; ++j) {
                     float f4 = 0.25F;
                     this.level().addParticle(ParticleTypes.BUBBLE, d5 - d3 * 0.25D, d1 - d4 * 0.25D, d2 - d0 * 0.25D, d3, d4, d0);
                 }
@@ -277,8 +283,8 @@ public class TraceArrowEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult p_213868_1_) {
         Entity entity = p_213868_1_.getEntity();
-        float f = (float)this.getDeltaMovement().length();
-        int i = Mth.ceil(Mth.clamp((double)f * this.getBaseDamage(), 0.0D, 2.147483647E9D));
+        float f = (float) this.getDeltaMovement().length();
+        int i = Mth.ceil(Mth.clamp((double) f * this.getBaseDamage(), 0.0D, 2.147483647E9D));
         if (this.getPierceLevel() > 0) {
             if (this.piercingIgnoreEntityIds == null) {
                 this.piercingIgnoreEntityIds = new IntOpenHashSet(5);
@@ -298,7 +304,7 @@ public class TraceArrowEntity extends AbstractArrow {
 
         if (this.isCritArrow()) {
             long j = this.random.nextInt(i / 2 + 2);
-            i = (int)Math.min(j + (long)i, 2147483647L);
+            i = (int) Math.min(j + (long) i, 2147483647L);
         }
 
         DamageSource damagesource = ToolUtils.getArrowDamageSource(this, this.getOwner(), entity);
@@ -311,19 +317,19 @@ public class TraceArrowEntity extends AbstractArrow {
         if (entity instanceof Player player) {
             if (player.isUsingItem() && player.getUseItem().getItem() instanceof ShieldItem) {
                 player.getCooldowns().addCooldown(player.getUseItem().getItem(), 100);
-                this.level().broadcastEntityEvent(player, (byte)30);
+                this.level().broadcastEntityEvent(player, (byte) 30);
                 player.stopUsingItem();
             }
         }
 
-        if (entity.hurt(damagesource, (float)i)) {
+        if (entity.hurt(damagesource, (float) i)) {
             if (entity instanceof LivingEntity livingentity) {
                 if (!this.level().isClientSide && this.getPierceLevel() <= 0) {
                     livingentity.setArrowCount(livingentity.getArrowCount() + 1);
                 }
 
                 if (this.knockback > 0) {
-                    Vec3 vector3d = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double)this.knockback * 0.6D);
+                    Vec3 vector3d = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) this.knockback * 0.6D);
                     if (vector3d.lengthSqr() > 0.0D) {
                         livingentity.push(vector3d.x, 0.1D, vector3d.z);
                     }
@@ -331,12 +337,12 @@ public class TraceArrowEntity extends AbstractArrow {
 
                 if (!this.level().isClientSide && owner instanceof LivingEntity) {
                     EnchantmentHelper.doPostHurtEffects(livingentity, owner);
-                    EnchantmentHelper.doPostDamageEffects((LivingEntity)owner, livingentity);
+                    EnchantmentHelper.doPostDamageEffects((LivingEntity) owner, livingentity);
                 }
 
                 this.doPostHurtEffects(livingentity);
                 if (livingentity != owner && livingentity instanceof Player && owner instanceof ServerPlayer && !this.isSilent()) {
-                    ((ServerPlayer)owner).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
+                    ((ServerPlayer) owner).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
                 }
 
                 if (!entity.isAlive() && this.piercedAndKilledEntities != null) {
@@ -416,11 +422,6 @@ public class TraceArrowEntity extends AbstractArrow {
 
     }
 
-    public static int getCustomColor(ItemStack p_191508_0_) {
-        CompoundTag compoundnbt = p_191508_0_.getTag();
-        return compoundnbt != null && compoundnbt.contains("CustomPotionColor", 99) ? compoundnbt.getInt("CustomPotionColor") : -1;
-    }
-
     private void updateColor() {
         this.fixedColor = false;
         if (this.potion == Potions.EMPTY && this.effects.isEmpty()) {
@@ -447,11 +448,11 @@ public class TraceArrowEntity extends AbstractArrow {
     private void makeParticle(int p_184556_1_) {
         int i = this.getColor();
         if (i != -1 && p_184556_1_ > 0) {
-            double d0 = (double)(i >> 16 & 255) / 255.0D;
-            double d1 = (double)(i >> 8 & 255) / 255.0D;
-            double d2 = (double)(i & 255) / 255.0D;
+            double d0 = (double) (i >> 16 & 255) / 255.0D;
+            double d1 = (double) (i >> 8 & 255) / 255.0D;
+            double d2 = (double) (i & 255) / 255.0D;
 
-            for(int j = 0; j < p_184556_1_; ++j) {
+            for (int j = 0; j < p_184556_1_; ++j) {
                 this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
             }
         }
@@ -531,7 +532,7 @@ public class TraceArrowEntity extends AbstractArrow {
         Iterator<MobEffectInstance> var2 = this.potion.getEffects().iterator();
 
         MobEffectInstance effectinstance;
-        while(var2.hasNext()) {
+        while (var2.hasNext()) {
             effectinstance = var2.next();
             livingEntity.addEffect(new MobEffectInstance(effectinstance.getEffect(), Math.max(effectinstance.getDuration() / 8, 1), effectinstance.getAmplifier(), effectinstance.isAmbient(), effectinstance.isVisible()));
         }
@@ -539,7 +540,7 @@ public class TraceArrowEntity extends AbstractArrow {
         if (!this.effects.isEmpty()) {
             var2 = this.effects.iterator();
 
-            while(var2.hasNext()) {
+            while (var2.hasNext()) {
                 effectinstance = var2.next();
                 livingEntity.addEffect(effectinstance);
             }
@@ -574,11 +575,11 @@ public class TraceArrowEntity extends AbstractArrow {
         if (p_70103_1_ == 0) {
             int i = this.getColor();
             if (i != -1) {
-                double d0 = (double)(i >> 16 & 255) / 255.0D;
-                double d1 = (double)(i >> 8 & 255) / 255.0D;
-                double d2 = (double)(i & 255) / 255.0D;
+                double d0 = (double) (i >> 16 & 255) / 255.0D;
+                double d1 = (double) (i >> 8 & 255) / 255.0D;
+                double d2 = (double) (i & 255) / 255.0D;
 
-                for(int j = 0; j < 20; ++j) {
+                for (int j = 0; j < 20; ++j) {
                     this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
                 }
             }
@@ -606,7 +607,7 @@ public class TraceArrowEntity extends AbstractArrow {
 
             if (!this.level().isClientSide) {
                 TargetingConditions conditions = TargetingConditions.forCombat().selector((living) -> living.hasLineOfSight(this));
-                this.homingTarget = this.level().getNearestEntity(LivingEntity.class, conditions, owner instanceof LivingEntity ? (LivingEntity)owner : null, this.seekOrigin.x, this.seekOrigin.y, this.seekOrigin.z, this.getBoundingBox().inflate(64.0D));
+                this.homingTarget = this.level().getNearestEntity(LivingEntity.class, conditions, owner instanceof LivingEntity ? (LivingEntity) owner : null, this.seekOrigin.x, this.seekOrigin.y, this.seekOrigin.z, this.getBoundingBox().inflate(64.0D));
                 if (this.homingTarget != null) {
                     Vec3 targetPos = this.homingTarget.getEyePosition();
                     double x = targetPos.x - this.getX();
@@ -651,16 +652,15 @@ public class TraceArrowEntity extends AbstractArrow {
             if (level1 instanceof ServerLevel level) {
                 ClientboundLevelParticlesPacket packet = new ClientboundLevelParticlesPacket(ParticleTypes.SMOKE, true, this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F, 0.0F, 4.0F, 10);
 
-                if (owner instanceof ServerPlayer player){
+                if (owner instanceof ServerPlayer player) {
                     player.connection.send(packet);
                 }
                 level.explode(this.getOwner() == null ? this : this.getOwner(), this.getX(), this.getY(), this.getZ(), 4.0F, Level.ExplosionInteraction.NONE);
             }
 
             this.discard();
-        }
-        else {
-            level1.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F, 0.0F );
+        } else {
+            level1.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F, 0.0F);
         }
     }
 

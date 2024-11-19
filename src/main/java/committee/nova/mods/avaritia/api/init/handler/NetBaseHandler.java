@@ -44,6 +44,7 @@ public class NetBaseHandler {
         Objects.requireNonNull(message);
         messageBuilder.consumerNetworkThread(message::run).add();
     }
+
     public <M> void sendToServer(M message) {
         this.channel.sendToServer(message);
     }

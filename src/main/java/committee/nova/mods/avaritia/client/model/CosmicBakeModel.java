@@ -28,8 +28,9 @@ import java.util.List;
  * @CreateTime: 2024/11/14 22:58
  * @Description:
  */
-public class CosmicBakeModel extends WrappedItemModel{
+public class CosmicBakeModel extends WrappedItemModel {
     private final List<ResourceLocation> maskSprite;
+
     public CosmicBakeModel(final BakedModel wrapped, final List<ResourceLocation> maskSprite) {
         super(wrapped);
         this.maskSprite = maskSprite;
@@ -55,8 +56,8 @@ public class CosmicBakeModel extends WrappedItemModel{
         if (AvaritiaShaders.inventoryRender || transformType == ItemDisplayContext.GUI) {
             scale = 100.0F;
         } else {
-            yaw = (float)(mc.player.getYRot() * 2.0f * Math.PI / 360.0);
-            pitch = -(float)(mc.player.getXRot() * 2.0f * Math.PI / 360.0);
+            yaw = (float) (mc.player.getYRot() * 2.0f * Math.PI / 360.0);
+            pitch = -(float) (mc.player.getXRot() * 2.0f * Math.PI / 360.0);
         }
 
         AvaritiaShaders.cosmicTime
@@ -66,7 +67,7 @@ public class CosmicBakeModel extends WrappedItemModel{
         AvaritiaShaders.cosmicExternalScale.set(scale);
 
         if (stack.getItem() == ModItems.matter_cluster.get()) {
-            AvaritiaShaders.cosmicOpacity.set(MatterClusterItem.getClusterSize(stack) / (float)MatterClusterItem.CAPACITY);
+            AvaritiaShaders.cosmicOpacity.set(MatterClusterItem.getClusterSize(stack) / (float) MatterClusterItem.CAPACITY);
         } else {
             AvaritiaShaders.cosmicOpacity.set(1.0F);
         }
@@ -83,8 +84,8 @@ public class CosmicBakeModel extends WrappedItemModel{
         }
 
         final VertexConsumer cons = source.getBuffer(AvaritiaShaders.COSMIC_RENDER_TYPE);
-        List<TextureAtlasSprite> atlasSprite  = new ArrayList<>();
-        for (ResourceLocation res : maskSprite){
+        List<TextureAtlasSprite> atlasSprite = new ArrayList<>();
+        for (ResourceLocation res : maskSprite) {
             atlasSprite.add(Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(res));
         }
         mc.getItemRenderer().renderQuadList(pStack, cons, bakeItem(atlasSprite), stack, light, overlay);

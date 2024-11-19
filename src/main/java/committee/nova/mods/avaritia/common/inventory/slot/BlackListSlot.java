@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BlackListSlot extends Slot {
     private final ItemStack item;
+
     public BlackListSlot(Container pContainer, int pSlot, int pX, int pY, ItemStack item) {
         super(pContainer, pSlot, pX, pY);
         this.item = item;
@@ -23,12 +24,12 @@ public class BlackListSlot extends Slot {
     @Override
     public boolean mayPickup(@NotNull Player pPlayer) {
         if (ItemUtils.areStacksSameType(item, this.getItem())) return false;
-        else  return super.mayPickup(pPlayer);
+        else return super.mayPickup(pPlayer);
     }
 
     @Override
     public boolean mayPlace(@NotNull ItemStack stack) {
         if (ItemUtils.areStacksSameType(item, this.getItem())) return false;
-        else  return super.mayPlace(stack);
+        else return super.mayPlace(stack);
     }
 }

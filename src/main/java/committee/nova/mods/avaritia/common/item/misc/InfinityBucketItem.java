@@ -56,6 +56,65 @@ public class InfinityBucketItem extends ResourceItem {
         super(ModRarities.LEGEND, "infinity_bucket", true, new Properties().stacksTo(1));
     }
 
+    public static List<FluidStack> getFluids(ItemStack stack) {
+        CompoundTag nbt = stack.getTag();
+        if (nbt == null)
+            return new ArrayList<>();
+
+        if (!nbt.contains(FLUIDS_NBT, Tag.TAG_LIST))
+            return new ArrayList<>();
+
+        return nbt.getList(FLUIDS_NBT, Tag.TAG_COMPOUND).stream()
+                .filter(tag -> tag.getId() == Tag.TAG_COMPOUND)
+                .map(tag -> loadFluidStackFromNBT((CompoundTag) tag))
+                .collect(Collectors.toList());
+    }
+
+    public static void setFluids(ItemStack stack, List<FluidStack> fluids) {
+        ListTag listTag = new ListTag();
+        for (FluidStack fluid : fluids) {
+            listTag.add(writeFluidStackToNBT(fluid, new CompoundTag()));
+        }
+        CompoundTag tag = new CompoundTag();
+        tag.put(FLUIDS_NBT, listTag);
+        stack.setTag(tag);
+    }
+
+    @NotNull
+    public static FluidStack loadFluidStackFromNBT(CompoundTag nbt) {
+        if (nbt == null) {
+            return FluidStack.EMPTY;
+        }
+
+        if (!nbt.contains(FLUID_ID_KEY, Tag.TAG_STRING)) {
+            return FluidStack.EMPTY;
+        }
+
+        ResourceLocation fluidName = new ResourceLocation(nbt.getString(FLUID_ID_KEY));
+        Fluid fluid = ForgeRegistries.FLUIDS.getValue(fluidName);
+        if (fluid == null) {
+            return FluidStack.EMPTY;
+        }
+
+        int amount = nbt.getInt(FLUID_AMOUNT_KEY);
+        return new FluidStack(fluid, amount);
+    }
+
+    @NotNull
+    public static CompoundTag writeFluidStackToNBT(FluidStack fluidStack, CompoundTag nbt) {
+        nbt.putString(FLUID_ID_KEY, getFluidName(fluidStack));
+        nbt.putInt(FLUID_AMOUNT_KEY, fluidStack.getAmount());
+        return nbt;
+    }
+
+    @NotNull
+    public static String getFluidName(FluidStack fluidStack) {
+        Fluid fluid = fluidStack.getFluid();
+        ResourceLocation fluidName = ForgeRegistries.FLUIDS.getKey(fluid);
+        if (fluidName == null) return "";
+        return fluidName.toString();
+    }
+
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new InfinityBucketWrapper(stack);
@@ -133,64 +192,5 @@ public class InfinityBucketItem extends ResourceItem {
         }
 
         return InteractionResultHolder.fail(itemStack);
-    }
-
-    public static List<FluidStack> getFluids(ItemStack stack) {
-        CompoundTag nbt = stack.getTag();
-        if (nbt == null)
-            return new ArrayList<>();
-
-        if (!nbt.contains(FLUIDS_NBT, Tag.TAG_LIST))
-            return new ArrayList<>();
-
-        return nbt.getList(FLUIDS_NBT, Tag.TAG_COMPOUND).stream()
-                .filter(tag -> tag.getId() == Tag.TAG_COMPOUND)
-                .map(tag -> loadFluidStackFromNBT((CompoundTag) tag))
-                .collect(Collectors.toList());
-    }
-
-    public static void setFluids(ItemStack stack, List<FluidStack> fluids) {
-        ListTag listTag = new ListTag();
-        for (FluidStack fluid : fluids) {
-            listTag.add(writeFluidStackToNBT(fluid, new CompoundTag()));
-        }
-        CompoundTag tag = new CompoundTag();
-        tag.put(FLUIDS_NBT, listTag);
-        stack.setTag(tag);
-    }
-
-    @NotNull
-    public static FluidStack loadFluidStackFromNBT(CompoundTag nbt) {
-        if (nbt == null) {
-            return FluidStack.EMPTY;
-        }
-
-        if (!nbt.contains(FLUID_ID_KEY, Tag.TAG_STRING)) {
-            return FluidStack.EMPTY;
-        }
-
-        ResourceLocation fluidName = new ResourceLocation(nbt.getString(FLUID_ID_KEY));
-        Fluid fluid = ForgeRegistries.FLUIDS.getValue(fluidName);
-        if (fluid == null) {
-            return FluidStack.EMPTY;
-        }
-
-        int amount = nbt.getInt(FLUID_AMOUNT_KEY);
-        return new FluidStack(fluid, amount);
-    }
-
-    @NotNull
-    public static CompoundTag writeFluidStackToNBT(FluidStack fluidStack, CompoundTag nbt) {
-        nbt.putString(FLUID_ID_KEY, getFluidName(fluidStack));
-        nbt.putInt(FLUID_AMOUNT_KEY, fluidStack.getAmount());
-        return nbt;
-    }
-
-    @NotNull
-    public static String getFluidName(FluidStack fluidStack) {
-        Fluid fluid = fluidStack.getFluid();
-        ResourceLocation fluidName = ForgeRegistries.FLUIDS.getKey(fluid);
-        if (fluidName == null) return "";
-        return fluidName.toString();
     }
 }

@@ -36,6 +36,7 @@ import java.util.List;
 public class CrystalPickaxeItem extends PickaxeItem implements ITooltip {
 
     private final String name;
+
     public CrystalPickaxeItem(String name) {
         super(ModToolTiers.CRYSTAL_PICKAXE, 1, 0F,
                 new Properties()
@@ -73,11 +74,13 @@ public class CrystalPickaxeItem extends PickaxeItem implements ITooltip {
             if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0) {
                 ItemUtils.clearEnchants(stack);
                 stack.enchant(Enchantments.BLOCK_FORTUNE, 3);
-                if(!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(Component.translatable("tooltip.crystal_pickaxe.enchant_1"), true);
+                if (!world.isClientSide && player instanceof ServerPlayer serverPlayer)
+                    serverPlayer.sendSystemMessage(Component.translatable("tooltip.crystal_pickaxe.enchant_1"), true);
             } else {
                 ItemUtils.clearEnchants(stack);
                 stack.enchant(Enchantments.SILK_TOUCH, 1);
-                if(!world.isClientSide && player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(Component.translatable("tooltip.crystal_pickaxe.enchant_2"), true);
+                if (!world.isClientSide && player instanceof ServerPlayer serverPlayer)
+                    serverPlayer.sendSystemMessage(Component.translatable("tooltip.crystal_pickaxe.enchant_2"), true);
             }
             player.swing(hand);
             return InteractionResultHolder.success(stack);

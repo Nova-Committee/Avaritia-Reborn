@@ -24,9 +24,10 @@ public class ModBlockLootTables extends BlockLootSubProvider {
     protected ModBlockLootTables() {
         super(Collections.emptySet(), FeatureFlags.REGISTRY.allFlags());
     }
+
     @Override
     protected void generate() {
-        for (var block : ModBlocks.BLOCKS.getEntries()){
+        for (var block : ModBlocks.BLOCKS.getEntries()) {
             dropSelf(block.get());
         }
     }

@@ -45,7 +45,9 @@ public class CCRenderState {
     public final VertexAttribute<int[]> lightingAttrib = new LightingAttribute();
     public final VertexAttribute<int[]> sideAttrib = new SideAttribute();
     public final VertexAttribute<LC[]> lightCoordAttrib = new LightCoordAttribute();
-
+    //vertex outputs
+    public final Vertex5 vert = new Vertex5();
+    public final Vector3 normal = new Vector3();
     //pipeline state
     public IVertexSource model;
     public int firstVertexIndex;
@@ -53,10 +55,10 @@ public class CCRenderState {
     public int vertexIndex;
     public CCRenderPipeline pipeline;
     public VertexConsumer r;
-    public VertexFormat fmt;
-    public CachedFormat cFmt;
 
     //context
+    public VertexFormat fmt;
+    public CachedFormat cFmt;
     /**
      * The base color, multiplied by the {@link ColourAttribute} from the bound model if present otherwise used as-is.
      */
@@ -73,10 +75,6 @@ public class CCRenderState {
      * A standard {@link LightMatrix} instance to be shared on this pipeline.
      */
     public LightMatrix lightMatrix = new LightMatrix();
-
-    //vertex outputs
-    public final Vertex5 vert = new Vertex5();
-    public final Vector3 normal = new Vector3();
     public int colour;
     public int brightness;
     public int overlay;
@@ -300,12 +298,12 @@ public class CCRenderState {
         this.baseColour = IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor(fluidStack) << 8 | alpha;
     }
 
-    public void setColour(Colour colour) {
-        this.colour = colour.rgba();
-    }
-
     public ColourRGBA getColour() {
         return new ColourRGBA(colour);
+    }
+
+    public void setColour(Colour colour) {
+        this.colour = colour.rgba();
     }
 
     public VertexConsumer getConsumer() {

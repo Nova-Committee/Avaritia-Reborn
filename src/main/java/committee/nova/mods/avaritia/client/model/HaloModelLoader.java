@@ -68,16 +68,16 @@ public class HaloModelLoader implements IGeometryLoader<HaloModelLoader.HaloItem
     }
 
 
-    public static class HaloItemModelGeometry implements IUnbakedGeometry<HaloItemModelGeometry>
-    {
+    public static class HaloItemModelGeometry implements IUnbakedGeometry<HaloItemModelGeometry> {
+        private static final ConcurrentMap<Pair<VertexFormat, VertexFormat>, int[]> formatMaps = new ConcurrentHashMap<>();
+        private static final int[] DEFAULT_MAPPING = generateMapping(DefaultVertexFormat.BLOCK, DefaultVertexFormat.BLOCK);
         private final BlockModel baseModel;
         private final IntList layerColors;
         private final String texture;
         private final int color;
         private final int size;
+        ;
         private final boolean pulse;
-        private static final ConcurrentMap<Pair<VertexFormat, VertexFormat>, int[]> formatMaps = new ConcurrentHashMap<>();;
-        private static final int[] DEFAULT_MAPPING = generateMapping(DefaultVertexFormat.BLOCK, DefaultVertexFormat.BLOCK);
 
 
         public HaloItemModelGeometry(final BlockModel baseModel, final IntList layerColors, final String texture, final int color, final int size, final boolean pulse) {
@@ -89,23 +89,6 @@ public class HaloModelLoader implements IGeometryLoader<HaloModelLoader.HaloItem
             this.pulse = pulse;
         }
 
-        @Override
-        public BakedModel bake(final IGeometryBakingContext owner, final ModelBaker bakery, final Function<Material, TextureAtlasSprite> spriteGetter, final ModelState modelTransform, final ItemOverrides overrides, final ResourceLocation modelLocation) {
-            final BakedModel bakedBaseModel = this.baseModel.bake(bakery, this.baseModel, spriteGetter, modelTransform, modelLocation, false);
-            //Static.LOGGER.info("test0"+ this.texture);
-            Material particleLocation = this.baseModel.getMaterial(this.texture);
-            TextureAtlasSprite particle =
-                    spriteGetter.apply(particleLocation);
-            //Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation(Static.MOD_ID, "misc/halo"));
-            //Static.LOGGER.info("test1"+ particle.toString());
-            return new HaloBakedModel(tintLayers(bakedBaseModel, layerColors), particle, this.color, this.size, this.pulse);
-        }
-
-        @Override
-        public void resolveParents(Function<ResourceLocation, UnbakedModel> modelGetter, IGeometryBakingContext context) {
-            this.baseModel.resolveParents(modelGetter);
-        }
-
         private static BakedModel tintLayers(final BakedModel model, final IntList layerColors) {
             if (layerColors.isEmpty()) {
                 return model;
@@ -115,7 +98,7 @@ public class HaloModelLoader implements IGeometryLoader<HaloModelLoader.HaloItem
                 faceQuads.put(face, transformQuads(model.getQuads(null, face, RandomSource.create()), layerColors));
             }
             final List<BakedQuad> unculled = transformQuads(model.getQuads(null, null, RandomSource.create()), layerColors);
-            return new SimpleBakedModel(unculled, faceQuads, model.useAmbientOcclusion(), model.usesBlockLight(), model.isGui3d(), model.getParticleIcon(), model.getTransforms(), ItemOverrides.EMPTY , RenderTypeGroup.EMPTY);
+            return new SimpleBakedModel(unculled, faceQuads, model.useAmbientOcclusion(), model.usesBlockLight(), model.isGui3d(), model.getParticleIcon(), model.getTransforms(), ItemOverrides.EMPTY, RenderTypeGroup.EMPTY);
         }
 
         static List<BakedQuad> transformQuads(final List<BakedQuad> quads, final IntList layerColors) {
@@ -155,24 +138,18 @@ public class HaloModelLoader implements IGeometryLoader<HaloModelLoader.HaloItem
                     bits &= mask;
                     if (type == VertexFormatElement.Type.FLOAT) {
                         to[i] = Float.intBitsToFloat(bits);
+                    } else if (type == VertexFormatElement.Type.UBYTE || type == VertexFormatElement.Type.USHORT) {
+                        to[i] = bits / (float) mask;
+                    } else if (type == VertexFormatElement.Type.UINT) {
+                        to[i] = (float) (((long) bits & 0xFFFFFFFFL) / 4.294967295E9);
+                    } else if (type == VertexFormatElement.Type.BYTE) {
+                        to[i] = (byte) bits / (float) (mask >> 1);
+                    } else if (type == VertexFormatElement.Type.SHORT) {
+                        to[i] = (short) bits / (float) (mask >> 1);
+                    } else if (type == VertexFormatElement.Type.INT) {
+                        to[i] = (float) (((long) bits & 0xFFFFFFFFL) / 2.147483647E9);
                     }
-                    else if (type == VertexFormatElement.Type.UBYTE || type == VertexFormatElement.Type.USHORT) {
-                        to[i] = bits / (float)mask;
-                    }
-                    else if (type == VertexFormatElement.Type.UINT) {
-                        to[i] = (float)(((long)bits & 0xFFFFFFFFL) / 4.294967295E9);
-                    }
-                    else if (type == VertexFormatElement.Type.BYTE) {
-                        to[i] = (byte)bits / (float)(mask >> 1);
-                    }
-                    else if (type == VertexFormatElement.Type.SHORT) {
-                        to[i] = (short)bits / (float)(mask >> 1);
-                    }
-                    else if (type == VertexFormatElement.Type.INT) {
-                        to[i] = (float)(((long)bits & 0xFFFFFFFFL) / 2.147483647E9);
-                    }
-                }
-                else {
+                } else {
                     to[i] = ((i == 3 && usage == VertexFormatElement.Usage.POSITION) ? 1.0f : 0.0f);
                 }
             }
@@ -214,8 +191,7 @@ public class HaloModelLoader implements IGeometryLoader<HaloModelLoader.HaloItem
                     if (eMap[e] != countTo) {
                         unpack(quad.getVertices(), data, formatTo, v, eMap[e]);
                         consumer.put(e, data);
-                    }
-                    else {
+                    } else {
                         consumer.put(e);
                     }
                 }
@@ -244,6 +220,23 @@ public class HaloModelLoader implements IGeometryLoader<HaloModelLoader.HaloItem
             }
             newQuad.tintIndex = -1;
             return newQuad.bake();
+        }
+
+        @Override
+        public BakedModel bake(final IGeometryBakingContext owner, final ModelBaker bakery, final Function<Material, TextureAtlasSprite> spriteGetter, final ModelState modelTransform, final ItemOverrides overrides, final ResourceLocation modelLocation) {
+            final BakedModel bakedBaseModel = this.baseModel.bake(bakery, this.baseModel, spriteGetter, modelTransform, modelLocation, false);
+            //Static.LOGGER.info("test0"+ this.texture);
+            Material particleLocation = this.baseModel.getMaterial(this.texture);
+            TextureAtlasSprite particle =
+                    spriteGetter.apply(particleLocation);
+            //Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation(Static.MOD_ID, "misc/halo"));
+            //Static.LOGGER.info("test1"+ particle.toString());
+            return new HaloBakedModel(tintLayers(bakedBaseModel, layerColors), particle, this.color, this.size, this.pulse);
+        }
+
+        @Override
+        public void resolveParents(Function<ResourceLocation, UnbakedModel> modelGetter, IGeometryBakingContext context) {
+            this.baseModel.resolveParents(modelGetter);
         }
 
     }

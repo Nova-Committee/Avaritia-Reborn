@@ -11,10 +11,17 @@ import java.math.RoundingMode;
 
 public class Rotation extends Transformation {
 
-    /**
+    public static Vector3[] axes = new Vector3[]{
+            new Vector3(0, -1, 0),
+            new Vector3(0, 1, 0),
+            new Vector3(0, 0, -1),
+            new Vector3(0, 0, 1),
+            new Vector3(-1, 0, 0),
+            new Vector3(1, 0, 0)
+    };    /**
      * Clockwise pi/2 about y looking down
      */
-    public static Transformation[] quarterRotations = new Transformation[] {
+    public static Transformation[] quarterRotations = new Transformation[]{
             RedundantTransformation.INSTANCE,
             new VariableTransformation(new Matrix4(0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1)) {
                 @Override
@@ -57,8 +64,14 @@ public class Rotation extends Transformation {
                 }
             }
     };
-
-    public static Transformation[] sideRotations = new Transformation[] {
+    public static int[] sideRotMap = new int[]{
+            3, 4, 2, 5,
+            3, 5, 2, 4,
+            1, 5, 0, 4,
+            1, 4, 0, 5,
+            1, 2, 0, 3,
+            1, 3, 0, 2
+    };    public static Transformation[] sideRotations = new Transformation[]{
             RedundantTransformation.INSTANCE,
             new VariableTransformation(new Matrix4(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1)) {
                 @Override
@@ -129,26 +142,7 @@ public class Rotation extends Transformation {
                 }
             }
     };
-
-    public static Vector3[] axes = new Vector3[] {
-            new Vector3(0, -1, 0),
-            new Vector3(0, 1, 0),
-            new Vector3(0, 0, -1),
-            new Vector3(0, 0, 1),
-            new Vector3(-1, 0, 0),
-            new Vector3(1, 0, 0)
-    };
-
-    public static int[] sideRotMap = new int[] {
-            3, 4, 2, 5,
-            3, 5, 2, 4,
-            1, 5, 0, 4,
-            1, 4, 0, 5,
-            1, 2, 0, 3,
-            1, 3, 0, 2
-    };
-
-    public static int[] rotSideMap = new int[] {
+    public static int[] rotSideMap = new int[]{
             -1, -1, 2, 0,
             1, 3, -1, -1,
             2, 0, 3, 1,
@@ -159,11 +153,43 @@ public class Rotation extends Transformation {
             -1, -1, 2, 0,
             3, 1, -1, -1
     };
-
     /**
      * Rotate pi/2 * this offset for [side] about y axis before rotating to the side for the rotation indicies to line up
      */
-    public static int[] sideRotOffsets = new int[] { 0, 2, 2, 0, 1, 3 };
+    public static int[] sideRotOffsets = new int[]{0, 2, 2, 0, 1, 3};
+    public double angle;
+    public Vector3 axis;
+    @Nullable
+    private Quat quat;
+
+    public Rotation(double angle, Vector3 axis) {
+        this.angle = angle;
+        this.axis = axis;
+    }
+
+    public Rotation(double angle, double x, double y, double z) {
+        this(angle, new Vector3(x, y, z));
+    }
+
+    public Rotation(Quat quat) {
+        this.quat = quat;
+
+        angle = Math.acos(quat.s) * 2;
+        if (angle == 0) {
+            axis = new Vector3(0, 1, 0);
+        } else {
+            double sa = Math.sin(angle * 0.5);
+            axis = new Vector3(quat.x / sa, quat.y / sa, quat.z / sa);
+        }
+    }
+
+    public Rotation(Rotation rot) {
+        if (rot.quat != null) {
+            quat = rot.quat.copy();
+        }
+        angle = rot.angle;
+        axis = rot.axis.copy();
+    }
 
     public static int rotateSide(int s, int r) {
         return sideRotMap[s << 2 | r];
@@ -222,41 +248,6 @@ public class Rotation extends Transformation {
             }
         }
         return maxs;
-    }
-
-    public double angle;
-    public Vector3 axis;
-
-    @Nullable
-    private Quat quat;
-
-    public Rotation(double angle, Vector3 axis) {
-        this.angle = angle;
-        this.axis = axis;
-    }
-
-    public Rotation(double angle, double x, double y, double z) {
-        this(angle, new Vector3(x, y, z));
-    }
-
-    public Rotation(Quat quat) {
-        this.quat = quat;
-
-        angle = Math.acos(quat.s) * 2;
-        if (angle == 0) {
-            axis = new Vector3(0, 1, 0);
-        } else {
-            double sa = Math.sin(angle * 0.5);
-            axis = new Vector3(quat.x / sa, quat.y / sa, quat.z / sa);
-        }
-    }
-
-    public Rotation(Rotation rot) {
-        if (rot.quat != null) {
-            quat = rot.quat.copy();
-        }
-        angle = rot.angle;
-        axis = rot.axis.copy();
     }
 
     @Override
@@ -318,4 +309,8 @@ public class Rotation extends Transformation {
     public Rotation copy() {
         return new Rotation(this);
     }
+
+
+
+
 }

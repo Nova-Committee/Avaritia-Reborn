@@ -19,6 +19,7 @@ public class ModEMCHandler {
     private static void registerEMC(ItemLike item, int emc) {
         APICustomEMCMapper.INSTANCE.registerCustomEMC(Static.MOD_ID, new CustomEMCRegistration(NSSItem.createItem(item), emc));
     }
+
     public static void init() {
         registerEMC(ModItems.neutron_pile.get(), ModConfig.neutronPileEmc.get());
         registerEMC(ModItems.blaze_cube.get(), ModConfig.blazeCubeEmc.get());

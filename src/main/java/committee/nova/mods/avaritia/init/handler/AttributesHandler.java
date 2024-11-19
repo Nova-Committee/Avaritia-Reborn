@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 public class AttributesHandler {
 
     @SubscribeEvent
-    public static void addAttributes(EntityAttributeCreationEvent event){
+    public static void addAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.INFINITY_GOLEM.get(), InfinityGolem.createAttributes().build());
     }
 }

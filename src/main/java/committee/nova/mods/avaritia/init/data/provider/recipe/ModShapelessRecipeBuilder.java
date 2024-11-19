@@ -72,7 +72,7 @@ public class ModShapelessRecipeBuilder extends CraftingRecipeBuilder implements 
     }
 
     public ModShapelessRecipeBuilder requires(ItemLike p_126212_, int p_126213_) {
-        for(int i = 0; i < p_126213_; ++i) {
+        for (int i = 0; i < p_126213_; ++i) {
             this.requires(Ingredient.of(p_126212_));
         }
 
@@ -84,7 +84,7 @@ public class ModShapelessRecipeBuilder extends CraftingRecipeBuilder implements 
     }
 
     public ModShapelessRecipeBuilder requires(Ingredient p_126187_, int p_126188_) {
-        for(int i = 0; i < p_126188_; ++i) {
+        for (int i = 0; i < p_126188_; ++i) {
             this.ingredients.add(p_126187_);
         }
 
@@ -153,7 +153,7 @@ public class ModShapelessRecipeBuilder extends CraftingRecipeBuilder implements 
 
             JsonArray jsonarray = new JsonArray();
 
-            for(Ingredient ingredient : this.ingredients) {
+            for (Ingredient ingredient : this.ingredients) {
                 jsonarray.add(ingredient.toJson());
             }
 

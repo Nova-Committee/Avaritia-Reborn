@@ -54,7 +54,32 @@ public class Singularity {
         this(id, name, colors, tag, -1, FMLLoader.isProduction() ? ModConfig.singularityTimeRequired.get() : 240);
     }
 
+    public static Singularity read(FriendlyByteBuf buffer) {
+        var id = buffer.readResourceLocation();
+        var name = buffer.readUtf();
+        int[] colors = buffer.readVarIntArray();
+        var isTagIngredient = buffer.readBoolean();
+        int timeRequired = buffer.readVarInt();
 
+        String tag = null;
+        var ingredient = Ingredient.EMPTY;
+
+        if (isTagIngredient) {
+            tag = buffer.readUtf();
+        } else {
+            ingredient = Ingredient.fromNetwork(buffer);
+        }
+
+        int ingredientCount = buffer.readVarInt();
+
+        Singularity singularity = isTagIngredient ? new Singularity(id, name, colors, tag, ingredientCount, timeRequired)
+                : new Singularity(id, name, colors, ingredient, ingredientCount, timeRequired);
+
+        singularity.enabled = buffer.readBoolean();
+        singularity.recipeDisabled = buffer.readBoolean();
+
+        return singularity;
+    }
 
     public ResourceLocation getId() {
         return this.id;
@@ -116,32 +141,6 @@ public class Singularity {
         this.recipeDisabled = recipeDisabled;
     }
 
-    public static Singularity read(FriendlyByteBuf buffer) {
-        var id = buffer.readResourceLocation();
-        var name = buffer.readUtf();
-        int[] colors = buffer.readVarIntArray();
-        var isTagIngredient = buffer.readBoolean();
-        int timeRequired = buffer.readVarInt();
-
-        String tag = null;
-        var ingredient = Ingredient.EMPTY;
-
-        if (isTagIngredient) {
-            tag = buffer.readUtf();
-        } else {
-            ingredient = Ingredient.fromNetwork(buffer);
-        }
-
-        int ingredientCount = buffer.readVarInt();
-
-        Singularity singularity = isTagIngredient ? new Singularity(id, name, colors, tag, ingredientCount, timeRequired)
-                : new Singularity(id, name, colors, ingredient, ingredientCount, timeRequired);
-
-        singularity.enabled = buffer.readBoolean();
-        singularity.recipeDisabled = buffer.readBoolean();
-
-        return singularity;
-    }
     public void write(FriendlyByteBuf buffer) {
         buffer.writeResourceLocation(this.id);
         buffer.writeUtf(this.name);

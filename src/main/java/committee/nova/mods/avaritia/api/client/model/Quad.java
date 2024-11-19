@@ -37,24 +37,20 @@ import net.minecraft.world.phys.AABB;
  */
 public class Quad implements IVertexProducer, IVertexConsumer {
 
-    public CachedFormat format;
-
-    public int tintIndex = -1;
-    public Direction orientation;
-    public boolean diffuseLighting = true;
-    public TextureAtlasSprite sprite;
-
-    public Vertex[] vertices = new Vertex[4];
-    public boolean full;
-
-    // Not copied.
-    private int vertexIndex = 0;
-
     // Cache for normal computation.
     private final Vector3 v1 = new Vector3();
     private final Vector3 v2 = new Vector3();
     private final Vector3 t = new Vector3();
     private final Cuboid6 c = new Cuboid6();
+    public CachedFormat format;
+    public int tintIndex = -1;
+    public Direction orientation;
+    public boolean diffuseLighting = true;
+    public TextureAtlasSprite sprite;
+    public Vertex[] vertices = new Vertex[4];
+    public boolean full;
+    // Not copied.
+    private int vertexIndex = 0;
 
     /**
      * Use this if you reset the quad each time you use it.
