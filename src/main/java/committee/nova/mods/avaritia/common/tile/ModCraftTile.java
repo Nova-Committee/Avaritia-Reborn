@@ -1,6 +1,6 @@
 package committee.nova.mods.avaritia.common.tile;
 
-import committee.nova.mods.avaritia.api.common.item.BaseItemStackHandler;
+import committee.nova.mods.avaritia.api.common.wrapper.ItemStackWrapper;
 import committee.nova.mods.avaritia.api.common.tile.BaseInventoryTileEntity;
 import committee.nova.mods.avaritia.common.menu.ModCraftMenu;
 import committee.nova.mods.avaritia.init.registry.ModBlocks;
@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ModCraftTile extends BaseInventoryTileEntity {
 
-    private final BaseItemStackHandler inventory;
+    private final ItemStackWrapper inventory;
     private ModCraftTier tier;
 
     public ModCraftTile(BlockPos pos, BlockState blockState) {
@@ -37,11 +37,11 @@ public class ModCraftTile extends BaseInventoryTileEntity {
         } else if (blockState.is(ModBlocks.extreme_crafting_table.get())) {
             tier = ModCraftTier.EXTREME;
         }
-        this.inventory = new BaseItemStackHandler(tier.size * tier.size, this::setChangedAndDispatch);
+        this.inventory = new ItemStackWrapper(tier.size * tier.size, this::setChangedAndDispatch);
     }
 
     @Override
-    public @NotNull BaseItemStackHandler getInventory() {
+    public @NotNull ItemStackWrapper getInventory() {
         return inventory;
     }
 

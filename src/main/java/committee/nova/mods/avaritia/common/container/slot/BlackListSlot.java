@@ -1,4 +1,4 @@
-package committee.nova.mods.avaritia.common.inventory.slot;
+package committee.nova.mods.avaritia.common.container.slot;
 
 import committee.nova.mods.avaritia.util.ItemUtils;
 import net.minecraft.world.Container;

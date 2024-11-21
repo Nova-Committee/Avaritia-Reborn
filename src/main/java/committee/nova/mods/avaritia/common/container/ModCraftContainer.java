@@ -1,6 +1,6 @@
-package committee.nova.mods.avaritia.common.inventory;
+package committee.nova.mods.avaritia.common.container;
 
-import committee.nova.mods.avaritia.api.common.item.BaseItemStackHandler;
+import committee.nova.mods.avaritia.api.common.wrapper.ItemStackWrapper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.TransientCraftingContainer;
@@ -13,16 +13,16 @@ import org.jetbrains.annotations.NotNull;
  * Date: 2022/4/2 11:09
  * Version: 1.0
  */
-public class ModCraftInventory extends TransientCraftingContainer {
+public class ModCraftContainer extends TransientCraftingContainer {
     private final AbstractContainerMenu container;
-    private final BaseItemStackHandler inventory;
+    private final ItemStackWrapper inventory;
     private final boolean autoTable;
 
-    public ModCraftInventory(AbstractContainerMenu container, BaseItemStackHandler inventory, int size) {
+    public ModCraftContainer(AbstractContainerMenu container, ItemStackWrapper inventory, int size) {
         this(container, inventory, size, false);
     }
 
-    public ModCraftInventory(AbstractContainerMenu container, BaseItemStackHandler inventory, int size, boolean autoTable) {
+    public ModCraftContainer(AbstractContainerMenu container, ItemStackWrapper inventory, int size, boolean autoTable) {
         super(container, size, size);
         this.container = container;
         this.inventory = inventory;

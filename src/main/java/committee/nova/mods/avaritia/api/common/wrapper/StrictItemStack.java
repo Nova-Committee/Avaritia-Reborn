@@ -1,4 +1,4 @@
-package committee.nova.mods.avaritia.api.common.item;
+package committee.nova.mods.avaritia.api.common.wrapper;
 
 import net.minecraft.world.item.ItemStack;
 
@@ -8,19 +8,17 @@ import net.minecraft.world.item.ItemStack;
  * Date: 2022/3/31 14:16
  * Version: 1.0
  */
-public class ItemStackWrapper {
+public class StrictItemStack {
     public final ItemStack stack;
 
-    public ItemStackWrapper(ItemStack stack) {
+    public StrictItemStack(ItemStack stack) {
         this.stack = stack;
     }
 
     @Override
-    public boolean equals(Object otherobj) {
-        if (otherobj instanceof ItemStackWrapper other) {
-
+    public boolean equals(Object otherObj) {
+        if (otherObj instanceof StrictItemStack other) {
             if (stack.getItem().equals(other.stack.getItem()) && stack.getDamageValue() == other.stack.getDamageValue()) {
-
                 if (stack.getTag() == null && other.stack.getTag() == null) {
                     return true;
                 } else {
@@ -28,7 +26,6 @@ public class ItemStackWrapper {
                         return false;
                     } else return stack.getTag().equals(other.stack.getTag());
                 }
-
             }
         }
         return false;

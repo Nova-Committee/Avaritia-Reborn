@@ -1,6 +1,7 @@
-package committee.nova.mods.avaritia.common.capability.wrappers;
+package committee.nova.mods.avaritia.common.capability;
 
-import committee.nova.mods.avaritia.common.item.misc.NeutronRingItem;
+import committee.nova.mods.avaritia.api.common.wrapper.ItemStackWrapper;
+import committee.nova.mods.avaritia.common.item.MatterClusterItem;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -14,24 +15,17 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @Project: Avaritia
  * @Author: cnlimiter
- * @CreateTime: 2024/8/5 下午11:31
+ * @CreateTime: 2024/11/16 20:49
  * @Description:
  */
-public class RingWrapper implements ICapabilitySerializable<CompoundTag> {
-    ItemStackHandler inv = new ItemStackHandler(81) {
-        @Override
-        public int getSlotLimit(int slot) {
-            return Integer.MAX_VALUE;
-        }
+public class MatterClusterProvider implements ICapabilitySerializable<CompoundTag> {
+    private final ItemStackWrapper inv;
+    private final LazyOptional<ItemStackHandler> inventoryCap;
 
-        @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
-            return !(stack.getItem() instanceof NeutronRingItem) && super.isItemValid(slot, stack);
-        }
-    };
-    private final LazyOptional<ItemStackHandler> inventoryCap = LazyOptional.of(() -> inv);
-
-    public RingWrapper(ItemStack stack, CompoundTag nbt) {
+    public MatterClusterProvider(ItemStack stack, CompoundTag nbt) {
+        this.inv = new ItemStackWrapper(256);
+        this.inv.setSlotValidator((integer, itemStack) -> itemStack.getItem() instanceof MatterClusterItem);
+        this.inventoryCap = LazyOptional.of(() -> inv);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package committee.nova.mods.avaritia.util;
 
 import com.google.common.base.Objects;
-import committee.nova.mods.avaritia.api.common.container.ContainerRange;
+import committee.nova.mods.avaritia.api.common.container.RangeContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -156,7 +156,7 @@ public class ContainerUtils {
         return insert;
     }
 
-    public static int fitStackInSlot(ContainerRange inv, int slot, ItemStack stack) {
+    public static int fitStackInSlot(RangeContainer inv, int slot, ItemStack stack) {
         ItemStack base = inv.inv.getItem(slot);
         if (!canStack(base, stack) || !inv.canInsertItem(slot, stack)) {
             return 0;
@@ -167,14 +167,14 @@ public class ContainerUtils {
     }
 
     public static int fitStackInSlot(Container inv, int slot, @Nonnull ItemStack stack) {
-        return fitStackInSlot(new ContainerRange(inv), slot, stack);
+        return fitStackInSlot(new RangeContainer(inv), slot, stack);
     }
 
     /**
      * @param simulate If set to true, no items will actually be inserted
      * @return The number of items unable to be inserted
      */
-    public static int insertItem(ContainerRange inv, @Nonnull ItemStack stack, boolean simulate) {
+    public static int insertItem(RangeContainer inv, @Nonnull ItemStack stack, boolean simulate) {
         stack = stack.copy();
         for (int pass = 0; pass < 2; pass++) {
             for (int slot : inv.slots) {
@@ -208,7 +208,7 @@ public class ContainerUtils {
     }
 
     public static int insertItem(Container inv, @Nonnull ItemStack stack, boolean simulate) {
-        return insertItem(new ContainerRange(inv), stack, simulate);
+        return insertItem(new RangeContainer(inv), stack, simulate);
     }
 
     /**

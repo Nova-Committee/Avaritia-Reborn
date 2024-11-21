@@ -1,4 +1,4 @@
-package committee.nova.mods.avaritia.api.common.item;
+package committee.nova.mods.avaritia.api.common.wrapper;
 
 /**
  * Description:
@@ -20,19 +20,32 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-public class BaseItemStackHandler extends ItemStackHandler {
+public class ItemStackWrapper extends ItemStackHandler {
     private final Runnable onContentsChanged;
     private final Map<Integer, Integer> slotSizeMap;
     private BiFunction<Integer, ItemStack, Boolean> slotValidator;
     private int maxStackSize;
     private int[] outputSlots;
 
-    public BaseItemStackHandler(int size) {
+    public ItemStackWrapper(int size) {
         this(size, null);
     }
 
-    public BaseItemStackHandler(int size, Runnable onContentsChanged) {
+    public ItemStackWrapper(NonNullList<ItemStack> size) {
+        this(size, null);
+    }
+
+    public ItemStackWrapper(int size, Runnable onContentsChanged) {
         super(size);
+        this.slotValidator = null;
+        this.maxStackSize = 64;
+        this.outputSlots = null;
+        this.onContentsChanged = onContentsChanged;
+        this.slotSizeMap = new HashMap<>();
+    }
+
+    public ItemStackWrapper(NonNullList<ItemStack> stacks, Runnable onContentsChanged) {
+        super(stacks);
         this.slotValidator = null;
         this.maxStackSize = 64;
         this.outputSlots = null;
@@ -105,8 +118,8 @@ public class BaseItemStackHandler extends ItemStackHandler {
         return new SimpleContainer(this.stacks.toArray(new ItemStack[0]));
     }
 
-    public BaseItemStackHandler copy() {
-        BaseItemStackHandler newInventory = new BaseItemStackHandler(this.getSlots(), this.onContentsChanged);
+    public ItemStackWrapper copy() {
+        ItemStackWrapper newInventory = new ItemStackWrapper(this.getSlots(), this.onContentsChanged);
         newInventory.setDefaultSlotLimit(this.maxStackSize);
         newInventory.setSlotValidator(this.slotValidator);
         newInventory.setOutputSlots(this.outputSlots);

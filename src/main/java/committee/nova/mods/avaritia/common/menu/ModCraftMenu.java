@@ -1,9 +1,9 @@
 package committee.nova.mods.avaritia.common.menu;
 
-import committee.nova.mods.avaritia.api.common.item.BaseItemStackHandler;
+import committee.nova.mods.avaritia.api.common.wrapper.ItemStackWrapper;
 import committee.nova.mods.avaritia.api.common.menu.BaseMenu;
-import committee.nova.mods.avaritia.common.inventory.ModCraftInventory;
-import committee.nova.mods.avaritia.common.inventory.slot.ModCraftResultSlot;
+import committee.nova.mods.avaritia.common.container.ModCraftContainer;
+import committee.nova.mods.avaritia.common.container.slot.ModCraftResultSlot;
 import committee.nova.mods.avaritia.init.registry.ModCraftTier;
 import committee.nova.mods.avaritia.init.registry.ModMenus;
 import committee.nova.mods.avaritia.init.registry.ModRecipeTypes;
@@ -32,10 +32,10 @@ public class ModCraftMenu extends BaseMenu {
     private final ModCraftTier tier;
 
     private ModCraftMenu(MenuType<?> type, int id, Inventory playerInventory, FriendlyByteBuf buf, ModCraftTier tier) {
-        this(type, id, playerInventory, new BaseItemStackHandler(tier.size * tier.size), buf.readBlockPos(), tier);
+        this(type, id, playerInventory, new ItemStackWrapper(tier.size * tier.size), buf.readBlockPos(), tier);
     }
 
-    public ModCraftMenu(MenuType<?> type, int id, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos,
+    public ModCraftMenu(MenuType<?> type, int id, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos,
                         ModCraftTier tier
     ) {
         super(type, id, pos);
@@ -44,7 +44,7 @@ public class ModCraftMenu extends BaseMenu {
         this.result = new ResultContainer();
         this.tier = tier;
 
-        var matrix = new ModCraftInventory(this, inventory, tier.size * tier.size);
+        var matrix = new ModCraftContainer(this, inventory, tier.size * tier.size);
 
         this.addSlot(new ModCraftResultSlot(this.player, this, matrix, this.result, 0, tier.outX, tier.outY));
 
@@ -72,7 +72,7 @@ public class ModCraftMenu extends BaseMenu {
         return new ModCraftMenu(ModMenus.sculk_crafting_tile_table.get(), windowId, playerInventory, buf, tier);
     }
 
-    public static ModCraftMenu sculk(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos, ModCraftTier tier) {
+    public static ModCraftMenu sculk(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ModCraftTier tier) {
         return new ModCraftMenu(ModMenus.sculk_crafting_tile_table.get(), windowId, playerInventory, inventory, pos, tier);
     }
 
@@ -80,7 +80,7 @@ public class ModCraftMenu extends BaseMenu {
         return new ModCraftMenu(ModMenus.nether_crafting_tile_table.get(), windowId, playerInventory, buf, tier);
     }
 
-    public static ModCraftMenu nether(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos, ModCraftTier tier) {
+    public static ModCraftMenu nether(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ModCraftTier tier) {
         return new ModCraftMenu(ModMenus.nether_crafting_tile_table.get(), windowId, playerInventory, inventory, pos, tier);
     }
 
@@ -88,7 +88,7 @@ public class ModCraftMenu extends BaseMenu {
         return new ModCraftMenu(ModMenus.end_crafting_tile_table.get(), windowId, playerInventory, buf, tier);
     }
 
-    public static ModCraftMenu end(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos, ModCraftTier tier) {
+    public static ModCraftMenu end(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ModCraftTier tier) {
         return new ModCraftMenu(ModMenus.end_crafting_tile_table.get(), windowId, playerInventory, inventory, pos, tier);
     }
 
@@ -96,7 +96,7 @@ public class ModCraftMenu extends BaseMenu {
         return new ModCraftMenu(ModMenus.extreme_crafting_table.get(), windowId, playerInventory, buf, tier);
     }
 
-    public static ModCraftMenu extreme(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos, ModCraftTier tier) {
+    public static ModCraftMenu extreme(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ModCraftTier tier) {
         return new ModCraftMenu(ModMenus.extreme_crafting_table.get(), windowId, playerInventory, inventory, pos, tier);
     }
 

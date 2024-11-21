@@ -1,6 +1,6 @@
 package committee.nova.mods.avaritia.common.menu;
 
-import committee.nova.mods.avaritia.api.common.item.BaseItemStackHandler;
+import committee.nova.mods.avaritia.api.common.wrapper.ItemStackWrapper;
 import committee.nova.mods.avaritia.api.common.menu.BaseMenu;
 import committee.nova.mods.avaritia.api.common.slot.OutputSlot;
 import committee.nova.mods.avaritia.common.tile.collector.BaseNeutronCollectorTile;
@@ -30,7 +30,7 @@ public class NeutronCollectorMenu extends BaseMenu {
         this(type, id, playerInventory, BaseNeutronCollectorTile.createInventoryHandler(null), buffer.readBlockPos(), data);
     }
 
-    protected NeutronCollectorMenu(MenuType<?> type, int id, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos, ContainerData data) {
+    protected NeutronCollectorMenu(MenuType<?> type, int id, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ContainerData data) {
         super(type, id, pos);
         this.data = data;
         this.addSlot(new OutputSlot(inventory, 0, 80, 32));
@@ -51,7 +51,7 @@ public class NeutronCollectorMenu extends BaseMenu {
         return new NeutronCollectorMenu(ModMenus.neutron_collector.get(), windowId, playerInventory, buffer, new SimpleContainerData(10));
     }
 
-    public static NeutronCollectorMenu create(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos, ContainerData data) {
+    public static NeutronCollectorMenu create(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ContainerData data) {
         return new NeutronCollectorMenu(ModMenus.neutron_collector.get(), windowId, playerInventory, inventory, pos, data);
     }
 

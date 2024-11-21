@@ -1,6 +1,6 @@
 package committee.nova.mods.avaritia.common.tile;
 
-import committee.nova.mods.avaritia.api.common.item.BaseItemStackHandler;
+import committee.nova.mods.avaritia.api.common.wrapper.ItemStackWrapper;
 import committee.nova.mods.avaritia.api.common.tile.BaseInventoryTileEntity;
 import committee.nova.mods.avaritia.common.crafting.recipe.CompressorRecipe;
 import committee.nova.mods.avaritia.common.menu.CompressorMenu;
@@ -27,8 +27,8 @@ import org.jetbrains.annotations.Nullable;
  * Version: 1.0
  */
 public class CompressorTile extends BaseInventoryTileEntity {
-    private final BaseItemStackHandler inventory;
-    private final BaseItemStackHandler recipeInventory;
+    private final ItemStackWrapper inventory;
+    private final ItemStackWrapper recipeInventory;
     private final SimpleContainerData data = new SimpleContainerData(1);
     private CompressorRecipe recipe;
     private ItemStack materialStack = ItemStack.EMPTY;
@@ -39,11 +39,11 @@ public class CompressorTile extends BaseInventoryTileEntity {
     public CompressorTile(BlockPos pos, BlockState state) {
         super(ModTileEntities.compressor_tile.get(), pos, state);
         this.inventory = createInventoryHandler(null);
-        this.recipeInventory = new BaseItemStackHandler(1);
+        this.recipeInventory = new ItemStackWrapper(1);
     }
 
-    public static BaseItemStackHandler createInventoryHandler(Runnable onContentsChanged) {
-        var inventory = new BaseItemStackHandler(2, onContentsChanged);
+    public static ItemStackWrapper createInventoryHandler(Runnable onContentsChanged) {
+        var inventory = new ItemStackWrapper(2, onContentsChanged);
 
         inventory.setOutputSlots(0);
         inventory.setSlotValidator((slot, stack) -> slot == 1);
@@ -135,7 +135,7 @@ public class CompressorTile extends BaseInventoryTileEntity {
     }
 
     @Override
-    public @NotNull BaseItemStackHandler getInventory() {
+    public @NotNull ItemStackWrapper getInventory() {
         return this.inventory;
     }
 

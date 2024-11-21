@@ -1,4 +1,4 @@
-package committee.nova.mods.avaritia.common.inventory.slot;
+package committee.nova.mods.avaritia.common.container.slot;
 
 import committee.nova.mods.avaritia.init.registry.ModRecipeTypes;
 import net.minecraft.core.NonNullList;

@@ -16,11 +16,15 @@ import org.jetbrains.annotations.Nullable;
  */
 public abstract class BaseMenu extends AbstractContainerMenu {
 
-    private final BlockPos pos;
+    private BlockPos pos;
 
     protected BaseMenu(MenuType<?> menu, int id, @Nullable BlockPos pos) {
-        super(menu, id);
+        this(menu, id);
         this.pos = pos;
+    }
+
+    protected BaseMenu(MenuType<?> menu, int id) {
+        super(menu, id);
     }
 
     @Override

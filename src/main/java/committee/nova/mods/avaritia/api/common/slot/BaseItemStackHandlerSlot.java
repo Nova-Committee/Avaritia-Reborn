@@ -1,6 +1,6 @@
 package committee.nova.mods.avaritia.api.common.slot;
 
-import committee.nova.mods.avaritia.api.common.item.BaseItemStackHandler;
+import committee.nova.mods.avaritia.api.common.wrapper.ItemStackWrapper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
@@ -13,10 +13,10 @@ import org.jetbrains.annotations.NotNull;
  * Version: 1.0
  */
 public class BaseItemStackHandlerSlot extends SlotItemHandler {
-    private final BaseItemStackHandler inventory;
+    private final ItemStackWrapper inventory;
     private final int index;
 
-    public BaseItemStackHandlerSlot(BaseItemStackHandler inventory, int index, int xPosition, int yPosition) {
+    public BaseItemStackHandlerSlot(ItemStackWrapper inventory, int index, int xPosition, int yPosition) {
         super(inventory, index, xPosition, yPosition);
         this.inventory = inventory;
         this.index = index;

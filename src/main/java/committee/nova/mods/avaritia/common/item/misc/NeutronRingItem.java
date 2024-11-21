@@ -1,6 +1,6 @@
 package committee.nova.mods.avaritia.common.item.misc;
 
-import committee.nova.mods.avaritia.common.capability.wrappers.RingWrapper;
+import committee.nova.mods.avaritia.common.capability.RingStorageProvider;
 import committee.nova.mods.avaritia.common.item.resources.ResourceItem;
 import committee.nova.mods.avaritia.common.menu.NeutronRingMenu;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
@@ -53,6 +53,6 @@ public class NeutronRingItem extends ResourceItem {
 
     @Override
     public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new RingWrapper(stack, nbt);
+        return new RingStorageProvider(stack, nbt);
     }
 }

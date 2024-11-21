@@ -10,6 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.text.DecimalFormat;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -24,7 +25,7 @@ public class Static {
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final GameProfile avaritiaFakePlayer = new GameProfile(UUID.fromString("32283731-bbef-487c-bb69-c7e32f84ed27"), "[Avaritia]");
-
+    public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat(",###");
     public static ResourceLocation rl(String path) {
         return new ResourceLocation(MOD_ID, path);
     }

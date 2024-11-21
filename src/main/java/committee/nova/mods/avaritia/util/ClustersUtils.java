@@ -1,7 +1,7 @@
 package committee.nova.mods.avaritia.util;
 
 import com.google.common.collect.Sets;
-import committee.nova.mods.avaritia.api.common.item.ItemStackWrapper;
+import committee.nova.mods.avaritia.api.common.wrapper.StrictItemStack;
 import committee.nova.mods.avaritia.common.item.MatterClusterItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -83,12 +83,12 @@ public class ClustersUtils {
         return collateMatterClusterContents(collateMatterCluster(input));
     }
 
-    public static List<ItemStack> collateMatterClusterContents(Map<ItemStackWrapper, Integer> input) {
+    public static List<ItemStack> collateMatterClusterContents(Map<StrictItemStack, Integer> input) {
         List<ItemStack> collated = new ArrayList<>();
 
-        for (Map.Entry<ItemStackWrapper, Integer> e : input.entrySet()) {
+        for (Map.Entry<StrictItemStack, Integer> e : input.entrySet()) {
             int count = e.getValue();
-            ItemStackWrapper wrap = e.getKey();
+            StrictItemStack wrap = e.getKey();
 
             int size = wrap.stack.getMaxStackSize();
             int fullstacks = Mth.floor((float) count / size);
@@ -110,12 +110,12 @@ public class ClustersUtils {
         return collated;
     }
 
-    public static Map<ItemStackWrapper, Integer> collateMatterCluster(Set<ItemStack> input) {
-        Map<ItemStackWrapper, Integer> counts = new HashMap<>();
+    public static Map<StrictItemStack, Integer> collateMatterCluster(Set<ItemStack> input) {
+        Map<StrictItemStack, Integer> counts = new HashMap<>();
 
         if (input != null) {
             for (ItemStack entity : input) {
-                ItemStackWrapper wrap = new ItemStackWrapper(entity);
+                StrictItemStack wrap = new StrictItemStack(entity);
                 if (!counts.containsKey(wrap)) {
                     counts.put(wrap, 0);
                 }

@@ -1,6 +1,6 @@
 package committee.nova.mods.avaritia.common.tile.collector;
 
-import committee.nova.mods.avaritia.api.common.item.BaseItemStackHandler;
+import committee.nova.mods.avaritia.api.common.wrapper.ItemStackWrapper;
 import committee.nova.mods.avaritia.api.common.tile.BaseInventoryTileEntity;
 import committee.nova.mods.avaritia.common.menu.NeutronCollectorMenu;
 import committee.nova.mods.avaritia.init.registry.ModBlocks;
@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 public class BaseNeutronCollectorTile extends BaseInventoryTileEntity {
 
 
-    public final BaseItemStackHandler inventory;
+    public final ItemStackWrapper inventory;
     public SimpleContainerData data = new SimpleContainerData(1);
     private int progress;
     private CollectorTier tier;
@@ -72,8 +72,8 @@ public class BaseNeutronCollectorTile extends BaseInventoryTileEntity {
 
     }
 
-    public static BaseItemStackHandler createInventoryHandler(Runnable onContentsChanged) {
-        var inventory = new BaseItemStackHandler(1, onContentsChanged);
+    public static ItemStackWrapper createInventoryHandler(Runnable onContentsChanged) {
+        var inventory = new ItemStackWrapper(1, onContentsChanged);
         inventory.setOutputSlots(0);
         return inventory;
     }
@@ -91,7 +91,7 @@ public class BaseNeutronCollectorTile extends BaseInventoryTileEntity {
     }
 
     @Override
-    public @NotNull BaseItemStackHandler getInventory() {
+    public @NotNull ItemStackWrapper getInventory() {
         return this.inventory;
     }
 

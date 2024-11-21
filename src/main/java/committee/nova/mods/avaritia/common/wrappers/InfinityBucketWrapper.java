@@ -1,4 +1,4 @@
-package committee.nova.mods.avaritia.common.capability.wrappers;
+package committee.nova.mods.avaritia.common.wrappers;
 
 import committee.nova.mods.avaritia.common.item.misc.InfinityBucketItem;
 import net.minecraft.core.Direction;

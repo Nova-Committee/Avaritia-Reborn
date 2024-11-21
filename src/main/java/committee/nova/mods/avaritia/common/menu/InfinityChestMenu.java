@@ -1,20 +1,21 @@
 package committee.nova.mods.avaritia.common.menu;
 
-import committee.nova.mods.avaritia.api.common.item.BaseItemStackHandler;
+import committee.nova.mods.avaritia.api.common.slot.FakeSlot;
 import committee.nova.mods.avaritia.api.common.menu.BaseMenu;
-import committee.nova.mods.avaritia.common.inventory.slot.InfinitySlot;
+import committee.nova.mods.avaritia.common.container.InfinityChestContainer;
+import committee.nova.mods.avaritia.common.tile.InfinityChestTile;
+import committee.nova.mods.avaritia.common.wrappers.InfinityChestWrapper;
 import committee.nova.mods.avaritia.init.registry.ModMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.Mth;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.level.Level;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * @Project: Avaritia
@@ -23,88 +24,148 @@ import org.jetbrains.annotations.Nullable;
  * @Description:
  */
 public class InfinityChestMenu extends BaseMenu {
-    public static final SimpleContainer CONTAINER = new SimpleContainer(45);
-    public final BaseItemStackHandler stackHandler;
 
-    private InfinityChestMenu(MenuType<?> type, int id, Inventory playerInventory, FriendlyByteBuf buffer) {
-        this(type, id, playerInventory, new BaseItemStackHandler(Integer.MAX_VALUE), buffer.readBlockPos());
-    }
+    public final InfinityChestWrapper channel;
+    protected final Player player;
+    private final Level level;
+    private final BlockPos blockPos;
+    public InfinityChestTile controlPanelBlock;
+    public InfinityChestContainer dummyContainer;
 
-    protected InfinityChestMenu(MenuType<?> menu, int id, Inventory playerInventory, BaseItemStackHandler stackHandler, @Nullable BlockPos pos) {
-        super(menu, id, pos);
-        this.stackHandler = stackHandler;
-        for (int i = 0; i < 5; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                this.addSlot(new InfinitySlot(CONTAINER, i * 9 + j, 9 + j * 18, 18 + i * 18));
+    public String filter;
+    public byte sortType;
+    public boolean LShifting = false;
+
+
+    public InfinityChestMenu(int id, Inventory playerInventory, FriendlyByteBuf extraData) {
+        super(ModMenus.infinity_chest.get(), id);
+        this.level = playerInventory.player.level();
+        this.player = playerInventory.player;
+        this.blockPos = extraData.readBlockPos();
+        this.filter = extraData.readUtf(64);
+        this.sortType = extraData.readByte();
+
+        addSlots(playerInventory.player, playerInventory);
+        this.channel = new InfinityChestWrapper();
+        this.dummyContainer = new InfinityChestContainer(this.channel, this.level, this.filter, this.sortType, this.LShifting);
+        //虚拟储存物品格51 ~ 149
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 11; j++) {
+                this.addSlot(new FakeSlot(dummyContainer, i * 11 + j, 6 + j * 17, 6 + i * 17));
             }
         }
-
-        for (int k = 0; k < 9; ++k) {
-            this.addSlot(new Slot(playerInventory, k, 9 + k * 18, 112));
-        }
-
-        this.scrollTo(0.0F);
     }
 
-    public static InfinityChestMenu create(int windowId, Inventory playerInventory, FriendlyByteBuf buffer) {
-        return new InfinityChestMenu(ModMenus.infinity_chest.get(), windowId, playerInventory, buffer);
-    }
-
-    public static InfinityChestMenu create(int windowId, Inventory playerInventory, BaseItemStackHandler stackHandler, BlockPos pos) {
-        return new InfinityChestMenu(ModMenus.infinity_chest.get(), windowId, playerInventory, stackHandler, pos);
-    }
-
-    protected int calculateRowCount() {
-        return Mth.positiveCeilDiv(this.stackHandler.getStacks().size(), 9) - 5;
-    }
-
-    public int getRowIndexForScroll(float pScrollOffs) {
-        return Math.max((int) ((double) (pScrollOffs * (float) this.calculateRowCount()) + 0.5D), 0);
-    }
-
-    public float getScrollForRowIndex(int pRowIndex) {
-        return Mth.clamp((float) pRowIndex / (float) this.calculateRowCount(), 0.0F, 1.0F);
-    }
-
-    public float subtractInputFromScroll(float pScrollOffs, double pInput) {
-        return Mth.clamp(pScrollOffs - (float) (pInput / (double) this.calculateRowCount()), 0.0F, 1.0F);
-    }
-
-    public void scrollTo(float pPos) {
-        int i = this.getRowIndexForScroll(pPos);
-
-        for (int j = 0; j < 5; ++j) {
-            for (int k = 0; k < 9; ++k) {
-                int l = k + (j + i) * 9;
-                if (l >= 0 && l < this.stackHandler.getStacks().size()) {
-                    CONTAINER.setItem(k + j * 9, this.stackHandler.getStacks().get(l));
-                } else {
-                    CONTAINER.setItem(k + j * 9, ItemStack.EMPTY);
-                }
-            }
-        }
-
-    }
-
-    public boolean canScroll() {
-        return this.stackHandler.getStacks().size() > 45;
-    }
-
-
-    @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player pPlayer, int pIndex) {
-        if (pIndex >= this.slots.size() - 9 && pIndex < this.slots.size()) {
-            Slot slot = this.slots.get(pIndex);
-            if (slot.hasItem()) {
-                slot.setByPlayer(ItemStack.EMPTY);
-            }
-        }
-
-        return ItemStack.EMPTY;
+    public InfinityChestMenu(int id, Player player, InfinityChestTile blockEntity) {
+        super(ModMenus.infinity_chest.get(), id);
+        this.level = player.level();
+        this.player = player;
+        this.blockPos = blockEntity.getBlockPos();
+        this.controlPanelBlock = blockEntity;
+        this.filter = blockEntity.getFilter();
+        this.sortType = blockEntity.getSortType();
+        this.channel = blockEntity.getInventory();
+        addSlots(player, player.getInventory());
     }
 
     @Override
-    public boolean canDragTo(Slot pSlot) {
-        return pSlot.container != CONTAINER;
+    @ParametersAreNonnullByDefault
+    public boolean clickMenuButton(Player pPlayer, int pId) {
+        switch (pId) {
+            case 0 -> nextSort();
+            case 1 -> reverseSort();
+        }
+        return pId < 2;
     }
+
+    private void pushToInventory(ItemStack itemStack) {
+        moveItemStackTo(itemStack, 9, 36, false);
+        if (!itemStack.isEmpty()) moveItemStackTo(itemStack, 0, 9, false);
+        if (!itemStack.isEmpty()) player.drop(itemStack, false);
+    }
+
+    private void savePushToInventory(ItemStack itemStack) {
+        int loops = itemStack.getCount() / itemStack.getMaxStackSize();
+        for (int i = 0; i < loops; i++) {
+            ItemStack newStack = itemStack.copy();
+            newStack.setCount(itemStack.getMaxStackSize());
+            itemStack.setCount(itemStack.getCount() - itemStack.getMaxStackSize());
+            pushToInventory(newStack);
+        }
+        if (itemStack.getCount() > 0) pushToInventory(itemStack);
+    }
+
+    private void fillStackFromInventory(ItemStack stack) {
+        int maxStackSize = stack.getMaxStackSize();
+        for (int i = 9; i < 36; i++) {
+            applyNbtFromInvIndex(stack, i);
+            if (stack.getCount() >= maxStackSize) break;
+        }
+        if (stack.getCount() < maxStackSize) for (int i = 0; i < 9; i++) {
+            applyNbtFromInvIndex(stack, i);
+            if (stack.getCount() >= maxStackSize) break;
+        }
+    }
+
+    private void applyFromInvIndex(ItemStack itemStack, int slotId) {
+        if (itemStack.getItem().equals(player.getInventory().getItem(slotId).getItem())) {
+            ItemStack otherStack = player.getInventory().getItem(slotId);
+            int needAmount = itemStack.getMaxStackSize() - itemStack.getCount();
+            if (otherStack.getCount() > needAmount) {
+                itemStack.setCount(itemStack.getMaxStackSize());
+                otherStack.setCount(otherStack.getCount() - needAmount);
+            }
+            else {
+                itemStack.setCount(itemStack.getCount() + otherStack.getCount());
+                player.getInventory().setItem(slotId, ItemStack.EMPTY);
+            }
+        }
+    }
+
+    private void applyNbtFromInvIndex(ItemStack itemStack, int slotId) {
+        if (ItemStack.isSameItemSameTags(itemStack, player.getInventory().getItem(slotId))) {
+            ItemStack otherStack = player.getInventory().getItem(slotId);
+            int needAmount = itemStack.getMaxStackSize() - itemStack.getCount();
+            if (otherStack.getCount() > needAmount) {
+                itemStack.setCount(itemStack.getMaxStackSize());
+                otherStack.setCount(otherStack.getCount() - needAmount);
+            }
+            else {
+                itemStack.setCount(itemStack.getCount() + otherStack.getCount());
+                player.getInventory().setItem(slotId, ItemStack.EMPTY);
+            }
+        }
+    }
+
+    public void nextSort() {
+        sortType += 2;
+        if (sortType > 7) sortType %= 8;
+        if (level.isClientSide) dummyContainer.refreshContainer(true);
+    }
+
+    public void reverseSort() {
+        if (sortType % 2 == 0) sortType++;
+        else sortType--;
+        if (level.isClientSide) dummyContainer.refreshContainer(true);
+    }
+
+    private void saveBlock() {
+        controlPanelBlock.setFilter(filter);
+        controlPanelBlock.setSortType(sortType);
+    }
+
+    private void addSlots(Player player, Inventory playerInv) {
+        //快捷栏0~8
+        for (int l = 0; l < 9; ++l) {
+            this.addSlot(new Slot(playerInv, l, 23 + l * 17, 227));
+        }
+
+        //背包9~35
+        for (int k = 0; k < 3; ++k) {
+            for (int i1 = 0; i1 < 9; ++i1) {
+                this.addSlot(new Slot(playerInv, i1 + k * 9 + 9, 23 + i1 * 17, 176 + k * 17));
+            }
+        }
+    }
+
 }

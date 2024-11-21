@@ -1,6 +1,6 @@
 package committee.nova.mods.avaritia.common.net;
 
-import committee.nova.mods.avaritia.common.inventory.slot.ModCraftRecipeSlot;
+import committee.nova.mods.avaritia.common.container.slot.ModCraftRecipeSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;

@@ -34,6 +34,8 @@ public class ModConfig {
     public static final ForgeConfigSpec.IntValue blazeCubeEmc;
     public static final ForgeConfigSpec.IntValue vanillaTotemEmc;
 
+    public static final ForgeConfigSpec.IntValue chestMaxItemSize;
+
     //SERVER
     static {
         final var common = new ForgeConfigSpec.Builder();
@@ -61,7 +63,9 @@ public class ModConfig {
         vanillaTotemEmc = buildInt(common, "Vanilla Totem Emc", 1000, 0, Integer.MAX_VALUE, "Emc of Totem Of Undying");
         blazeCubeEmc = buildInt(common, "Blaze Cube Emc", 100, 0, Integer.MAX_VALUE, "Emc of Blaze Cube");
         common.pop();
-
+        common.push("storage");
+        chestMaxItemSize = buildInt(common, "Chest Max ItemSize", 32768, 2048, Integer.MAX_VALUE, "Define the maximum number of item .types. that can be stored in a Infinity Chest.");
+        common.pop();
         COMMON = common.build();
     }
 

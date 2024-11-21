@@ -1,6 +1,6 @@
 package committee.nova.mods.avaritia.common.menu;
 
-import committee.nova.mods.avaritia.api.common.item.BaseItemStackHandler;
+import committee.nova.mods.avaritia.api.common.wrapper.ItemStackWrapper;
 import committee.nova.mods.avaritia.api.common.menu.BaseMenu;
 import committee.nova.mods.avaritia.api.common.slot.BaseItemStackHandlerSlot;
 import committee.nova.mods.avaritia.api.common.slot.OutputSlot;
@@ -26,7 +26,7 @@ public class CompressorMenu extends BaseMenu {
         this(type, id, playerInventory, CompressorTile.createInventoryHandler(null), buffer.readBlockPos());
     }
 
-    private CompressorMenu(MenuType<?> type, int id, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos) {
+    private CompressorMenu(MenuType<?> type, int id, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
         super(type, id, pos);
 
         this.addSlot(new OutputSlot(inventory, 0, 120, 35));
@@ -47,7 +47,7 @@ public class CompressorMenu extends BaseMenu {
         return new CompressorMenu(ModMenus.compressor.get(), windowId, playerInventory, buffer);
     }
 
-    public static CompressorMenu create(int windowId, Inventory playerInventory, BaseItemStackHandler inventory, BlockPos pos) {
+    public static CompressorMenu create(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
         return new CompressorMenu(ModMenus.compressor.get(), windowId, playerInventory, inventory, pos);
     }
 
