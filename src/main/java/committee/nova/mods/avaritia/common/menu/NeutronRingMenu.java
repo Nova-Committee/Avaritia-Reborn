@@ -25,12 +25,12 @@ public class NeutronRingMenu extends BaseMenu {
     public ItemStack ring = ItemStack.EMPTY;
     public int slot;
 
-    private NeutronRingMenu(MenuType<?> type, int id, Inventory playerInventory, FriendlyByteBuf buf) {
-        this(type, id, playerInventory, buf.readInt());
+    public NeutronRingMenu(int id, Inventory playerInventory, FriendlyByteBuf buf) {
+        this(id, playerInventory, buf.readInt());
     }
 
-    public NeutronRingMenu(MenuType<?> type, int id, Inventory playerInventory, int slot) {
-        super(type, id, null);
+    public NeutronRingMenu(int id, Inventory playerInventory, int slot) {
+        super(ModMenus.neutron_ring.get(), id, null);
         this.slot = slot;
         if (slot > -1) {
             this.ring = playerInventory.getItem(slot);
@@ -62,14 +62,6 @@ public class NeutronRingMenu extends BaseMenu {
         for (j = 0; j < 9; j++) {
             this.addSlot(new BlackListSlot(playerInventory, j, 8 + j * 18, 251, ring));
         }
-    }
-
-    public static NeutronRingMenu create(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
-        return new NeutronRingMenu(ModMenus.neutron_ring.get(), windowId, playerInventory, buf);
-    }
-
-    public static NeutronRingMenu create(int windowId, Inventory playerInventory, int slot) {
-        return new NeutronRingMenu(ModMenus.neutron_ring.get(), windowId, playerInventory, slot);
     }
 
     @Override

@@ -48,18 +48,15 @@ public class ModMenus {
         return MENUS.register(name, container);
     }
 
-    public static RegistryObject<MenuType<NeutronRingMenu>> neutron_ring = menu("neutron_ring", () -> IForgeMenuType.create(NeutronRingMenu::create));
-    public static RegistryObject<MenuType<ModCraftMenu>> sculk_crafting_tile_table = menu("sculk_crafting_tile_table", () -> IForgeMenuType.create((id, inventory, byteBuf) -> ModCraftMenu.sculk(id, inventory, byteBuf, ModCraftTier.SCULK)));
-    public static RegistryObject<MenuType<ModCraftMenu>> nether_crafting_tile_table = menu("nether_crafting_tile_table", () -> IForgeMenuType.create((id, inventory, byteBuf) -> ModCraftMenu.nether(id, inventory, byteBuf, ModCraftTier.NETHER)));
-    public static RegistryObject<MenuType<ModCraftMenu>> end_crafting_tile_table = menu("end_crafting_tile_table", () -> IForgeMenuType.create((id, inventory, byteBuf) -> ModCraftMenu.end(id, inventory, byteBuf, ModCraftTier.END)));
-    public static RegistryObject<MenuType<ModCraftMenu>> extreme_crafting_table = menu("extreme_crafting_table", () -> IForgeMenuType.create((id, inventory, byteBuf) -> ModCraftMenu.extreme(id, inventory, byteBuf, ModCraftTier.EXTREME)));
-    public static RegistryObject<MenuType<NeutronCollectorMenu>> neutron_collector = menu("neutron_collector", () -> IForgeMenuType.create(NeutronCollectorMenu::create));
-    public static RegistryObject<MenuType<CompressorMenu>> compressor = menu("compressor", () -> IForgeMenuType.create(CompressorMenu::create));
+    public static RegistryObject<MenuType<NeutronRingMenu>> neutron_ring = menu("neutron_ring", () -> IForgeMenuType.create(NeutronRingMenu::new));
+    public static RegistryObject<MenuType<ModCraftMenu>> sculk_crafting_tile_table = menu("sculk_crafting_tile_table", () -> IForgeMenuType.create(ModCraftMenu::sculk));
+    public static RegistryObject<MenuType<ModCraftMenu>> nether_crafting_tile_table = menu("nether_crafting_tile_table", () -> IForgeMenuType.create(ModCraftMenu::nether));
+    public static RegistryObject<MenuType<ModCraftMenu>> end_crafting_tile_table = menu("end_crafting_tile_table", () -> IForgeMenuType.create(ModCraftMenu::end));
+    public static RegistryObject<MenuType<ModCraftMenu>> extreme_crafting_table = menu("extreme_crafting_table", () -> IForgeMenuType.create(ModCraftMenu::extreme));
+    public static RegistryObject<MenuType<NeutronCollectorMenu>> neutron_collector = menu("neutron_collector", () -> IForgeMenuType.create(NeutronCollectorMenu::new));
+    public static RegistryObject<MenuType<CompressorMenu>> compressor = menu("compressor", () -> IForgeMenuType.create(CompressorMenu::new));
     public static RegistryObject<MenuType<InfinityChestMenu>> infinity_chest = menu("infinity_chest", () -> IForgeMenuType.create(InfinityChestMenu::new));
-    public static RegistryObject<MenuType<CompressedChestMenu>> GENERIC_9x27 = menu("generic_9x27",
-            () -> IForgeMenuType.create(
-                    (windowId, playerInventory, buffer) -> new CompressedChestMenu(ModMenus.GENERIC_9x27.get(), windowId, playerInventory, new SimpleContainer(9 * 27), 9)
-                    ));
+    public static RegistryObject<MenuType<CompressedChestMenu>> GENERIC_9x27 = menu("generic_9x27", () -> IForgeMenuType.create(CompressedChestMenu::new));
 
 
 }

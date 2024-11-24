@@ -108,7 +108,7 @@ public class BaseNeutronCollectorTile extends BaseInventoryTileEntity {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int windowId, @NotNull Inventory playerInventory) {
-        return NeutronCollectorMenu.create(windowId, playerInventory, this.inventory, this.getBlockPos(), data);
+        return new NeutronCollectorMenu(windowId, playerInventory, this.inventory, this.getBlockPos(), data);
     }
 
     public CollectorTier getTier() {

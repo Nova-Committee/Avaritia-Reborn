@@ -1,36 +1,23 @@
 package committee.nova.mods.avaritia.client.screen;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import committee.nova.mods.avaritia.Static;
-import committee.nova.mods.avaritia.api.client.screen.BaseContainerScreen;
 import committee.nova.mods.avaritia.client.widget.SimpleScrollBar;
 import committee.nova.mods.avaritia.common.menu.InfinityChestMenu;
-import committee.nova.mods.avaritia.util.StorageUtils;
-import net.minecraft.client.Minecraft;
+import committee.nova.mods.avaritia.common.wrappers.InfinityChestWrapper;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,12 +27,10 @@ import java.util.List;
  * @Description:
  */
 public class InfinityChestScreen extends AbstractContainerScreen<InfinityChestMenu> {
-    private String[] lastHoveredObject = new String[2];
+    private InfinityChestWrapper.SlotInfo lastHoveredObject;
     private long lastCount = 0;
     private String lastFormatCountTemp = "";
-    private SortButton sortButton;
     private ItemScrollBar scrollBar;
-    private EditBox longSearchBox;
 
     private static final ResourceLocation GUI_IMG = Static.rl("textures/gui/control_panel.png");
 
@@ -61,17 +46,9 @@ public class InfinityChestScreen extends AbstractContainerScreen<InfinityChestMe
         this.leftPos = (this.width - imageWidth + 4) / 2;
         this.topPos = (this.height - imageHeight) / 2;
         this.scrollBar = new ItemScrollBar(leftPos + 193, topPos + 6, 4, 152);
-        this.scrollBar.setScrolledOn(menu.dummyContainer.getScrollOn());
+        this.scrollBar.setScrolledOn(menu.getScrollOn());
         this.addRenderableWidget(scrollBar);
-        this.sortButton = new SortButton(this.leftPos + 177, this.topPos + 176);
-        this.addRenderableWidget(sortButton);
-
-        this.longSearchBox = new EditBox(this.font, leftPos + 41, topPos + 163, 77, 9, Component.translatable("bhs.GUI.search"));
-        this.longSearchBox.setMaxLength(64);
-        this.longSearchBox.setBordered(false);
-        this.longSearchBox.setValue(menu.filter);
-        this.addRenderableWidget(longSearchBox);
-        menu.dummyContainer.refreshContainer(true);
+        menu.scrollOffset(0);
     }
 
     @Override
@@ -86,7 +63,6 @@ public class InfinityChestScreen extends AbstractContainerScreen<InfinityChestMe
     @Override
     @ParametersAreNonnullByDefault
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        RenderSystem.setShaderTexture(0, GUI_IMG);
         guiGraphics.blit(GUI_IMG, this.leftPos, this.topPos, 0, 0, imageWidth, 6);
 
             guiGraphics.blit(GUI_IMG, this.leftPos, this.topPos, 0, 0, imageWidth, 57);
@@ -101,40 +77,23 @@ public class InfinityChestScreen extends AbstractContainerScreen<InfinityChestMe
     @ParametersAreNonnullByDefault
     protected void renderTooltip(GuiGraphics guiGraphics, int pX, int pY) {
         if (this.hoveredSlot != null) {
-            if (hoveredSlot.index >= 51) {
+            if (hoveredSlot.index >= 36) {
                 if (menu.getCarried().getCount() == 1 )
                     renderObjectStorageTooltip(guiGraphics, pX, pY);
                 else renderCounterTooltip(guiGraphics, pX, pY);
             } else if (!hoveredSlot.getItem().isEmpty() && menu.getCarried().isEmpty()) guiGraphics.renderTooltip(font, this.hoveredSlot.getItem(), pX, pY);
-        } else {
-            if (isInsideEditBox(pX, pY)) {
-                List<FormattedCharSequence> list = new ArrayList<>();
-                list.add(Component.translatable("bhs.GUI.search.tip1").getVisualOrderText());
-                list.add(Component.translatable("bhs.GUI.search.tip2").getVisualOrderText());
-                list.add(Component.translatable("bhs.GUI.search.tip3").getVisualOrderText());
-                guiGraphics.renderTooltip(font, list, pX, pY);
-            }
-            //else if (sortButton.isHoveredOrFocused()) sortButton.renderToolTip(pPoseStack, pX, pY);
         }
-    }
-
-
-    private boolean isInsideEditBox(double pMouseX, double pMouseY) {
-        return pMouseX >= leftPos + 40 && pMouseX <= leftPos + 124 && pMouseY >= topPos + 162 && pMouseY <= topPos + 172;
     }
 
     private void renderCounterTooltip(GuiGraphics guiGraphics, int pMouseX, int pMouseY) {
-        if ((hoveredSlot.index - 51) >= menu.dummyContainer.viewingObject.size()) return;
-        String[] hoveredObject = menu.dummyContainer.viewingObject.get(hoveredSlot.index - 51);
+        if ((hoveredSlot.index - 36) >= menu.viewingItems.size()) return;
+        InfinityChestWrapper.SlotInfo hoveredObject = menu.viewingItems.get(hoveredSlot.index - 36);
         List<Component> components = Lists.newArrayList();
         long count;
-        if (hoveredObject[0].equals("item")) {
-            components = this.getTooltipFromItem(this.minecraft, hoveredSlot.getItem());
-            count = menu.channel.getRealItemAmount(hoveredObject[1]);
-        } else {
-            count = menu.channel.getItemAmount(hoveredObject[1]);
-        }
-        if (!Arrays.equals(hoveredObject, lastHoveredObject)) {
+        components = getTooltipFromItem(this.minecraft, hoveredSlot.getItem());
+        count = hoveredObject.count();
+
+        if (!hoveredObject.equals(lastHoveredObject)) {
             String formatCount = Static.DECIMAL_FORMAT.format(count);
             components.add(Component.literal(formatCount));
             this.lastHoveredObject = hoveredObject;
@@ -167,32 +126,6 @@ public class InfinityChestScreen extends AbstractContainerScreen<InfinityChestMe
         } else renderCounterTooltip(guiGraphics, pMouseX, pMouseY);
     }
 
-    @Override
-    public void containerTick() {
-        super.containerTick();
-        if (longSearchBox.isFocused()) longSearchBox.tick();
-    }
-
-    @Override
-    public void onClose() {
-       // NetworkHandler.INSTANCE.send(PacketDistributor.SERVER.noArg(), new ControlPanelFilterPack(menu.containerId, menu.filter));
-        super.onClose();
-    }
-
-    @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        boolean lshift = InputConstants.isKeyDown(getMinecraft().getWindow().getWindow(), InputConstants.KEY_LSHIFT);
-        if (pButton == 1) {
-            //长搜索框
-            if (longSearchBox.isMouseOver(pMouseX, pMouseY)) {
-                menu.filter = "";
-                longSearchBox.setValue("");
-                menu.dummyContainer.refreshContainer(true);
-                longSearchBox.setEditable(true);
-            }
-        }
-        return super.mouseClicked(pMouseX, pMouseY, pButton);
-    }
 
     @Override
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
@@ -206,36 +139,12 @@ public class InfinityChestScreen extends AbstractContainerScreen<InfinityChestMe
         return super.mouseReleased(pMouseX, pMouseY, pButton);
     }
 
-    @Override
-    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        if (longSearchBox.isFocused()) {
-            if (pKeyCode >= InputConstants.KEY_0 && pKeyCode <= InputConstants.KEY_Z) return true;
-        }
-        if (pKeyCode == InputConstants.KEY_LSHIFT) menu.LShifting = true;
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
-    }
-
-    @Override
-    public boolean keyReleased(int pKeyCode, int pScanCode, int pModifiers) {
-        if (longSearchBox.isFocused()) {
-            String s = longSearchBox.getValue().toLowerCase();
-            if (!s.equals(menu.filter)) {
-                menu.filter = s;
-                menu.dummyContainer.refreshContainer(true);
-            }
-        }
-        if (pKeyCode == InputConstants.KEY_LSHIFT) {
-            menu.LShifting = false;
-            menu.dummyContainer.refreshContainer(true);
-        }
-        return super.keyReleased(pKeyCode, pScanCode, pModifiers);
-    }
 
     @Override
     public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
         if (pMouseX >= leftPos + 5 && pMouseX <= leftPos + 197 && pMouseY >= topPos + 5 && pMouseY <= topPos + 6 + (153) && scrollBar.canScroll()) {
-            if (pDelta <= 0) scrollBar.setScrolledOn(menu.dummyContainer.onMouseScrolled(false));
-            else scrollBar.setScrolledOn(menu.dummyContainer.onMouseScrolled(true));
+            if (pDelta <= 0) scrollBar.setScrolledOn(menu.onMouseScrolled(false));
+            else scrollBar.setScrolledOn(menu.onMouseScrolled(true));
             return true;
         } else return super.mouseScrolled(pMouseX, pMouseY, pDelta);
     }
@@ -251,9 +160,9 @@ public class InfinityChestScreen extends AbstractContainerScreen<InfinityChestMe
 
     public void renderDummyCount(GuiGraphics guiGraphics) {
        var poseStack = guiGraphics.pose();
-        for (int i = 0; i < menu.dummyContainer.formatCount.size(); i++) {
-            Slot slot = menu.slots.get(i + 51);
-            String count = menu.dummyContainer.formatCount.get(i);
+        for (int i = 0; i < menu.formatCount.size(); i++) {
+            Slot slot = menu.slots.get(i + 36);
+            String count = menu.formatCount.get(i);
             //this.setBlitOffset(100);
             RenderSystem.enableDepthTest();
             float fontSize = 0.5F;
@@ -269,32 +178,6 @@ public class InfinityChestScreen extends AbstractContainerScreen<InfinityChestMe
         }
     }
 
-    private void cycleSort() {
-        if (InputConstants.isKeyDown(getMinecraft().getWindow().getWindow(), InputConstants.KEY_LSHIFT)) {
-            menu.reverseSort();
-            minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 1);
-        } else {
-            menu.nextSort();
-            minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 0);
-        }
-    }
-
-
-    private class SortButton extends ImageButton {
-
-        public SortButton(int pX, int pY) {
-            super(pX, pY, 19, 16, 202, 0, GUI_IMG, pButton -> cycleSort());
-        }
-
-        @Override
-        @ParametersAreNonnullByDefault
-        public void renderWidget(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-            int uOffset = this.isHoveredOrFocused() ? 221 : 202;
-            int vOffset = menu.sortType * 16;
-            guiGraphics.blit(GUI_IMG, this.getX(), this.getY(), (float) uOffset, (float) vOffset, this.width, this.height, 256, 256);
-        }
-    }
-
     private class ItemScrollBar extends SimpleScrollBar {
 
         private int lastObjectListSize;
@@ -302,24 +185,24 @@ public class InfinityChestScreen extends AbstractContainerScreen<InfinityChestMe
         public ItemScrollBar(int x, int y, int weight, int height) {
             super(x, y, weight, height);
             this.setScrollTagSize();
-            this.lastObjectListSize = menu.dummyContainer.sortedObject.size();
+            this.lastObjectListSize = menu.chestWrapper.getSlots();
         }
 
         public void setScrollTagSize() {
-            double v = (double) this.height * ((9.0D) / Math.ceil(menu.dummyContainer.sortedObject.size() / 11.0D));
+            double v = (double) this.height * ((9.0D) / Math.ceil(menu.chestWrapper.getSlots() / 11.0D));
             this.setScrollTagSize(v);
         }
 
         @Override
         public void draggedTo(double scrolledOn) {
-            menu.dummyContainer.onScrollTo(scrolledOn);
+            menu.onScrollTo(scrolledOn);
         }
 
         @Override
         public void beforeRender() {
-            if (menu.dummyContainer.sortedObject.size() != lastObjectListSize) {
+            if (menu.chestWrapper.getSlots() != lastObjectListSize) {
                 setScrollTagSize();
-                this.lastObjectListSize = menu.dummyContainer.sortedObject.size();
+                this.lastObjectListSize = menu.chestWrapper.getSlots();
             }
         }
     }

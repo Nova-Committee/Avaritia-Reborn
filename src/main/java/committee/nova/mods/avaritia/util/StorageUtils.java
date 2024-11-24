@@ -1,5 +1,6 @@
 package committee.nova.mods.avaritia.util;
 
+import committee.nova.mods.avaritia.common.wrappers.InfinityChestWrapper.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -21,18 +22,20 @@ public class StorageUtils {
     private static final HashMap<Fluid, String> FLUID_ID_MAP = new HashMap<>();
     private static final HashMap<String, Fluid> ID_FLUID_MAP = new HashMap<>();
 
-    public static int sortFromCount(String s1, String s2, HashMap<String, Long> storageItems, boolean reverseOrder) {
-        int i;
-        if (reverseOrder) {
-            i = storageItems.get(s2).compareTo(storageItems.get(s1));
-        } else {
-            i = storageItems.get(s1).compareTo(storageItems.get(s2));
-        }
-        if (i == 0) i = s1.compareTo(s2);
-        return i;
-    }
+//    public static int sortFromCount(SlotInfo s1, SlotInfo s2, boolean reverseOrder) {
+//        int i;
+//        if (reverseOrder) {
+//            i = s2.getCount().compareTo(s1.getCount());
+//        } else {
+//            i = storageItems.get(s1).compareTo(storageItems.get(s2));
+//        }
+//        if (i == 0) i = s1.compareTo(s2);
+//        return i;
+//    }
 
-    public static int sortFromRightID(String s1, String s2) {
+    public static int sortFromRightID(SlotInfo stack1, SlotInfo stack2) {
+        var s1 = ForgeRegistries.ITEMS.getKey(stack1.stack().getItem()).toString();
+        var s2 = ForgeRegistries.ITEMS.getKey(stack2.stack().getItem()).toString();
         int i = s1.indexOf(":");
         String a = s1.substring(i + 1);
         int j = s2.indexOf(":");
@@ -42,7 +45,9 @@ public class StorageUtils {
         return k;
     }
 
-    public static int sortFromMirrorID(String s1, String s2) {
+    public static int sortFromMirrorID(SlotInfo stack1, SlotInfo stack2) {
+        var s1 = ForgeRegistries.ITEMS.getKey(stack1.stack().getItem()).toString();
+        var s2 = ForgeRegistries.ITEMS.getKey(stack2.stack().getItem()).toString();
         char[] a = s1.toCharArray();
         char[] b = s2.toCharArray();
         int j = a.length - 1;

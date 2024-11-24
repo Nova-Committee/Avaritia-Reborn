@@ -1,6 +1,7 @@
 package committee.nova.mods.avaritia.init.handler;
 
 import committee.nova.mods.avaritia.Static;
+import committee.nova.mods.avaritia.common.net.C2SICFilterPacket;
 import committee.nova.mods.avaritia.common.net.C2SJEIGhostPacket;
 import committee.nova.mods.avaritia.common.net.S2CSingularitiesPacket;
 import committee.nova.mods.avaritia.common.net.S2CTotemPacket;
@@ -33,5 +34,6 @@ public class NetworkHandler {
         CHANNEL.registerMessage(id++, S2CSingularitiesPacket.class, S2CSingularitiesPacket::write, S2CSingularitiesPacket::new, S2CSingularitiesPacket::run);
         CHANNEL.registerMessage(id++, S2CTotemPacket.class, S2CTotemPacket::write, S2CTotemPacket::new, S2CTotemPacket::run);
         CHANNEL.registerMessage(id++, C2SJEIGhostPacket.class, C2SJEIGhostPacket::write, C2SJEIGhostPacket::new, C2SJEIGhostPacket::run);
+        CHANNEL.registerMessage(id++, C2SICFilterPacket.class, C2SICFilterPacket::write, C2SICFilterPacket::new, C2SICFilterPacket::run);
     }
 }

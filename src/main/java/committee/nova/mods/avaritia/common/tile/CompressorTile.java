@@ -165,7 +165,7 @@ public class CompressorTile extends BaseInventoryTileEntity {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int windowId, @NotNull Inventory playerInventory) {
-        return CompressorMenu.create(windowId, playerInventory, this.inventory, this.getBlockPos());
+        return new CompressorMenu(windowId, playerInventory, this.inventory, this.getBlockPos());
     }
 
     public ItemStack getMaterialStack() {

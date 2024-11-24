@@ -1,6 +1,10 @@
 package committee.nova.mods.avaritia.common.menu;
 
+import committee.nova.mods.avaritia.api.common.menu.BaseMenu;
+import committee.nova.mods.avaritia.init.registry.ModMenus;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -9,13 +13,17 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class CompressedChestMenu extends AbstractContainerMenu {
+public class CompressedChestMenu extends BaseMenu {
     private static final int SLOTS_PER_ROW = 27;
     private final Container container;
     private final int containerRows;
 
-    public CompressedChestMenu(MenuType<?> pType, int pContainerId, Inventory pPlayerInventory, Container pContainer, int pRows) {
-        super(pType, pContainerId);
+    public CompressedChestMenu(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
+        this(id, playerInventory, new SimpleContainer(9 * 27), 9);
+    }
+
+    public CompressedChestMenu(int pContainerId, Inventory pPlayerInventory, Container pContainer, int pRows) {
+        super(ModMenus.GENERIC_9x27.get(), pContainerId);
         this.containerRows = pRows;
         this.container = pContainer;
         pContainer.startOpen(pPlayerInventory.player);

@@ -26,12 +26,12 @@ public class NeutronCollectorMenu extends BaseMenu {
     private final ContainerData data;
 
 
-    private NeutronCollectorMenu(MenuType<?> type, int id, Inventory playerInventory, FriendlyByteBuf buffer, ContainerData data) {
-        this(type, id, playerInventory, BaseNeutronCollectorTile.createInventoryHandler(null), buffer.readBlockPos(), data);
+    public NeutronCollectorMenu(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
+        this(id, playerInventory, BaseNeutronCollectorTile.createInventoryHandler(null), buffer.readBlockPos(), new SimpleContainerData(10));
     }
 
-    protected NeutronCollectorMenu(MenuType<?> type, int id, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ContainerData data) {
-        super(type, id, pos);
+    public NeutronCollectorMenu(int id, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ContainerData data) {
+        super(ModMenus.neutron_collector.get(), id, pos);
         this.data = data;
         this.addSlot(new OutputSlot(inventory, 0, 80, 32));
 
@@ -45,14 +45,6 @@ public class NeutronCollectorMenu extends BaseMenu {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
         this.addDataSlots(data);
-    }
-
-    public static NeutronCollectorMenu create(int windowId, Inventory playerInventory, FriendlyByteBuf buffer) {
-        return new NeutronCollectorMenu(ModMenus.neutron_collector.get(), windowId, playerInventory, buffer, new SimpleContainerData(10));
-    }
-
-    public static NeutronCollectorMenu create(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ContainerData data) {
-        return new NeutronCollectorMenu(ModMenus.neutron_collector.get(), windowId, playerInventory, inventory, pos, data);
     }
 
     @Override

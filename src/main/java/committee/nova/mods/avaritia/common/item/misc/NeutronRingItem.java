@@ -45,7 +45,7 @@ public class NeutronRingItem extends ResourceItem {
         if (!worldIn.isClientSide && !playerIn.isCrouching()) {
             int slot = handIn == InteractionHand.MAIN_HAND ? playerIn.getInventory().selected : 40;
             NetworkHooks.openScreen((ServerPlayer) playerIn,
-                    new SimpleMenuProvider((id, playerInventory, player) -> NeutronRingMenu.create(id, playerInventory, slot), Component.translatable("item.avaritia.neutron_ring")),
+                    new SimpleMenuProvider((id, playerInventory, player) -> new NeutronRingMenu(id, playerInventory, slot), Component.translatable("item.avaritia.neutron_ring")),
                     buf -> buf.writeInt(slot));
         }
         return super.use(worldIn, playerIn, handIn);

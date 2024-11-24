@@ -1,15 +1,17 @@
 package committee.nova.mods.avaritia.common.wrappers;
 
-import committee.nova.mods.avaritia.api.common.wrapper.ICapItemHandler;
-import committee.nova.mods.avaritia.init.config.ModConfig;
-import committee.nova.mods.avaritia.util.StorageUtils;
+import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * @Project: Avaritia
@@ -17,330 +19,186 @@ import java.util.HashMap;
  * @CreateTime: 2024/11/21 12:56
  * @Description:
  */
-public class InfinityChestWrapper implements ICapItemHandler {
-    public final HashMap<String, Long> storageItems = new HashMap<>();
-    public final int maxItemSize = ModConfig.chestMaxItemSize.get();
-    private String[] itemKeys = new String[]{};
-    private ItemStack[] slotItemTemp = {ItemStack.EMPTY};
+@Getter
+public class InfinityChestWrapper implements IItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundTag> {
+    public List<SlotInfo> stacks = new ArrayList<>();
 
-    public int getChestSize() {
-        return storageItems.size();
-    }
+    public record SlotInfo(ItemStack stack, long count) {}
 
-    public boolean hasItem(String item) { return storageItems.containsKey(item); }
-
-    public boolean isEmpty() {
-        return storageItems.isEmpty();
-    }
-
-    public void onItemChanged(String itemId, boolean listChanged) {
-        if (listChanged) updateItemKeys();
-    }
-
-    public void updateItemKeys() {
-        itemKeys = storageItems.keySet().toArray(new String[]{});
-        slotItemTemp = new ItemStack[itemKeys.length];
-        for (int i = 0; i < itemKeys.length; i++) slotItemTemp[i] = new ItemStack(StorageUtils.getItem(itemKeys[i]));
-    }
-
-    public int getItemAmount(String item) {
-        return (int) Long.min(Integer.MAX_VALUE, storageItems.getOrDefault(item, 0L));
-    }
-
-    public long getRealItemAmount(String item) {
-        return storageItems.getOrDefault(item, 0L);
-    }
-
-    public int canStorageAmount(ItemStack itemStack) {
-        if (itemStack.hasTag()) return 0;
-        long a = storageItems.getOrDefault(StorageUtils.getItemId(itemStack.getItem()), 0L);
-        if (a == 0L) {
-            if (getChestSize() >= maxItemSize) return 0;
-            else return Integer.MAX_VALUE;
-        }
-        return (int) Math.min(Integer.MAX_VALUE, Long.MAX_VALUE - a);
-    }
-
-    public boolean canStorageItem(String item) {
-        if (storageItems.containsKey(item)) {
-            return storageItems.get(item) < Long.MAX_VALUE;
-        } else return getChestSize() < maxItemSize;
-    }
-
-    public int canStorageItemAmount(String item) {
-        long a = storageItems.getOrDefault(item, 0L);
-        if (a == 0L) {
-            if (getChestSize() >= maxItemSize) return 0;
-            else return Integer.MAX_VALUE;
-        }
-        return (int) Math.min(Integer.MAX_VALUE, Long.MAX_VALUE - a);
-    }
-
-    /**
-     * @param itemStack 会被修改，塞不进去会有余，
-     * @return 存进去的量
-     */
-    public int addItem(ItemStack itemStack) {
-        if (itemStack.hasTag() || itemStack.isEmpty()) return 0;
-        String itemId = StorageUtils.getItemId(itemStack.getItem());
-        int count = itemStack.getCount();
-        if (storageItems.containsKey(itemId)) {
-            long storageCount = storageItems.get(itemId);
-            long remainingSpaces = Long.MAX_VALUE - storageCount;
-            if (remainingSpaces >= itemStack.getCount()) {
-                storageItems.replace(itemId, storageCount + itemStack.getCount());
-                itemStack.setCount(0);
-                onItemChanged(itemId, false);
-                return count;
-            } else {
-                storageItems.replace(itemId, Long.MAX_VALUE);
-                itemStack.setCount(itemStack.getCount() - (int) remainingSpaces);
-                onItemChanged(itemId, false);
-                return (int) remainingSpaces;
-            }
-        } else {
-            if (getChestSize() >= maxItemSize) return 0;
-            storageItems.put(itemId, (long) itemStack.getCount());
-            itemStack.setCount(0);
-            onItemChanged(itemId, true);
-            return count;
-        }
-    }
-
-        /**
-     * @return 成功进入的
-     */
-    public long addItem(String itemId, long count) {
-        if (itemId.equals("minecraft:air") || count == 0) return 0L;
-        if (storageItems.containsKey(itemId)) {
-            long storageCount = storageItems.get(itemId);
-            long remainingSpaces = Long.MAX_VALUE - storageCount;
-            if (remainingSpaces >= count) {
-                storageItems.replace(itemId, storageCount + count);
-                onItemChanged(itemId, false);
-                return count;
-            } else {
-                storageItems.replace(itemId, Long.MAX_VALUE);
-                onItemChanged(itemId, false);
-                return remainingSpaces;
-            }
-        } else {
-            if (getChestSize() >= maxItemSize) return 0L;
-            storageItems.put(itemId, count);
-            onItemChanged(itemId, true);
-            return count;
-        }
-    }
-
-        /**
-     * 填充物品叠堆，不限制数量。
-     *
-     * @param itemStack 要填充的物品
-     * @param count     要填充的数量，负数为扣除。
-     */
-    public void fillItemStack(ItemStack itemStack, int count) {
-        if (itemStack.isEmpty() || count == 0 || itemStack.hasTag()) return;
-        String itemId = StorageUtils.getItemId(itemStack.getItem());
-        if (storageItems.containsKey(itemId)) {
-            long storageCount = storageItems.get(itemId);
-            long remainingSpaces = Long.MAX_VALUE - storageCount;
-            if (count >= storageCount) {
-                storageItems.remove(itemId);
-                itemStack.setCount(itemStack.getCount() + (int) storageCount);
-                onItemChanged(itemId, true);
-            } else if (remainingSpaces < -count) {
-                storageItems.replace(itemId, Long.MAX_VALUE);
-                itemStack.setCount(itemStack.getCount() - (int) remainingSpaces);
-                onItemChanged(itemId, false);
-            } else {
-                storageItems.replace(itemId, storageCount - count);
-                itemStack.setCount(itemStack.getCount() + count);
-                onItemChanged(itemId, false);
-            }
-        } else {
-            if (count < 0) {
-                if (getChestSize() >= maxItemSize) return;
-                storageItems.put(itemId, (long) -count);
-                itemStack.setCount(itemStack.getCount() + count);
-                onItemChanged(itemId, true);
-            }
-        }
-    }
-
-        /**
-     * 从频道获取物品，但不限制数量。
-     */
-    public ItemStack takeItem(String itemId, int count) {
-        if (!storageItems.containsKey(itemId) || itemId.equals("minecraft:air") || count == 0) return ItemStack.EMPTY;
-        long storageCount = storageItems.get(itemId);
-        if (count < storageCount) {
-            storageItems.replace(itemId, storageCount - count);
-            onItemChanged(itemId, false);
-        } else {
-            storageItems.remove(itemId);
-            count = (int) storageCount;
-            onItemChanged(itemId, true);
-        }
-        return new ItemStack(StorageUtils.getItem(itemId), count);
-    }
-
-        /**
-     * 从频道获取物品，数量限制在叠堆最大值。
-     */
-    public ItemStack saveTakeItem(String itemId, int count) {
-        if (!storageItems.containsKey(itemId) || itemId.equals("minecraft:air") || count == 0) return ItemStack.EMPTY;
-        ItemStack itemStack = new ItemStack(StorageUtils.getItem(itemId), 1);
-        count = Integer.min(count, itemStack.getMaxStackSize());
-        long storageCount = storageItems.get(itemId);
-        if (count < storageCount) {
-            storageItems.replace(itemId, storageCount - count);
-            onItemChanged(itemId, false);
-        } else {
-            storageItems.remove(itemId);
-            count = (int) storageCount;
-            onItemChanged(itemId, true);
-        }
-        itemStack.setCount(count);
-        return itemStack;
-    }
-
-    public ItemStack saveTakeItem(String itemId, boolean half) {
-        if (!storageItems.containsKey(itemId)) return ItemStack.EMPTY;
-        ItemStack itemStack = new ItemStack(StorageUtils.getItem(itemId), 1);
-        int count = half ? (itemStack.getMaxStackSize() + 1) / 2 : itemStack.getMaxStackSize();
-        long storageCount = storageItems.get(itemId);
-        if (count < storageCount) {
-            storageItems.replace(itemId, storageCount - count);
-            onItemChanged(itemId, false);
-        } else {
-            storageItems.remove(itemId);
-            count = (int) storageCount;
-            onItemChanged(itemId, true);
-        }
-        itemStack.setCount(count);
-        return itemStack;
-    }
-
-    public void removeItem(ItemStack itemStack) {
-        if (itemStack.isEmpty()) return;
-        String itemId = StorageUtils.getItemId(itemStack.getItem());
-        if (!storageItems.containsKey(itemId)) return;
-        long storageCount = storageItems.get(itemId);
-        if (itemStack.getCount() < storageCount) {
-            storageItems.replace(itemId, storageCount - itemStack.getCount());
-            onItemChanged(itemId, false);
-        } else {
-            storageItems.remove(itemId);
-            onItemChanged(itemId, true);
-        }
-    }
-
-    public void removeItem(String itemId, long count) {
-        if (!storageItems.containsKey(itemId)) return;
-        long storageCount = storageItems.get(itemId);
-        if (count < storageCount) {
-            storageItems.replace(itemId, storageCount - count);
-            onItemChanged(itemId, false);
-        } else {
-            storageItems.remove(itemId);
-            onItemChanged(itemId, true);
-        }
-    }
     @Override
-    public int getSlots() {
-        return storageItems.size() + 36;
+    public void setStackInSlot(int slot, @NotNull ItemStack stack)
+    {
+        validateSlotIndex(slot);
+        this.stacks.add(slot, new SlotInfo(stack, stack.getCount()));
+        onContentsChanged(slot);
     }
 
     @Override
-    public @NotNull ItemStack getStackInSlot(int slot) {
-        if (slot >= itemKeys.length + 27 || slot < 27) return ItemStack.EMPTY;
-        ItemStack itemStack = slotItemTemp[slot - 27];
-        itemStack.setCount((int) Math.min(Integer.MAX_VALUE, storageItems.get(itemKeys[slot - 27])));
-        return itemStack;
+    public int getSlots()
+    {
+        return stacks.size();
     }
 
     @Override
-    public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        if (stack.isEmpty() || stack.hasTag()) return stack;
-        String itemId = StorageUtils.getItemId(stack.getItem());
-        ItemStack remainingStack = ItemStack.EMPTY;
-        if (storageItems.containsKey(itemId)) {
-            long storageCount = storageItems.get(itemId);
-            long remainingSpaces = Long.MAX_VALUE - storageCount;
-            if (remainingSpaces >= stack.getCount()) {
-                if (!simulate) storageItems.replace(itemId, storageCount + stack.getCount());
-            } else {
-                if (!simulate) storageItems.replace(itemId, Long.MAX_VALUE);
-                remainingStack = stack.copy();
-                remainingStack.setCount(stack.getCount() - (int) remainingSpaces);
+    @NotNull
+    public ItemStack getStackInSlot(int slot)
+    {
+        validateSlotIndex(slot);
+        return this.stacks.get(slot).stack();
+    }
+
+    @Override
+    @NotNull
+    public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate)
+    {
+        if (stack.isEmpty())
+            return ItemStack.EMPTY;
+
+        if (!isItemValid(slot, stack))
+            return stack;
+
+        validateSlotIndex(slot);
+
+        ItemStack existing = this.stacks.get(slot).stack();
+
+        int limit = getStackLimit(slot, stack);
+
+        if (!existing.isEmpty())
+        {
+            if (!ItemHandlerHelper.canItemStacksStack(stack, existing))
+                return stack;
+
+            limit -= existing.getCount();
+        }
+
+        if (limit <= 0)
+            return stack;
+
+        boolean reachedLimit = stack.getCount() > limit;
+
+        if (!simulate)
+        {
+            if (existing.isEmpty())
+            {
+                this.stacks.set(slot, new SlotInfo(reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack, stack.getCount()));
             }
-            if (!simulate) onItemChanged(itemId, false);
-        } else {
-            if (getChestSize() >= maxItemSize) return stack;
-            if (!simulate) {
-                storageItems.put(itemId, (long) stack.getCount());
-                onItemChanged(itemId, true);
+            else
+            {
+                existing.grow(reachedLimit ? limit : stack.getCount());
+            }
+            onContentsChanged(slot);
+        }
+
+        return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount()- limit) : ItemStack.EMPTY;
+    }
+
+    @Override
+    @NotNull
+    public ItemStack extractItem(int slot, int amount, boolean simulate)
+    {
+        if (amount == 0)
+            return ItemStack.EMPTY;
+
+        validateSlotIndex(slot);
+
+        ItemStack existing = this.stacks.get(slot).stack();
+
+        if (existing.isEmpty())
+            return ItemStack.EMPTY;
+
+        int toExtract = Math.min(amount, existing.getMaxStackSize());
+
+        if (existing.getCount() <= toExtract)
+        {
+            if (!simulate)
+            {
+                this.stacks.set(slot, new SlotInfo(ItemStack.EMPTY, 1));
+                onContentsChanged(slot);
+                return existing;
+            }
+            else
+            {
+                return existing.copy();
             }
         }
-        return remainingStack;
-    }
+        else
+        {
+            if (!simulate)
+            {
+                this.stacks.set(slot, new SlotInfo(ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract), existing.getCount()));
+                onContentsChanged(slot);
+            }
 
-    @Override
-    public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-        if (slot >= itemKeys.length + 27 || slot < 27) return ItemStack.EMPTY;
-        String itemId = itemKeys[slot - 27];
-        if (!storageItems.containsKey(itemId)) return ItemStack.EMPTY;
-        ItemStack itemStack = new ItemStack(StorageUtils.getItem(itemId), 1);
-        int count = Math.min(itemStack.getMaxStackSize(), amount);
-        long storageCount = storageItems.get(itemId);
-        if (count < storageCount) {
-            if (!simulate) {
-                storageItems.replace(itemId, storageCount - count);
-                onItemChanged(itemId, false);
-            }
-        } else {
-            if (!simulate) {
-                storageItems.remove(itemId);
-                onItemChanged(itemId, true);
-            }
-            count = (int) storageCount;
+            return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
         }
-        itemStack.setCount(count);
-        return itemStack;
     }
 
     @Override
-    public int getSlotLimit(int slot) {
+    public int getSlotLimit(int slot)
+    {
         return Integer.MAX_VALUE;
     }
 
-    @Override
-    public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-        return !stack.isEmpty() && !stack.hasTag();
+    protected int getStackLimit(int slot, @NotNull ItemStack stack)
+    {
+        return Math.min(getSlotLimit(slot), stack.getMaxStackSize());
     }
 
     @Override
-    public CompoundTag serializeNBT() {
-        CompoundTag items = new CompoundTag();
-        storageItems.forEach(items::putLong);
-        CompoundTag data = new CompoundTag();
-        data.put("ic_items", items);
-        return data;
+    public boolean isItemValid(int slot, @NotNull ItemStack stack)
+    {
+        return true;
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt) {
-        CompoundTag items = nbt.getCompound("ic_items");
-            items.getAllKeys().forEach(itemId -> {
-                if (items.getLong(itemId) > 0 && ForgeRegistries.ITEMS.containsKey(new ResourceLocation(itemId))) {
-                    storageItems.put(itemId, items.getLong(itemId));
-                }
-            });
-        updateItemKeys();
+    public CompoundTag serializeNBT()
+    {
+        ListTag nbtTagList = new ListTag();
+        for (int i = 0; i < stacks.size(); i++)
+        {
+            if (!stacks.get(i).stack().isEmpty())
+            {
+                CompoundTag itemTag = new CompoundTag();
+                itemTag.putInt("Slot", i);
+                stacks.get(i).stack().save(itemTag);
+                nbtTagList.add(itemTag);
+            }
+        }
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("Items", nbtTagList);
+        return nbt;
     }
 
     @Override
-    public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+    public void deserializeNBT(CompoundTag nbt)
+    {
+        ListTag tagList = nbt.getList("Items", Tag.TAG_COMPOUND);
+        for (int i = 0; i < tagList.size(); i++)
+        {
+            CompoundTag itemTags = tagList.getCompound(i);
+            int slot = itemTags.getInt("Slot");
+
+            if (slot >= 0 && slot < stacks.size())
+            {
+                stacks.set(slot, new SlotInfo(ItemStack.of(itemTags), itemTags.getByte("Count")));
+            }
+        }
+        onLoad();
+    }
+
+    protected void validateSlotIndex(int slot)
+    {
+        if (slot < 0 || slot > stacks.size())
+            throw new RuntimeException("Slot " + slot + " not in valid range - [0," + stacks.size() + ")");
+    }
+
+    protected void onLoad()
+    {
+
+    }
+
+    protected void onContentsChanged(int slot)
+    {
 
     }
 }

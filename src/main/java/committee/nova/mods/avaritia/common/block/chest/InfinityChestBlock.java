@@ -57,8 +57,7 @@ public class InfinityChestBlock extends BaseTileEntityBlock {
             if (tile instanceof InfinityChestTile chestTile) {
                 NetworkHooks.openScreen((ServerPlayer) player, chestTile, buf -> {
                         buf.writeBlockPos(pos);
-                        buf.writeUtf(chestTile.getFilter(), 64);
-                        buf.writeByte(chestTile.getSortType());
+                        //buf.writeUtf(chestTile.getFilter(), 64);
                     });
             }
         }

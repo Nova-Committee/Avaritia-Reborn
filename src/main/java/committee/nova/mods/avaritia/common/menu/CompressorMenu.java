@@ -22,12 +22,12 @@ import org.jetbrains.annotations.NotNull;
  * Version: 1.0
  */
 public class CompressorMenu extends BaseMenu {
-    private CompressorMenu(MenuType<?> type, int id, Inventory playerInventory, FriendlyByteBuf buffer) {
-        this(type, id, playerInventory, CompressorTile.createInventoryHandler(null), buffer.readBlockPos());
+    public CompressorMenu(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
+        this(id, playerInventory, CompressorTile.createInventoryHandler(null), buffer.readBlockPos());
     }
 
-    private CompressorMenu(MenuType<?> type, int id, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
-        super(type, id, pos);
+    public CompressorMenu(int id, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
+        super(ModMenus.compressor.get(), id, pos);
 
         this.addSlot(new OutputSlot(inventory, 0, 120, 35));
         this.addSlot(new BaseItemStackHandlerSlot(inventory, 1, 39, 35));
@@ -41,14 +41,6 @@ public class CompressorMenu extends BaseMenu {
         for (int i = 0; i < 9; i++) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
-    }
-
-    public static CompressorMenu create(int windowId, Inventory playerInventory, FriendlyByteBuf buffer) {
-        return new CompressorMenu(ModMenus.compressor.get(), windowId, playerInventory, buffer);
-    }
-
-    public static CompressorMenu create(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
-        return new CompressorMenu(ModMenus.compressor.get(), windowId, playerInventory, inventory, pos);
     }
 
     @Override

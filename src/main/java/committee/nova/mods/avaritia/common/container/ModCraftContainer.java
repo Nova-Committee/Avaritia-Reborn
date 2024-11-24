@@ -18,13 +18,13 @@ public class ModCraftContainer extends TransientCraftingContainer {
     private final ItemStackWrapper inventory;
     private final boolean autoTable;
 
-    public ModCraftContainer(AbstractContainerMenu container, ItemStackWrapper inventory, int size) {
-        this(container, inventory, size, false);
+    public ModCraftContainer(AbstractContainerMenu menu, ItemStackWrapper inventory, int size) {
+        this(menu, inventory, size, false);
     }
 
-    public ModCraftContainer(AbstractContainerMenu container, ItemStackWrapper inventory, int size, boolean autoTable) {
-        super(container, size, size);
-        this.container = container;
+    public ModCraftContainer(AbstractContainerMenu menu, ItemStackWrapper inventory, int size, boolean autoTable) {
+        super(menu, size, size);
+        this.container = menu;
         this.inventory = inventory;
         this.autoTable = autoTable;
     }

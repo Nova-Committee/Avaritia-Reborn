@@ -68,36 +68,36 @@ public class ModCraftMenu extends BaseMenu {
         this.slotsChanged(matrix);
     }
 
-    public static ModCraftMenu sculk(int windowId, Inventory playerInventory, FriendlyByteBuf buf, ModCraftTier tier) {
-        return new ModCraftMenu(ModMenus.sculk_crafting_tile_table.get(), windowId, playerInventory, buf, tier);
+    public static ModCraftMenu sculk(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
+        return new ModCraftMenu(ModMenus.sculk_crafting_tile_table.get(), windowId, playerInventory, buf, ModCraftTier.SCULK);
     }
 
-    public static ModCraftMenu sculk(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ModCraftTier tier) {
-        return new ModCraftMenu(ModMenus.sculk_crafting_tile_table.get(), windowId, playerInventory, inventory, pos, tier);
+    public static ModCraftMenu sculk(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
+        return new ModCraftMenu(ModMenus.sculk_crafting_tile_table.get(), windowId, playerInventory, inventory, pos, ModCraftTier.SCULK);
     }
 
-    public static ModCraftMenu nether(int windowId, Inventory playerInventory, FriendlyByteBuf buf, ModCraftTier tier) {
-        return new ModCraftMenu(ModMenus.nether_crafting_tile_table.get(), windowId, playerInventory, buf, tier);
+    public static ModCraftMenu nether(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
+        return new ModCraftMenu(ModMenus.nether_crafting_tile_table.get(), windowId, playerInventory, buf, ModCraftTier.NETHER);
     }
 
-    public static ModCraftMenu nether(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ModCraftTier tier) {
-        return new ModCraftMenu(ModMenus.nether_crafting_tile_table.get(), windowId, playerInventory, inventory, pos, tier);
+    public static ModCraftMenu nether(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
+        return new ModCraftMenu(ModMenus.nether_crafting_tile_table.get(), windowId, playerInventory, inventory, pos, ModCraftTier.NETHER);
     }
 
-    public static ModCraftMenu end(int windowId, Inventory playerInventory, FriendlyByteBuf buf, ModCraftTier tier) {
-        return new ModCraftMenu(ModMenus.end_crafting_tile_table.get(), windowId, playerInventory, buf, tier);
+    public static ModCraftMenu end(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
+        return new ModCraftMenu(ModMenus.end_crafting_tile_table.get(), windowId, playerInventory, buf, ModCraftTier.END);
     }
 
-    public static ModCraftMenu end(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ModCraftTier tier) {
-        return new ModCraftMenu(ModMenus.end_crafting_tile_table.get(), windowId, playerInventory, inventory, pos, tier);
+    public static ModCraftMenu end(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
+        return new ModCraftMenu(ModMenus.end_crafting_tile_table.get(), windowId, playerInventory, inventory, pos, ModCraftTier.END);
     }
 
-    public static ModCraftMenu extreme(int windowId, Inventory playerInventory, FriendlyByteBuf buf, ModCraftTier tier) {
-        return new ModCraftMenu(ModMenus.extreme_crafting_table.get(), windowId, playerInventory, buf, tier);
+    public static ModCraftMenu extreme(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
+        return new ModCraftMenu(ModMenus.extreme_crafting_table.get(), windowId, playerInventory, buf, ModCraftTier.EXTREME);
     }
 
-    public static ModCraftMenu extreme(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ModCraftTier tier) {
-        return new ModCraftMenu(ModMenus.extreme_crafting_table.get(), windowId, playerInventory, inventory, pos, tier);
+    public static ModCraftMenu extreme(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
+        return new ModCraftMenu(ModMenus.extreme_crafting_table.get(), windowId, playerInventory, inventory, pos, ModCraftTier.EXTREME);
     }
 
     @Override

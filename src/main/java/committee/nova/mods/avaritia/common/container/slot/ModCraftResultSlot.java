@@ -24,10 +24,10 @@ public class ModCraftResultSlot extends Slot {
     private final Player player;
     private int removeCount;
 
-    public ModCraftResultSlot(Player pPlayer, AbstractContainerMenu container, CraftingContainer craftSlots, Container inventory, int index, int xPosition, int yPosition) {
-        super(inventory, index, xPosition, yPosition);
+    public ModCraftResultSlot(Player pPlayer, AbstractContainerMenu menu, CraftingContainer craftSlots, Container container, int index, int xPosition, int yPosition) {
+        super(container, index, xPosition, yPosition);
         this.player = pPlayer;
-        this.container = container;
+        this.container = menu;
         this.craftSlots = craftSlots;
     }
 

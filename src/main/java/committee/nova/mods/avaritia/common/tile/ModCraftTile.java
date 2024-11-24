@@ -55,19 +55,19 @@ public class ModCraftTile extends BaseInventoryTileEntity {
     public AbstractContainerMenu createMenu(int pContainerId, @NotNull Inventory pInventory) {
         switch (tier) {
             case SCULK -> {
-                return ModCraftMenu.sculk(pContainerId, pInventory, this.inventory, this.getBlockPos(), ModCraftTier.SCULK);
+                return ModCraftMenu.sculk(pContainerId, pInventory, this.inventory, this.getBlockPos());
             }
             case END -> {
-                return ModCraftMenu.end(pContainerId, pInventory, this.inventory, this.getBlockPos(), ModCraftTier.END);
+                return ModCraftMenu.end(pContainerId, pInventory, this.inventory, this.getBlockPos());
             }
             case NETHER -> {
-                return ModCraftMenu.nether(pContainerId, pInventory, this.inventory, this.getBlockPos(), ModCraftTier.NETHER);
+                return ModCraftMenu.nether(pContainerId, pInventory, this.inventory, this.getBlockPos());
             }
             case EXTREME -> {
-                return ModCraftMenu.extreme(pContainerId, pInventory, this.inventory, this.getBlockPos(), ModCraftTier.EXTREME);
+                return ModCraftMenu.extreme(pContainerId, pInventory, this.inventory, this.getBlockPos());
             }
         }
-        return ModCraftMenu.extreme(pContainerId, pInventory, this.inventory, this.getBlockPos(), ModCraftTier.EXTREME);
+        return ModCraftMenu.extreme(pContainerId, pInventory, this.inventory, this.getBlockPos());
     }
 
 }
