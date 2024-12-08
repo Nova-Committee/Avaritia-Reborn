@@ -60,7 +60,7 @@ public class ModCraftResultSlot extends Slot {
     public void onTake(@NotNull Player player, @NotNull ItemStack stack) {
         this.checkTakeAchievements(stack);
         net.minecraftforge.common.ForgeHooks.setCraftingPlayer(player);
-        NonNullList<ItemStack> remaining = player.level().getRecipeManager().getRemainingItemsFor(ModRecipeTypes.EXTREME_CRAFT_RECIPE.get(), this.craftSlots, player.level());
+        NonNullList<ItemStack> remaining = player.level().getRecipeManager().getRemainingItemsFor(ModRecipeTypes.CRAFTING_TABLE_RECIPE.get(), this.craftSlots, player.level());
         net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
 
         for (int i = 0; i < remaining.size(); i++) {

@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
  * Version: 1.0
  * from <a href="https://github.com/BlakeBr0/ExtendedCrafting/blob/1.20/src/main/java/com/blakebr0/extendedcrafting/crafting/recipe/ShapedTableRecipe.java">...</a>
  */
-public class ShapedTableCraftingRecipe implements ISpecialRecipe, ITierRecipe {
+public class ShapedTableCraftingRecipe implements BaseTableCraftingRecipe {
     private final ResourceLocation recipeId;
     private final NonNullList<Ingredient> inputs;
     private final ItemStack output;
@@ -133,7 +133,7 @@ public class ShapedTableCraftingRecipe implements ISpecialRecipe, ITierRecipe {
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return ModRecipeTypes.EXTREME_CRAFT_RECIPE.get();
+        return ModRecipeTypes.CRAFTING_TABLE_RECIPE.get();
     }
 
     @Override
@@ -179,7 +179,7 @@ public class ShapedTableCraftingRecipe implements ISpecialRecipe, ITierRecipe {
 
             return remaining;
         }
-        return ISpecialRecipe.super.getRemainingItems(inventory);
+        return BaseTableCraftingRecipe.super.getRemainingItems(inventory);
     }
 
     @Override

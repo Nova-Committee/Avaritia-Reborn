@@ -25,6 +25,6 @@ public class AvaritiaExtremeRecipeMapper extends BaseRecipeTypeMapper {
 
     @Override
     public boolean canHandle(RecipeType<?> recipeType) {
-        return recipeType == ModRecipeTypes.EXTREME_CRAFT_RECIPE.get();
+        return recipeType == ModRecipeTypes.CRAFTING_TABLE_RECIPE.get();
     }
 }

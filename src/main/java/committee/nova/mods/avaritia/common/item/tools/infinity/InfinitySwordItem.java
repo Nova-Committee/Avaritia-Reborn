@@ -52,18 +52,18 @@ public class InfinitySwordItem extends SwordItem implements IMultiFunction, Init
         var endlessDamage = ModConfig.isSwordAttackEndless.get();
         if (!level.isClientSide) {
             if (victim instanceof EnderDragon dragon && livingEntity instanceof Player player) {
-                dragon.hurt(dragon.head, player.damageSources().source(ModDamageTypes.INFINITY, player, victim), endlessDamage ? Float.POSITIVE_INFINITY : ModToolTiers.INFINITY_SWORD.getAttackDamageBonus());
+                dragon.hurt(dragon.head, player.damageSources().source(ModDamageTypes.INFINITY, player, victim), endlessDamage ? Float.MAX_VALUE : ModToolTiers.INFINITY_SWORD.getAttackDamageBonus());
                 dragon.setHealth(0);//fix
             } else if (victim instanceof Player pvp) {
                 if (ToolUtils.isInfinite(pvp)) {
                     // 玩家身着无尽甲则只造成爆炸伤害
                     pvp.level().explode(livingEntity, pvp.getBlockX(), pvp.getBlockY(), pvp.getBlockZ(), 25.0f, Level.ExplosionInteraction.BLOCK);
                 } else
-                    victim.hurt(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), endlessDamage ? Float.POSITIVE_INFINITY : ModToolTiers.INFINITY_SWORD.getAttackDamageBonus());
+                    victim.hurt(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), endlessDamage ? Float.MAX_VALUE : ModToolTiers.INFINITY_SWORD.getAttackDamageBonus());
 
             } else {
                 victim.setInvulnerable(false);
-                victim.hurt(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), endlessDamage ? Float.POSITIVE_INFINITY : ModToolTiers.INFINITY_SWORD.getAttackDamageBonus());
+                victim.hurt(livingEntity.damageSources().source(ModDamageTypes.INFINITY, livingEntity, victim), endlessDamage ? Float.MAX_VALUE : ModToolTiers.INFINITY_SWORD.getAttackDamageBonus());
             }
 
             victim.lastHurtByPlayerTime = 60;
@@ -136,10 +136,9 @@ public class InfinitySwordItem extends SwordItem implements IMultiFunction, Init
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create();
-        if (slot == EquipmentSlot.MAINHAND) {
-            multimap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", getTier().getAttackDamageBonus(), AttributeModifier.Operation.ADDITION));
-            multimap.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", getTier().getSpeed(), AttributeModifier.Operation.ADDITION));
-        }
+        var endlessDamage = ModConfig.isSwordAttackEndless.get();
+        multimap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", endlessDamage ? Float.MAX_VALUE : getTier().getAttackDamageBonus(), AttributeModifier.Operation.ADDITION));
+        multimap.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", getTier().getSpeed(), AttributeModifier.Operation.ADDITION));
         return multimap;
     }
 }

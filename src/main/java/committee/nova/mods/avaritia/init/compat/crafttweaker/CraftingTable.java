@@ -109,6 +109,6 @@ public class CraftingTable implements IRecipeManager<ISpecialRecipe> {
 
     @Override
     public RecipeType<ISpecialRecipe> getRecipeType() {
-        return ModRecipeTypes.EXTREME_CRAFT_RECIPE.get();
+        return ModRecipeTypes.CRAFTING_TABLE_RECIPE.get();
     }
 }

@@ -58,7 +58,7 @@ public class JadeCompat implements IWailaPlugin {
             var level = Minecraft.getInstance().level;
             assert level != null;
             var compressor = (ModCraftTile) accessor.getBlockEntity();
-            var recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.EXTREME_CRAFT_RECIPE.get(), compressor.getInventory().toIInventory(), level);
+            var recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CRAFTING_TABLE_RECIPE.get(), compressor.getInventory().toIInventory(), level);
 
             if (recipe.isPresent()) {
                 var output = recipe.get().getResultItem(level.registryAccess());

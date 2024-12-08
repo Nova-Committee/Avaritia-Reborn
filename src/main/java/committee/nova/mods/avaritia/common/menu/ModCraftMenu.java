@@ -102,7 +102,7 @@ public class ModCraftMenu extends BaseMenu {
 
     @Override
     public void slotsChanged(@NotNull Container matrix) {
-        var recipe = this.world.getRecipeManager().getRecipeFor(ModRecipeTypes.EXTREME_CRAFT_RECIPE.get(), matrix, this.world);
+        var recipe = this.world.getRecipeManager().getRecipeFor(ModRecipeTypes.CRAFTING_TABLE_RECIPE.get(), matrix, this.world);
 
         if (recipe.isPresent()) {
             var result = recipe.get().assemble(matrix, this.world.registryAccess());

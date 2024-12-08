@@ -1,11 +1,8 @@
-package committee.nova.mods.avaritia.init.compat.jei.category;
+package committee.nova.mods.avaritia.init.compat.jei.category.tables;
 
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.api.common.crafting.ISpecialRecipe;
-import committee.nova.mods.avaritia.common.crafting.recipe.EternalSingularityCraftRecipe;
-import committee.nova.mods.avaritia.common.crafting.recipe.InfinityCatalystCraftRecipe;
-import committee.nova.mods.avaritia.common.crafting.recipe.ShapedTableCraftingRecipe;
-import committee.nova.mods.avaritia.common.crafting.recipe.ShapelessTableCraftingRecipe;
+import committee.nova.mods.avaritia.common.crafting.recipe.*;
 import committee.nova.mods.avaritia.init.registry.ModBlocks;
 import committee.nova.mods.avaritia.init.registry.ModItems;
 import committee.nova.mods.avaritia.util.lang.Localizable;
@@ -35,28 +32,28 @@ import java.util.List;
  * Date: 2022/5/16 23:46
  * Version: 1.0
  */
-public class ExtremeCraftingTableCategory implements IRecipeCategory<ISpecialRecipe> {
+public class NetherCraftingTableCategory implements IRecipeCategory<BaseTableCraftingRecipe> {
 
-    public static final RecipeType<ISpecialRecipe> RECIPE_TYPE = RecipeType.create(Static.MOD_ID, "extreme_craft", ISpecialRecipe.class);
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Static.MOD_ID, "textures/gui/jei/extreme_jei.png");
+    public static final RecipeType<BaseTableCraftingRecipe> RECIPE_TYPE = RecipeType.create(Static.MOD_ID, "nether_craft", BaseTableCraftingRecipe.class);
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Static.MOD_ID, "textures/gui/jei/tables/nether_jei.png");
 
     private final IDrawable background;
     private final IDrawable icon;
 
-    public ExtremeCraftingTableCategory(IGuiHelper helper) {
+    public NetherCraftingTableCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 190, 163);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.extreme_crafting_table.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.nether_crafting_table.get()));
     }
 
 
     @Override
-    public @NotNull RecipeType<ISpecialRecipe> getRecipeType() {
+    public @NotNull RecipeType<BaseTableCraftingRecipe> getRecipeType() {
         return RECIPE_TYPE;
     }
 
     @Override
     public @NotNull Component getTitle() {
-        return Localizable.of("jei.category.avaritia.extreme_crafting_table").build();
+        return Localizable.of("jei.category.avaritia.nether_crafting_table").build();
     }
 
     @Override
@@ -70,15 +67,15 @@ public class ExtremeCraftingTableCategory implements IRecipeCategory<ISpecialRec
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, ISpecialRecipe recipe, @NotNull IFocusGroup focuses) {
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, BaseTableCraftingRecipe recipe, @NotNull IFocusGroup focuses) {
         var level = Minecraft.getInstance().level;
         assert level != null;
         var inputs = recipe.getIngredients();
         var output = recipe.getResultItem(level.registryAccess());
         if (recipe instanceof ShapedTableCraftingRecipe shaped) {
             int stackIndex = 0;
-            int heightOffset = Math.floorDiv(9 - shaped.getHeight(), 2);
-            int widthOffset = Math.floorDiv(9 - shaped.getWidth(), 2);
+            int heightOffset = Math.floorDiv(5 - shaped.getHeight(), 2);
+            int widthOffset = Math.floorDiv(5 - shaped.getWidth(), 2);
 
             for (int i = heightOffset; i < shaped.getHeight() + heightOffset; i++) {
                 for (int j = widthOffset; j < shaped.getWidth() + widthOffset; j++) {
@@ -101,9 +98,9 @@ public class ExtremeCraftingTableCategory implements IRecipeCategory<ISpecialRec
     }
 
     private void shapelessRecipe(@NotNull IRecipeLayoutBuilder builder, NonNullList<Ingredient> inputs) {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                int index = j + (i * 9);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                int index = j + (i * 5);
 
                 if (index < inputs.size()) {
                     builder.addSlot(RecipeIngredientRole.INPUT, j * 18 + 2, i * 18 + 2).addIngredients(inputs.get(index));
@@ -114,7 +111,7 @@ public class ExtremeCraftingTableCategory implements IRecipeCategory<ISpecialRec
     }
 
     @Override
-    public @NotNull List<Component> getTooltipStrings(@NotNull ISpecialRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+    public @NotNull List<Component> getTooltipStrings(@NotNull BaseTableCraftingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         var shapeless = recipe instanceof ShapelessTableCraftingRecipe;
         int sX = (shapeless ? 340 : 306) / 2, sY = 200 / 2;
 
