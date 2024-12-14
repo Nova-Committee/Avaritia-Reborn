@@ -11,6 +11,7 @@ import com.blamejared.crafttweaker.api.item.MCItemStack;
 import com.blamejared.crafttweaker.api.recipe.manager.base.IRecipeManager;
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.api.common.crafting.ISpecialRecipe;
+import committee.nova.mods.avaritia.common.crafting.recipe.BaseTableCraftingRecipe;
 import committee.nova.mods.avaritia.common.crafting.recipe.InfinityCatalystCraftRecipe;
 import committee.nova.mods.avaritia.common.crafting.recipe.ShapedTableCraftingRecipe;
 import committee.nova.mods.avaritia.common.crafting.recipe.ShapelessTableCraftingRecipe;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
  */
 @ZenCodeType.Name("mods.avaritia.CraftingTable")
 @ZenRegister
-public class CraftingTable implements IRecipeManager<ISpecialRecipe> {
+public class CraftingTable implements IRecipeManager<BaseTableCraftingRecipe> {
     private static final CraftingTable INSTANCE = new CraftingTable();
 
     @ZenCodeType.Method
@@ -87,16 +88,6 @@ public class CraftingTable implements IRecipeManager<ISpecialRecipe> {
     }
 
     @ZenCodeType.Method
-    public static void addCatalyst(String name, IIngredient[] inputs) {
-        var id = CraftTweakerConstants.rl(INSTANCE.fixRecipeName(name));
-        var recipe = new InfinityCatalystCraftRecipe(id, "default", toIngredientsList(inputs));
-
-        recipe.setTransformers((slot, stack) -> inputs[slot].getRemainingItem(new MCItemStack(stack)).getInternal());
-
-        CraftTweakerAPI.apply(new ActionAddRecipe<>(INSTANCE, recipe));
-    }
-
-    @ZenCodeType.Method
     public static void remove(IItemStack stack) {
         CraftTweakerAPI.apply(new ActionRemoveRecipe<>(INSTANCE, recipe -> recipe.getResultItem(RegistryAccess.EMPTY).is(stack.getInternal().getItem())));
     }
@@ -108,7 +99,7 @@ public class CraftingTable implements IRecipeManager<ISpecialRecipe> {
     }
 
     @Override
-    public RecipeType<ISpecialRecipe> getRecipeType() {
+    public RecipeType<BaseTableCraftingRecipe> getRecipeType() {
         return ModRecipeTypes.CRAFTING_TABLE_RECIPE.get();
     }
 }

@@ -76,7 +76,7 @@ public class InfinityCatalystCraftRecipe implements ISpecialRecipe {
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return ModRecipeTypes.CRAFTING_TABLE_RECIPE.get();
+        return ModRecipeTypes.CRAFTING_OTHERS_RECIPE.get();
     }
 
     @Override
