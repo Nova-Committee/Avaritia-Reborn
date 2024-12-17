@@ -49,6 +49,7 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
         nineBlockStorageRecipesWithCustomPacking(consumer, RecipeCategory.MISC, ModItems.neutron_pile.get(), RecipeCategory.MISC, ModItems.neutron_nugget.get(), "neutron_pile_from_ingots", "neutron_pile");
         nineBlockStorageRecipes(consumer, RecipeCategory.MISC, ModItems.infinity_ingot.get(), RecipeCategory.BUILDING_BLOCKS, ModBlocks.infinity.get());
         nineBlockStorageRecipes(consumer, RecipeCategory.MISC, ModItems.crystal_matrix_ingot.get(), RecipeCategory.BUILDING_BLOCKS, ModBlocks.crystal_matrix.get());
+        nineBlockStorageRecipes(consumer, RecipeCategory.MISC, ModItems.blaze_cube.get(), RecipeCategory.BUILDING_BLOCKS, ModBlocks.blaze_cube_block.get());
         nineBlockStorageRecipesRecipesWithCustomUnpacking(consumer, RecipeCategory.BUILDING_BLOCKS, ModBlocks.compressed_crafting_table.get(), RecipeCategory.BUILDING_BLOCKS, ModBlocks.double_compressed_crafting_table.get(),
                 "compressed_crafting_table_from_double_compressed_crafting_table", "compressed_crafting_table");
         nineBlockStorageRecipesRecipesWithCustomUnpacking(consumer, RecipeCategory.MISC, Blocks.CRAFTING_TABLE, RecipeCategory.BUILDING_BLOCKS, ModBlocks.compressed_crafting_table.get(),
@@ -56,11 +57,19 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
 
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.diamond_lattice.get())
-                .pattern("x x")
-                .pattern(" y ")
-                .pattern("x x")
+                .pattern("xxx")
+                .pattern("xyx")
+                .pattern("xxx")
                 .define('x', Items.DIAMOND)
                 .define('y', Items.NETHERITE_SCRAP)
+                .unlockedBy("", lul).save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.blaze_cube.get())
+                .pattern("xxx")
+                .pattern("xyx")
+                .pattern("xxx")
+                .define('x', Items.BLAZE_POWDER)
+                .define('y', Items.NETHERITE_INGOT)
                 .unlockedBy("", lul).save(consumer);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.crystal_matrix_ingot.get())
@@ -71,13 +80,49 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
 
                 .unlockedBy("has_item", has(ModItems.diamond_lattice.get())).save(consumer);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.extreme_crafting_table.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.sculk_crafting_table.get())
                 .pattern("xxx")
                 .pattern("xyx")
                 .pattern("xxx")
-                .define('x', ModBlocks.crystal_matrix.get())
+                .define('x', Blocks.SCULK)
                 .define('y', ModBlocks.double_compressed_crafting_table.get())
                 .unlockedBy("has_block", has(ModBlocks.double_compressed_crafting_table.get())).save(consumer);
+
+        ModShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.nether_crafting_table.get(), 1)
+                .pattern("xxx")
+                .pattern("xyx")
+                .pattern("xxx")
+                .define('x', ModBlocks.blaze_cube_block.get())
+                .define('y', ModBlocks.sculk_crafting_table.get())
+                .unlockedBy("has_block", has(ModBlocks.sculk_crafting_table.get())).save(consumer);
+
+        ModShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.end_crafting_table.get(), 2)
+                .pattern("xxxxx")
+                .pattern("xbabx")
+                .pattern("xayax")
+                .pattern("xbabx")
+                .pattern("xxxxx")
+                .define('x', Blocks.AMETHYST_BLOCK)
+                .define('y', ModBlocks.nether_crafting_table.get())
+                .define('a', Items.NETHER_STAR)
+                .define('b', Items.ENDER_EYE)
+                .unlockedBy("has_block", has(ModBlocks.nether_crafting_table.get())).save(consumer);
+
+        ModShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.extreme_crafting_table.get(), 3)
+                .pattern("xxxxxxx")
+                .pattern("xdcdcdx")
+                .pattern("xcbabcx")
+                .pattern("xdayadx")
+                .pattern("xcbabcx")
+                .pattern("xdcdcdx")
+                .pattern("xxxxxxx")
+                .define('x', ModBlocks.crystal_matrix.get())
+                .define('y', ModBlocks.end_crafting_table.get())
+                .define('a', Items.NETHER_STAR)
+                .define('b', Blocks.CONDUIT)
+                .define('c', Items.SHULKER_SHELL)
+                .define('d', Items.ECHO_SHARD)
+                .unlockedBy("has_block", has(ModBlocks.end_crafting_table.get())).save(consumer);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.endless_cake.get())
                 .pattern("aaa")

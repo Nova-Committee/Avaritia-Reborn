@@ -63,7 +63,7 @@ public class BlazePickaxeItem extends PickaxeItem implements ITooltip, ISwitchab
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltipComponents,
                                 @NotNull TooltipFlag isAdvanced) {
         tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.BLOCK_FORTUNE.getFullname(4)).build());
-        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.BLOCK_FORTUNE.getFullname(10)).build());
+        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.FIRE_ASPECT.getFullname(10)).build());
         this.appendTooltip(stack, level, tooltipComponents, isAdvanced, name);
     }
 

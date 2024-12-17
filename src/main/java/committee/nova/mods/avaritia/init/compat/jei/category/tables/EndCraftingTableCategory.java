@@ -79,20 +79,20 @@ public class EndCraftingTableCategory implements IRecipeCategory<BaseTableCrafti
 
             for (int i = heightOffset; i < shaped.getHeight() + heightOffset; i++) {
                 for (int j = widthOffset; j < shaped.getWidth() + widthOffset; j++) {
-                    builder.addSlot(RecipeIngredientRole.INPUT, j * 18 + 2, i * 18 + 2).addIngredients(inputs.get(stackIndex));
+                    builder.addSlot(RecipeIngredientRole.INPUT, j * 18 + 5, i * 18 + 5).addIngredients(inputs.get(stackIndex));
                     stackIndex++;
                 }
             }
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 170, 60).addItemStack(output);
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 169, 58).addItemStack(output);
         } else if (recipe instanceof ShapelessTableCraftingRecipe) {
             shapelessRecipe(builder, inputs);
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 170, 60).addItemStack(output);
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 169, 58).addItemStack(output);
         } else if (recipe instanceof InfinityCatalystCraftRecipe) {
             shapelessRecipe(builder, inputs);
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 170, 60).addItemStack(new ItemStack(ModItems.infinity_catalyst.get()));
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 169, 58).addItemStack(new ItemStack(ModItems.infinity_catalyst.get()));
         } else if (recipe instanceof EternalSingularityCraftRecipe) {
             shapelessRecipe(builder, inputs);
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 170, 60).addItemStack(new ItemStack(ModItems.eternal_singularity.get()));
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 169, 58).addItemStack(new ItemStack(ModItems.eternal_singularity.get()));
         }
         builder.moveRecipeTransferButton(170, 100);
     }

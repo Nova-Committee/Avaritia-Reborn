@@ -36,7 +36,7 @@ public class CrystalShovelItem extends ShovelItem implements ITooltip {
     private final String name;
 
     public CrystalShovelItem(String name) {
-        super(ModToolTiers.CRYSTAL_PICKAXE, 1, 0F,
+        super(ModToolTiers.CRYSTAL_SHOVEL, 1, 0F,
                 new Properties()
                         .rarity(ModRarities.EPIC)
                         .stacksTo(1)

@@ -15,7 +15,16 @@ public class ModToolTiers {
     public static ForgeTier CRYSTAL_SWORD = new ForgeTier(8888, 8888, 50f, 50F, 0, Tags.Blocks.NEEDS_WOOD_TOOL, () -> {
         return Ingredient.of(ModItems.crystal_matrix_ingot.get());
     });
-    public static ForgeTier CRYSTAL_PICKAXE = new ForgeTier(8888, 8888, 50f, 8.0F, 0, Tags.Blocks.NEEDS_WOOD_TOOL, () -> {
+    public static ForgeTier CRYSTAL_PICKAXE = new ForgeTier(8888, 8888, 25f, 25F, 0, Tags.Blocks.NEEDS_WOOD_TOOL, () -> {
+        return Ingredient.of(ModItems.crystal_matrix_ingot.get());
+    });
+    public static ForgeTier CRYSTAL_AXE = new ForgeTier(8888, 8888, 25f, 75F, 0, Tags.Blocks.NEEDS_WOOD_TOOL, () -> {
+        return Ingredient.of(ModItems.crystal_matrix_ingot.get());
+    });
+    public static ForgeTier CRYSTAL_SHOVEL = new ForgeTier(8888, 8888, 50f, 25F, 0, Tags.Blocks.NEEDS_WOOD_TOOL, () -> {
+        return Ingredient.of(ModItems.crystal_matrix_ingot.get());
+    });
+    public static ForgeTier CRYSTAL_HOE = new ForgeTier(8888, 8888, 25f, 50F, 0, Tags.Blocks.NEEDS_WOOD_TOOL, () -> {
         return Ingredient.of(ModItems.crystal_matrix_ingot.get());
     });
     public static ForgeTier BLAZE_PICKAXE = new ForgeTier(7777, 7777, 25f, 10F, 0, Tags.Blocks.NEEDS_WOOD_TOOL, () -> {

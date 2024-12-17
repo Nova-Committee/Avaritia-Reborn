@@ -10,9 +10,9 @@
     }
   },
   "pattern": [
-    "x x",
-    " y ",
-    "x x"
+    "xxx",
+    "xyx",
+    "xxx"
   ],
   "result": {
     "item": "avaritia:diamond_lattice"
