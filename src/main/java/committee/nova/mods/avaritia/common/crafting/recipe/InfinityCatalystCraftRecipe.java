@@ -32,7 +32,7 @@ import java.util.function.BiFunction;
  * Description:
  */
 
-public class InfinityCatalystCraftRecipe implements ISpecialRecipe {
+public class InfinityCatalystCraftRecipe implements BaseTableCraftingRecipe {
     private final ResourceLocation recipeId;
     private final String group;
     public NonNullList<Ingredient> inputs;
@@ -76,7 +76,7 @@ public class InfinityCatalystCraftRecipe implements ISpecialRecipe {
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return ModRecipeTypes.CRAFTING_OTHERS_RECIPE.get();
+        return ModRecipeTypes.CRAFTING_TABLE_RECIPE.get();
     }
 
     @Override
@@ -114,7 +114,7 @@ public class InfinityCatalystCraftRecipe implements ISpecialRecipe {
 
     @Override
     public @NotNull NonNullList<ItemStack> getRemainingItems(@NotNull IItemHandler inv) {
-        var remaining = ISpecialRecipe.super.getRemainingItems(inv);
+        var remaining = BaseTableCraftingRecipe.super.getRemainingItems(inv);
 
         if (this.transformers != null) {
             var used = new boolean[remaining.size()];
@@ -142,6 +142,16 @@ public class InfinityCatalystCraftRecipe implements ISpecialRecipe {
 
     public void setTransformers(BiFunction<Integer, ItemStack, ItemStack> transformers) {
         this.transformers = transformers;
+    }
+
+    @Override
+    public int getTier() {
+        return 4;
+    }
+
+    @Override
+    public boolean hasRequiredTier() {
+        return true;
     }
 
     public static class Serializer implements RecipeSerializer<InfinityCatalystCraftRecipe> {

@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "avaritia:skull_fire_sword"
+        "recipe": "avaritia:blaze_sword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "avaritia:skull_fire_sword"
+      "avaritia:blaze_sword"
     ]
   },
   "sends_telemetry_event": true

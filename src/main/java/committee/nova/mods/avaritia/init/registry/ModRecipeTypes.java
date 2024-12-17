@@ -25,7 +25,6 @@ public class ModRecipeTypes {
     public static final DeferredRegister<RecipeType<?>> RECIPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, Static.MOD_ID);
 
     public static final @NotNull RegistryObject<RecipeType<BaseTableCraftingRecipe>> CRAFTING_TABLE_RECIPE = recipe("crafting_table_recipe", () -> RecipeType.simple(new ResourceLocation(Static.MOD_ID, "crafting_table_recipe")));
-    public static final @NotNull RegistryObject<RecipeType<ISpecialRecipe>> CRAFTING_OTHERS_RECIPE = recipe("crafting_others_recipe", () -> RecipeType.simple(new ResourceLocation(Static.MOD_ID, "crafting_others_recipe")));
     public static final @NotNull RegistryObject<RecipeType<ICompressorRecipe>> COMPRESSOR_RECIPE = recipe("compressor_recipe", () -> RecipeType.simple(new ResourceLocation(Static.MOD_ID, "compressor_recipe")));
 
 

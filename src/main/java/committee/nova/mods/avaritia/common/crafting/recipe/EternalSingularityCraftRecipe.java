@@ -33,11 +33,10 @@ import java.util.function.BiFunction;
  * Description:
  */
 
-public class EternalSingularityCraftRecipe implements ISpecialRecipe {
+public class EternalSingularityCraftRecipe implements BaseTableCraftingRecipe {
     private static boolean ingredientsLoaded = false;
     private final ResourceLocation recipeId;
     public NonNullList<Ingredient> inputs = NonNullList.create();
-    private BiFunction<Integer, ItemStack, ItemStack> transformers;
 
     public EternalSingularityCraftRecipe(ResourceLocation recipeId) {
         this.recipeId = recipeId;
@@ -87,7 +86,7 @@ public class EternalSingularityCraftRecipe implements ISpecialRecipe {
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return ModRecipeTypes.CRAFTING_OTHERS_RECIPE.get();
+        return ModRecipeTypes.CRAFTING_TABLE_RECIPE.get();
     }
 
     @Override
@@ -126,9 +125,8 @@ public class EternalSingularityCraftRecipe implements ISpecialRecipe {
 
     @Override
     public @NotNull NonNullList<ItemStack> getRemainingItems(@NotNull IItemHandler inv) {
-        var remaining = ISpecialRecipe.super.getRemainingItems(inv);
+        var remaining = BaseTableCraftingRecipe.super.getRemainingItems(inv);
 
-        if (this.transformers != null) {
             var used = new boolean[remaining.size()];
 
             for (int i = 0; i < remaining.size(); i++) {
@@ -138,22 +136,26 @@ public class EternalSingularityCraftRecipe implements ISpecialRecipe {
                     var input = this.inputs.get(j);
 
                     if (!used[j] && input.test(stack)) {
-                        var ingredient = this.transformers.apply(j, stack);
 
                         used[j] = true;
-                        remaining.set(i, ingredient);
+                        remaining.set(i, stack);
 
                         break;
                     }
                 }
             }
-        }
+
 
         return remaining;
     }
+    @Override
+    public int getTier() {
+        return 4;
+    }
 
-    public void setTransformers(BiFunction<Integer, ItemStack, ItemStack> transformers) {
-        this.transformers = transformers;
+    @Override
+    public boolean hasRequiredTier() {
+        return true;
     }
 
     public static class Serializer implements RecipeSerializer<EternalSingularityCraftRecipe> {

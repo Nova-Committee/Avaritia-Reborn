@@ -10,7 +10,6 @@ import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.item.MCItemStack;
 import com.blamejared.crafttweaker.api.recipe.manager.base.IRecipeManager;
 import committee.nova.mods.avaritia.Static;
-import committee.nova.mods.avaritia.api.common.crafting.ISpecialRecipe;
 import committee.nova.mods.avaritia.common.crafting.recipe.BaseTableCraftingRecipe;
 import committee.nova.mods.avaritia.common.crafting.recipe.InfinityCatalystCraftRecipe;
 import committee.nova.mods.avaritia.common.crafting.recipe.ShapedTableCraftingRecipe;
@@ -81,6 +80,16 @@ public class CraftingTable implements IRecipeManager<BaseTableCraftingRecipe> {
             CraftTweakerAPI.getLogger(Static.MOD_ID).error("Unable to assign a tier to the Table Recipe for stack " + output.getCommandString() + ". Tier cannot be greater than 4 or less than 0.");
         }
         var recipe = new ShapelessTableCraftingRecipe(id, toIngredientsList(inputs), output.getInternal(), tier);
+
+        recipe.setTransformers((slot, stack) -> inputs[slot].getRemainingItem(new MCItemStack(stack)).getInternal());
+
+        CraftTweakerAPI.apply(new ActionAddRecipe<>(INSTANCE, recipe));
+    }
+
+    @ZenCodeType.Method
+    public static void addCatalyst(String name, IIngredient[] inputs) {
+        var id = CraftTweakerConstants.rl(INSTANCE.fixRecipeName(name));
+        var recipe = new InfinityCatalystCraftRecipe(id, "default", toIngredientsList(inputs));
 
         recipe.setTransformers((slot, stack) -> inputs[slot].getRemainingItem(new MCItemStack(stack)).getInternal());
 

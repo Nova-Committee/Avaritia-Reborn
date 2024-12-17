@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "avaritia:skull_fire_sword"
+              "avaritia:blaze_sword"
             ]
           }
         ]
@@ -22,7 +22,7 @@
     "frame": "task",
     "hidden": true,
     "icon": {
-      "item": "avaritia:skull_fire_sword",
+      "item": "avaritia:blaze_sword",
       "nbt": "{Damage:0}"
     },
     "show_toast": true,

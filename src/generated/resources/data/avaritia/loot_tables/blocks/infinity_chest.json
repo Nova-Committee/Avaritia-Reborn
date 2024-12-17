@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:air"
+          "name": "avaritia:infinity_chest"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "avaritia:blocks/magenta_candle_endless_cake"
+  "random_sequence": "avaritia:blocks/infinity_chest"
 }

@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:air"
+          "name": "avaritia:soul_farmland"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "avaritia:blocks/black_candle_endless_cake"
+  "random_sequence": "avaritia:blocks/soul_farmland"
 }
