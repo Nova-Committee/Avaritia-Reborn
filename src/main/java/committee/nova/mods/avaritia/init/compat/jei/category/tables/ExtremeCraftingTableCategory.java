@@ -107,7 +107,7 @@ public class ExtremeCraftingTableCategory implements IRecipeCategory<BaseTableCr
                 }
             }
         }
-        builder.setShapeless(175, 140);
+        builder.setShapeless(163, 150);
     }
 
     @Override

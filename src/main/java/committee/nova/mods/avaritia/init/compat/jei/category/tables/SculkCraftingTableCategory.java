@@ -41,7 +41,7 @@ public class SculkCraftingTableCategory implements IRecipeCategory<BaseTableCraf
     private final IDrawable icon;
 
     public SculkCraftingTableCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 190, 163);
+        this.background = helper.createDrawable(TEXTURE, 0, 0, 117, 56);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.sculk_crafting_table.get()));
     }
 
@@ -83,18 +83,18 @@ public class SculkCraftingTableCategory implements IRecipeCategory<BaseTableCraf
                     stackIndex++;
                 }
             }
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 167, 73).addItemStack(output);
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 97, 22).addItemStack(output);
         } else if (recipe instanceof ShapelessTableCraftingRecipe) {
             shapelessRecipe(builder, inputs);
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 167, 73).addItemStack(output);
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 97, 22).addItemStack(output);
         } else if (recipe instanceof InfinityCatalystCraftRecipe) {
             shapelessRecipe(builder, inputs);
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 167, 73).addItemStack(new ItemStack(ModItems.infinity_catalyst.get()));
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 97, 22).addItemStack(new ItemStack(ModItems.infinity_catalyst.get()));
         } else if (recipe instanceof EternalSingularityCraftRecipe) {
             shapelessRecipe(builder, inputs);
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 167, 73).addItemStack(new ItemStack(ModItems.eternal_singularity.get()));
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 97, 22).addItemStack(new ItemStack(ModItems.eternal_singularity.get()));
         }
-        builder.moveRecipeTransferButton(170, 100);
+        builder.moveRecipeTransferButton(82, 45);
     }
 
     private void shapelessRecipe(@NotNull IRecipeLayoutBuilder builder, NonNullList<Ingredient> inputs) {
@@ -107,7 +107,7 @@ public class SculkCraftingTableCategory implements IRecipeCategory<BaseTableCraf
                 }
             }
         }
-        builder.setShapeless(175, 140);
+        builder.setShapeless(57, 45);
     }
 
     @Override
