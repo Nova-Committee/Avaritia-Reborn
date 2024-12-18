@@ -19,14 +19,14 @@
     }
   },
   "pattern": [
-    "   DC",
-    "A DCD",
-    "ADCD ",
-    " ED  ",
-    "B AA "
+    "  DDA",
+    " DCA ",
+    " DACD",
+    " E DD",
+    "B    "
   ],
   "result": {
-    "item": "avaritia:blaze_sword"
+    "item": "avaritia:blaze_axe"
   },
   "show_notification": true,
   "tier": 2

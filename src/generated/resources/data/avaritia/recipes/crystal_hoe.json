@@ -13,16 +13,16 @@
     }
   },
   "pattern": [
-    "CAAAA  ",
-    " CCCC  ",
-    "    CCA",
+    "CAAAAA ",
+    " CCCA A",
+    "     AA",
     "   B CA",
-    "  B  CA",
-    " B   CA",
-    "A     C"
+    "  B   C",
+    " B     ",
+    "A      "
   ],
   "result": {
-    "item": "avaritia:crystal_pickaxe"
+    "item": "avaritia:crystal_hoe"
   },
   "show_notification": true,
   "tier": 3

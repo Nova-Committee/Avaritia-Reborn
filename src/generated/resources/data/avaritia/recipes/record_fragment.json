@@ -1,13 +1,28 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "avaritia:shaped_table",
   "category": "misc",
-  "ingredients": [
-    {
+  "key": {
+    "a": {
       "tag": "minecraft:music_discs"
+    },
+    "b": {
+      "item": "avaritia:neutron_pile"
     }
+  },
+  "pattern": [
+    "         ",
+    "         ",
+    "         ",
+    "    b    ",
+    "   bab   ",
+    "    b    ",
+    "         ",
+    "         ",
+    "         "
   ],
   "result": {
-    "count": 4,
     "item": "avaritia:record_fragment"
-  }
+  },
+  "show_notification": true,
+  "tier": 4
 }

@@ -1,0 +1,41 @@
+{
+  "type": "avaritia:shaped_table",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "minecraft:egg"
+    },
+    "b": {
+      "item": "avaritia:infinity_catalyst"
+    },
+    "c": {
+      "item": "avaritia:cosmic_meatballs"
+    },
+    "d": {
+      "item": "minecraft:dragon_head"
+    },
+    "e": {
+      "item": "avaritia:endest_pearl"
+    },
+    "f": {
+      "item": "minecraft:ender_eye"
+    },
+    "g": {
+      "item": "avaritia:neutron_pile"
+    }
+  },
+  "pattern": [
+    "  ggg  ",
+    " gfefg ",
+    "gfbdbfg",
+    "gecaceg",
+    "gfbcbfg",
+    "ggfefgg",
+    " ggggg "
+  ],
+  "result": {
+    "item": "minecraft:dragon_egg"
+  },
+  "show_notification": true,
+  "tier": 3
+}

@@ -79,8 +79,8 @@ public class ToolUtils {
             Tags.Blocks.GLASS, Tags.Blocks.ORES,
             BlockTags.SCULK_REPLACEABLE_WORLD_GEN,
             Tags.Blocks.ORE_BEARING_GROUND_DEEPSLATE,
-            Tags.Blocks.COBBLESTONE_DEEPSLATE
-
+            Tags.Blocks.COBBLESTONE_DEEPSLATE,
+            BlockTags.FEATURES_CANNOT_REPLACE
     );
 
     public static final Set<TagKey<Block>> materialsAxe = Sets.newHashSet(

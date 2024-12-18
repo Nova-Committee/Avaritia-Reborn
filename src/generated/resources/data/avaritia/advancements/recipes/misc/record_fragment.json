@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "avaritia:record_fragment"
-            ]
+            "tag": "minecraft:music_discs"
           }
         ]
       },
@@ -31,5 +29,5 @@
       "avaritia:record_fragment"
     ]
   },
-  "sends_telemetry_event": false
+  "sends_telemetry_event": true
 }

@@ -1,9 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
+  "category": "misc",
+  "group": "infinity_ingot",
   "key": {
     "#": {
-      "item": "avaritia:infinity_ingot"
+      "item": "avaritia:infinity_nugget"
     }
   },
   "pattern": [
@@ -12,7 +13,7 @@
     "###"
   ],
   "result": {
-    "item": "avaritia:infinity"
+    "item": "avaritia:infinity_ingot"
   },
   "show_notification": true
 }

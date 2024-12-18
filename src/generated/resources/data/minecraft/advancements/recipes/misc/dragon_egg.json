@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "minecraft:leather_horse_armor"
+              "avaritia:infinity_catalyst"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "avaritia:neutron_horse_armor"
+        "recipe": "minecraft:dragon_egg"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,8 +28,8 @@
   ],
   "rewards": {
     "recipes": [
-      "avaritia:neutron_horse_armor"
+      "minecraft:dragon_egg"
     ]
   },
-  "sends_telemetry_event": false
+  "sends_telemetry_event": true
 }

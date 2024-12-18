@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_infinity_ingot": {
+    "has_item": {
       "conditions": {
         "items": [
           {
             "items": [
-              "avaritia:infinity_ingot"
+              "avaritia:crystal_matrix_ingot"
             ]
           }
         ]
@@ -15,21 +15,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:infinity"
+        "recipe": "minecraft:end_portal_frame"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_infinity_ingot",
+      "has_item",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:infinity"
+      "minecraft:end_portal_frame"
     ]
   },
-  "sends_telemetry_event": false
+  "sends_telemetry_event": true
 }

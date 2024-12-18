@@ -2,17 +2,29 @@
   "type": "avaritia:shaped_table",
   "category": "misc",
   "key": {
-    "x": {
-      "item": "avaritia:blaze_cube_block"
-    },
-    "y": {
+    "a": {
       "item": "avaritia:sculk_crafting_table"
+    },
+    "b": {
+      "item": "minecraft:respawn_anchor"
+    },
+    "c": {
+      "item": "minecraft:wither_skeleton_skull"
+    },
+    "d": {
+      "item": "minecraft:netherrack"
+    },
+    "e": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "f": {
+      "item": "minecraft:nether_star"
     }
   },
   "pattern": [
-    "xxx",
-    "xyx",
-    "xxx"
+    "cbc",
+    "dad",
+    "efe"
   ],
   "result": {
     "item": "avaritia:nether_crafting_table"

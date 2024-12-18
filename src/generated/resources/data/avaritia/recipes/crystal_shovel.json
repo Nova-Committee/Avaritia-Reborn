@@ -13,16 +13,16 @@
     }
   },
   "pattern": [
-    "CAAAA  ",
-    " CCCC  ",
-    "    CCA",
-    "   B CA",
-    "  B  CA",
-    " B   CA",
-    "A     C"
+    "    CCC",
+    "   CCCC",
+    "    CCC",
+    "   B C ",
+    "  B    ",
+    " B     ",
+    "A      "
   ],
   "result": {
-    "item": "avaritia:crystal_pickaxe"
+    "item": "avaritia:crystal_shovel"
   },
   "show_notification": true,
   "tier": 3

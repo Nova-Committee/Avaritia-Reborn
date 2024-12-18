@@ -3,24 +3,42 @@
   "category": "misc",
   "key": {
     "a": {
-      "item": "minecraft:nether_star"
+      "item": "avaritia:nether_crafting_table"
     },
     "b": {
+      "item": "minecraft:end_crystal"
+    },
+    "c": {
+      "item": "minecraft:end_portal_frame"
+    },
+    "d": {
+      "item": "minecraft:obsidian"
+    },
+    "e": {
+      "item": "minecraft:dragon_breath"
+    },
+    "f": {
+      "item": "minecraft:purpur_pillar"
+    },
+    "g": {
+      "item": "minecraft:end_stone_bricks"
+    },
+    "h": {
+      "item": "minecraft:end_stone"
+    },
+    "i": {
       "item": "minecraft:ender_eye"
     },
-    "x": {
-      "item": "minecraft:amethyst_block"
-    },
-    "y": {
-      "item": "avaritia:nether_crafting_table"
+    "j": {
+      "item": "minecraft:ender_chest"
     }
   },
   "pattern": [
-    "xxxxx",
-    "xbabx",
-    "xayax",
-    "xbabx",
-    "xxxxx"
+    "bcccb",
+    "dfifd",
+    "dgagd",
+    "dhjhd",
+    "beeeb"
   ],
   "result": {
     "item": "avaritia:end_crafting_table"

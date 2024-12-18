@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "": {
+    "has_item": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:air"
+              "minecraft:blaze_rod"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "",
+      "has_item",
       "has_the_recipe"
     ]
   ],
@@ -31,5 +31,5 @@
       "avaritia:blaze_cube"
     ]
   },
-  "sends_telemetry_event": false
+  "sends_telemetry_event": true
 }

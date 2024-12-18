@@ -6,23 +6,23 @@
       "item": "avaritia:crystal_matrix"
     },
     "B": {
-      "item": "avaritia:neutron_ingot"
+      "item": "avaritia:neutron"
     },
     "C": {
       "item": "avaritia:crystal_matrix_ingot"
     }
   },
   "pattern": [
-    "CAAAA  ",
-    " CCCC  ",
-    "    CCA",
-    "   B CA",
-    "  B  CA",
-    " B   CA",
-    "A     C"
+    "     CA",
+    "    CAC",
+    " C CAC ",
+    " CCAC  ",
+    "CAAC   ",
+    " BACC  ",
+    "A C    "
   ],
   "result": {
-    "item": "avaritia:crystal_pickaxe"
+    "item": "avaritia:crystal_sword"
   },
   "show_notification": true,
   "tier": 3

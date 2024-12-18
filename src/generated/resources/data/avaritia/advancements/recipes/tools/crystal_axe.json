@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "avaritia:blaze_cube"
+              "avaritia:crystal_matrix_ingot"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "avaritia:blaze_sword"
+        "recipe": "avaritia:crystal_axe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "avaritia:blaze_sword"
+      "avaritia:crystal_axe"
     ]
   },
   "sends_telemetry_event": true

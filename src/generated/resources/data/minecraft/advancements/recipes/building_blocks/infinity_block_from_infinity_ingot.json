@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item": {
+    "has_infinity_ingot": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:dragon_egg"
+              "avaritia:infinity_ingot"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "avaritia:endless_cake"
+        "recipe": "minecraft:infinity_block_from_infinity_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_item",
+      "has_infinity_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "avaritia:endless_cake"
+      "minecraft:infinity_block_from_infinity_ingot"
     ]
   },
   "sends_telemetry_event": false

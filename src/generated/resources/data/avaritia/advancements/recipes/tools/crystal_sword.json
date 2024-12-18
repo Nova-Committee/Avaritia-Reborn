@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "avaritia:infinity_ingot"
+              "avaritia:crystal_matrix_ingot"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "avaritia:infinity_nugget"
+        "recipe": "avaritia:crystal_sword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,8 +28,8 @@
   ],
   "rewards": {
     "recipes": [
-      "avaritia:infinity_nugget"
+      "avaritia:crystal_sword"
     ]
   },
-  "sends_telemetry_event": false
+  "sends_telemetry_event": true
 }

@@ -3,32 +3,47 @@
   "category": "misc",
   "key": {
     "a": {
-      "item": "minecraft:nether_star"
+      "item": "avaritia:end_crafting_table"
     },
     "b": {
-      "item": "minecraft:conduit"
+      "item": "minecraft:lodestone"
     },
     "c": {
-      "item": "minecraft:shulker_shell"
+      "item": "avaritia:diamond_lattice"
     },
     "d": {
-      "item": "minecraft:echo_shard"
+      "item": "avaritia:crystal_matrix_ingot"
     },
-    "x": {
+    "e": {
       "item": "avaritia:crystal_matrix"
     },
-    "y": {
-      "item": "avaritia:end_crafting_table"
+    "f": {
+      "item": "minecraft:recovery_compass"
+    },
+    "g": {
+      "item": "minecraft:dragon_egg"
+    },
+    "h": {
+      "item": "minecraft:beacon"
+    },
+    "i": {
+      "item": "minecraft:reinforced_deepslate"
+    },
+    "j": {
+      "item": "minecraft:netherite_block"
+    },
+    "k": {
+      "item": "minecraft:heart_of_the_sea"
     }
   },
   "pattern": [
-    "xxxxxxx",
-    "xdcdcdx",
-    "xcbabcx",
-    "xdayadx",
-    "xcbabcx",
-    "xdcdcdx",
-    "xxxxxxx"
+    "bccfccb",
+    "cddgddc",
+    "cdihidc",
+    "cdiaidc",
+    "cdjkjdc",
+    "cdddddc",
+    "beeeeeb"
   ],
   "result": {
     "item": "avaritia:extreme_crafting_table"

@@ -20,13 +20,13 @@
   },
   "pattern": [
     "   DC",
-    "A DCD",
-    "ADCD ",
-    " ED  ",
-    "B AA "
+    "   CD",
+    "  A  ",
+    " E   ",
+    "B    "
   ],
   "result": {
-    "item": "avaritia:blaze_sword"
+    "item": "avaritia:blaze_shovel"
   },
   "show_notification": true,
   "tier": 2

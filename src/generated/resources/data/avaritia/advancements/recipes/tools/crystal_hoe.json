@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "avaritia:infinity_catalyst"
+              "avaritia:crystal_matrix_ingot"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "avaritia:star_fuel"
+        "recipe": "avaritia:crystal_hoe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,8 +28,8 @@
   ],
   "rewards": {
     "recipes": [
-      "avaritia:star_fuel"
+      "avaritia:crystal_hoe"
     ]
   },
-  "sends_telemetry_event": false
+  "sends_telemetry_event": true
 }

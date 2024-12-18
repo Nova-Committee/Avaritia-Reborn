@@ -30,8 +30,7 @@ public class SingularityUtils {
         }
         var name = GsonHelper.getAsString(json, "name");
         var colors = GsonHelper.getAsJsonArray(json, "colors");
-        int materialCount = GsonHelper.getAsInt(json, "materialCount", 1000);
-
+        int materialCount = Static.isLoad("projecte") ? 10000 : GsonHelper.getAsInt(json, "materialCount", 1000);
         int overlayColor = Integer.parseInt(colors.get(0).getAsString(), 16);
         int underlayColor = Integer.parseInt(colors.get(1).getAsString(), 16);
 

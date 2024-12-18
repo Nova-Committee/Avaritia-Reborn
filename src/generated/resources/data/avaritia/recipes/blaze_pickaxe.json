@@ -19,14 +19,14 @@
     }
   },
   "pattern": [
-    "   DC",
-    "A DCD",
-    "ADCD ",
-    " ED  ",
-    "B AA "
+    "DCCCA",
+    " DDAC",
+    "  ADC",
+    " E DC",
+    "B   D"
   ],
   "result": {
-    "item": "avaritia:blaze_sword"
+    "item": "avaritia:blaze_pickaxe"
   },
   "show_notification": true,
   "tier": 2

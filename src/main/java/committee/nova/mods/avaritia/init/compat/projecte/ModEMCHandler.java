@@ -22,7 +22,6 @@ public class ModEMCHandler {
 
     public static void init() {
         registerEMC(ModItems.neutron_pile.get(), ModConfig.neutronPileEmc.get());
-        registerEMC(ModItems.blaze_cube.get(), ModConfig.blazeCubeEmc.get());
         registerEMC(Items.TOTEM_OF_UNDYING, ModConfig.vanillaTotemEmc.get());
     }
 }
