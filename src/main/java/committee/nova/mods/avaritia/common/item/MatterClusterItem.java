@@ -59,7 +59,7 @@ public class MatterClusterItem extends Item {
         LinkedList<ItemStack> stacks = new LinkedList<>(input);
 
         while (!stacks.isEmpty()) {
-            SimpleContainer clusterInventory = new SimpleContainer(512);
+            SimpleContainer clusterInventory = new SimpleContainer(CAPACITY);
             int totalInserted = 0;
 
             ItemStack cluster;

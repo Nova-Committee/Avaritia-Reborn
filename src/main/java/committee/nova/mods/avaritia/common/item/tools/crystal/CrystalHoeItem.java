@@ -67,6 +67,7 @@ public class CrystalHoeItem extends HoeItem implements ITooltip {
 
     @Override
     public @NotNull InteractionResult useOn(@NotNull UseOnContext pContext) {
+        super.useOn(pContext);
         var pos = pContext.getClickedPos();
         var level = pContext.getLevel();
         var targetState = level.getBlockState(pos);
@@ -79,7 +80,7 @@ public class CrystalHoeItem extends HoeItem implements ITooltip {
                 ForgeHooks.onCropsGrowPost(serverLevel, pos, targetState);
             }
         }
-        return super.useOn(pContext);
+        return InteractionResult.CONSUME;
     }
 
     @Override
