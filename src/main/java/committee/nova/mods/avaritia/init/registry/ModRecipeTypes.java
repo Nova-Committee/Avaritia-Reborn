@@ -2,12 +2,12 @@ package committee.nova.mods.avaritia.init.registry;
 
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.api.common.crafting.ICompressorRecipe;
-import committee.nova.mods.avaritia.api.common.crafting.ISpecialRecipe;
 import committee.nova.mods.avaritia.common.crafting.recipe.BaseTableCraftingRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SmithingRecipe;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -26,6 +26,7 @@ public class ModRecipeTypes {
 
     public static final @NotNull RegistryObject<RecipeType<BaseTableCraftingRecipe>> CRAFTING_TABLE_RECIPE = recipe("crafting_table_recipe", () -> RecipeType.simple(new ResourceLocation(Static.MOD_ID, "crafting_table_recipe")));
     public static final @NotNull RegistryObject<RecipeType<ICompressorRecipe>> COMPRESSOR_RECIPE = recipe("compressor_recipe", () -> RecipeType.simple(new ResourceLocation(Static.MOD_ID, "compressor_recipe")));
+    public static final @NotNull RegistryObject<RecipeType<SmithingRecipe>> EXTREME_SMITHING_RECIPE = recipe("extreme_smithing_recipe", () -> RecipeType.simple(new ResourceLocation(Static.MOD_ID, "extreme_smithing_recipe")));
 
 
     public static <T extends Recipe<Container>> RegistryObject<RecipeType<T>> recipe(String name, Supplier<RecipeType<T>> type) {

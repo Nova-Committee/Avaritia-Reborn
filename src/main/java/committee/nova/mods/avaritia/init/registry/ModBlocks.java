@@ -11,6 +11,7 @@ import committee.nova.mods.avaritia.common.block.craft.CompressedCraftTableBlock
 import committee.nova.mods.avaritia.common.block.craft.DoubleCompressedCraftTableBlock;
 import committee.nova.mods.avaritia.common.block.craft.ModCraftTableBlock;
 import committee.nova.mods.avaritia.common.block.misc.SoulFarmLandBlock;
+import committee.nova.mods.avaritia.common.block.smith.ExtremeSmithingTableBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -54,6 +55,7 @@ public class ModBlocks {
     public static RegistryObject<Block> denser_neutron_collector = block("denser_neutron_collector", BaseNeutronCollectorBlock::new, ModRarities.LEGEND);
     public static RegistryObject<Block> densest_neutron_collector = block("densest_neutron_collector", BaseNeutronCollectorBlock::new, ModRarities.COSMIC);
     public static RegistryObject<Block> neutron_compressor = block("neutron_compressor", CompressorBlock::new, ModRarities.RARE);
+    public static RegistryObject<Block> extreme_smithing_table = block("extreme_smithing_table", ExtremeSmithingTableBlock::new, ModRarities.LEGEND);
 
     //CAKE
     public static RegistryObject<Block> endless_cake = block("endless_cake", EndlessCakeBlock::new, ModRarities.UNCOMMON);
