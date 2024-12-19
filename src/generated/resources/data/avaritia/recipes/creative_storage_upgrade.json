@@ -13,16 +13,16 @@
         "category": "equipment",
         "key": {
           "D": {
-            "item": "storagedrawers:oak_full_drawers_1"
+            "tag": "storagedrawers:drawers"
           },
           "E": {
             "item": "storagedrawers:emerald_storage_upgrade"
           },
           "N": {
-            "item": "avaritia:infinity_ingot"
+            "item": "avaritia:neutron_nugget"
           },
           "S": {
-            "item": "avaritia:infinity_catalyst"
+            "item": "minecraft:nether_star"
           }
         },
         "pattern": [
@@ -37,7 +37,7 @@
           "    S    "
         ],
         "result": {
-          "item": "storagedrawers:creative_vending_upgrade"
+          "item": "storagedrawers:creative_storage_upgrade"
         },
         "show_notification": true,
         "tier": 4

@@ -1014,7 +1014,7 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
                         .define('D', ModTags.DRAWERS)
                         .define('E', Static.getIngredient("storagedrawers", "emerald_storage_upgrade"))
                         .unlockedBy("has_item", has(Static.getItem("storagedrawers", "emerald_storage_upgrade")))::save
-        ).build(consumer, Static.rl("sd_creative_vending_upgrade"));
+        ).build(consumer, Static.rl("creative_storage_upgrade"));
 
         var creative_energy_cube_main = new CompoundTag();
         var energyContainers = new ListTag();

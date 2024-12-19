@@ -6,6 +6,7 @@ import committee.nova.mods.avaritia.common.item.EndestPearlItem;
 import committee.nova.mods.avaritia.common.item.InfinityArmorItem;
 import committee.nova.mods.avaritia.common.item.MatterClusterItem;
 import committee.nova.mods.avaritia.common.item.misc.*;
+import committee.nova.mods.avaritia.common.item.resources.EnhancementCoreItem;
 import committee.nova.mods.avaritia.common.item.resources.NeutronGearItem;
 import committee.nova.mods.avaritia.common.item.resources.ResourceItem;
 import committee.nova.mods.avaritia.common.item.resources.StarFuelItem;
@@ -96,6 +97,7 @@ public class ModItems {
     public static RegistryObject<Item> star_fuel = item("star_fuel", StarFuelItem::new);
     public static RegistryObject<Item> endest_pearl = item("endest_pearl", EndestPearlItem::new);
     public static RegistryObject<Item> matter_cluster = item("matter_cluster", MatterClusterItem::new);
+    public static RegistryObject<Item> enhancement_core = item("enhancement_core", EnhancementCoreItem::new);
     //food
     public static RegistryObject<Item> ultimate_stew = item("ultimate_stew", () -> new BaseItem(pro -> pro.rarity(ModRarities.EPIC).food(ModFoods.ultimate_stew)));
     public static RegistryObject<Item> cosmic_meatballs = item("cosmic_meatballs", () -> new BaseItem(pro -> pro.rarity(ModRarities.EPIC).food(ModFoods.cosmic_meatballs)));
