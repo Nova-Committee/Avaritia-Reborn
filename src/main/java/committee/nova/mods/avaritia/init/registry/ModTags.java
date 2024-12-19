@@ -1,9 +1,12 @@
 package committee.nova.mods.avaritia.init.registry;
 
 import committee.nova.mods.avaritia.Static;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 /**
  * @Project: Avaritia-forge
@@ -14,4 +17,5 @@ import net.minecraft.world.item.Item;
 
 public class ModTags {
     public static final TagKey<Item> SINGULARITY = ItemTags.create(Static.rl("singularity"));
+    public static final TagKey<Item> DRAWERS = ItemTags.create(new ResourceLocation("storagedrawers", "drawers"));
 }

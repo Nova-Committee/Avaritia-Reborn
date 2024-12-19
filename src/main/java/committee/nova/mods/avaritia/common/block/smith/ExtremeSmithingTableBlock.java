@@ -40,7 +40,7 @@ public class ExtremeSmithingTableBlock extends BaseBlock {
     @Override
     public MenuProvider getMenuProvider(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos) {
         return new SimpleMenuProvider((i, inventory, player) -> {
-            return new ExtremeSmithingMenu(i, inventory, pPos);
+            return new ExtremeSmithingMenu(i, inventory);
         }, CONTAINER_TITLE);
     }
 

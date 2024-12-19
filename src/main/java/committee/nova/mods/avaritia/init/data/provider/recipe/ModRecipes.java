@@ -4,6 +4,7 @@ import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.init.registry.ModBlocks;
 import committee.nova.mods.avaritia.init.registry.ModItems;
 import committee.nova.mods.avaritia.init.registry.ModSingularities;
+import committee.nova.mods.avaritia.init.registry.ModTags;
 import committee.nova.mods.avaritia.util.SingularityUtils;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -998,7 +999,7 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
         ).build(consumer, Static.rl("tc3_creative_slot_upgrades"));
 
         ConditionalRecipe.builder().addCondition(modLoaded("storagedrawers")).addRecipe(
-                ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ResourceLocation.tryBuild("storagedrawers", "creative_vending_upgrade"))
+                ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ResourceLocation.tryBuild("storagedrawers", "creative_storage_upgrade"))
                         .pattern("    S    ")
                         .pattern(" NDDDDDN ")
                         .pattern(" DNDDDND ")
@@ -1008,10 +1009,9 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
                         .pattern(" DNDDDND ")
                         .pattern(" NDDDDDN ")
                         .pattern("    S    ")
-
-                        .define('N', ModItems.infinity_ingot.get())
-                        .define('S', ModItems.infinity_catalyst.get())
-                        .define('D', Static.getIngredient("storagedrawers", "oak_full_drawers_1"))
+                        .define('N', ModItems.neutron_nugget.get())
+                        .define('S', Items.NETHER_STAR)
+                        .define('D', ModTags.DRAWERS)
                         .define('E', Static.getIngredient("storagedrawers", "emerald_storage_upgrade"))
                         .unlockedBy("has_item", has(Static.getItem("storagedrawers", "emerald_storage_upgrade")))::save
         ).build(consumer, Static.rl("sd_creative_vending_upgrade"));

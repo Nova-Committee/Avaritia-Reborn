@@ -31,10 +31,10 @@ public class ExtremeSmithingMenu extends ItemCombinerMenu {
     private final List<SmithingRecipe> recipes;
 
     public ExtremeSmithingMenu(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
-        this(id, playerInventory, buffer.readBlockPos());
+        this(id, playerInventory);
     }
-    public ExtremeSmithingMenu(int pContainerId, Inventory pPlayerInventory, BlockPos pBlockPos) {
-        super(ModMenus.extreme_smithing_table.get(), pContainerId, pPlayerInventory, ContainerLevelAccess.create(pPlayerInventory.player.level(), pBlockPos));
+    public ExtremeSmithingMenu(int pContainerId, Inventory pPlayerInventory) {
+        super(ModMenus.extreme_smithing_table.get(), pContainerId, pPlayerInventory, ContainerLevelAccess.NULL);
         this.level = pPlayerInventory.player.level();
         this.recipes = this.level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.EXTREME_SMITHING_RECIPE.get());
     }
@@ -81,27 +81,27 @@ public class ExtremeSmithingMenu extends ItemCombinerMenu {
 
     @Override
     protected @NotNull ItemCombinerMenuSlotDefinition createInputSlotDefinitions() {
-        return ItemCombinerMenuSlotDefinition.create().withSlot(0, 8, 48, (stack) -> {
+        return ItemCombinerMenuSlotDefinition.create().withSlot(0, 31, 35, (stack) -> {
             return this.recipes.stream().anyMatch((recipe) -> {
                 return recipe.isTemplateIngredient(stack);
             });
-        }).withSlot(1, 26, 48, (stack) -> {
+        }).withSlot(1, 49, 35, (stack) -> {
             return this.recipes.stream().anyMatch((recipe) -> {
                 return recipe.isBaseIngredient(stack);
             });
-        }).withSlot(2, 44, 48, (stack) -> {
+        }).withSlot(2, 67, 35, (stack) -> {
             return this.recipes.stream().anyMatch((recipe) -> {
                 return recipe.isAdditionIngredient(stack);
             });
-        }).withSlot(3, 26, 30, (stack) -> {
+        }).withSlot(3, 49, 17, (stack) -> {
             return this.recipes.stream().anyMatch((recipe) -> {
                 return recipe.isAdditionIngredient(stack);
             });
-        }).withSlot(4, 26, 66, (stack) -> {
+        }).withSlot(4, 49, 53, (stack) -> {
             return this.recipes.stream().anyMatch((recipe) -> {
                 return recipe.isAdditionIngredient(stack);
             });
-        }).withResultSlot(5, 98, 48).build();
+        }).withResultSlot(5, 121, 35).build();
     }
 
     private List<ItemStack> getRelevantItems() {
