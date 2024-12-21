@@ -16,10 +16,10 @@ public class ModSounds {
 
     public static final SoundEvent GAPING_VOID = SoundEvent.createVariableRangeEvent(new ResourceLocation("avaritia:gaping_void"));
     public static final SoundType END_PORTAL = new ForgeSoundType(1.0F, 1.0F,
-            () -> null,
-            () -> null,
             () -> SoundEvents.END_PORTAL_FRAME_FILL,
-            () -> null,
-            () -> null);
+            () -> SoundEvents.END_PORTAL_FRAME_FILL,
+            () -> SoundEvents.END_PORTAL_FRAME_FILL,
+            () -> SoundEvents.END_PORTAL_FRAME_FILL,
+            () -> SoundEvents.END_PORTAL_FRAME_FILL);
 
 }

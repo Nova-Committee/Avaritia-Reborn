@@ -3,6 +3,8 @@ package committee.nova.mods.avaritia.init.compat;
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.common.block.compressor.CompressorBlock;
 import committee.nova.mods.avaritia.common.block.craft.ModCraftTableBlock;
+import committee.nova.mods.avaritia.common.block.smith.ExtremeSmithingTableBlock;
+import committee.nova.mods.avaritia.common.crafting.recipe.ExtremeSmithingRecipe;
 import committee.nova.mods.avaritia.common.tile.CompressorTile;
 import committee.nova.mods.avaritia.common.tile.ModCraftTile;
 import committee.nova.mods.avaritia.init.registry.ModRecipeTypes;
@@ -23,7 +25,8 @@ public class JadeCompat implements IWailaPlugin {
     @Override
     public void registerClient(IWailaClientRegistration registration) {
         registration.registerBlockComponent(CompressorComponentProvider.INSTANCE, CompressorBlock.class);
-        registration.registerBlockComponent(ExtremeComponentProvider.INSTANCE, ModCraftTableBlock.class);
+        registration.registerBlockComponent(CraftingComponentProvider.INSTANCE, ModCraftTableBlock.class);
+        registration.registerBlockComponent(ExtremeSmithingComponentProvider.INSTANCE, ExtremeSmithingTableBlock.class);
     }
 
     public enum CompressorComponentProvider implements IBlockComponentProvider {
@@ -49,7 +52,7 @@ public class JadeCompat implements IWailaPlugin {
         }
     }
 
-    public enum ExtremeComponentProvider implements IBlockComponentProvider {
+    public enum CraftingComponentProvider implements IBlockComponentProvider {
 
         INSTANCE;
 
@@ -68,7 +71,29 @@ public class JadeCompat implements IWailaPlugin {
 
         @Override
         public ResourceLocation getUid() {
-            return new ResourceLocation(Static.MOD_ID, "extreme");
+            return new ResourceLocation(Static.MOD_ID, "crafting_table");
+        }
+    }
+
+    public enum ExtremeSmithingComponentProvider implements IBlockComponentProvider {
+
+        INSTANCE;
+
+        @Override
+        public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
+            var level = Minecraft.getInstance().level;
+            assert level != null;
+            var recipes = level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.EXTREME_SMITHING_RECIPE.get());
+            if (!recipes.isEmpty()) {
+                ExtremeSmithingRecipe recipe = recipes.get(0);
+                var output = recipe.getResultItem(level.registryAccess());
+                tooltip.add(ModTooltips.SMITHING.args(output.getCount(), output.getHoverName()).build());
+            }
+        }
+
+        @Override
+        public ResourceLocation getUid() {
+            return new ResourceLocation(Static.MOD_ID, "extreme_smithing");
         }
     }
 }

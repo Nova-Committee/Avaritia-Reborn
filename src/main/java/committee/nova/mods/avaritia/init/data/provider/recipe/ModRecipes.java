@@ -8,6 +8,7 @@ import committee.nova.mods.avaritia.init.registry.ModTags;
 import committee.nova.mods.avaritia.util.SingularityUtils;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.nbt.CompoundTag;
@@ -17,10 +18,14 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -39,6 +44,10 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
 
     protected static InventoryChangeTrigger.TriggerInstance has(@NotNull TagKey<Item> tagKey) {
         return inventoryTrigger(ItemPredicate.Builder.item().of(tagKey).build());
+    }
+
+    protected static String getModItemName(ItemLike pItemLike) {
+        return ForgeRegistries.ITEMS.getKey(pItemLike.asItem()).getPath();
     }
 
     @Override
@@ -213,6 +222,15 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
                 .define('g', ModItems.neutron_gear.get())
                 .unlockedBy("has_item", has(Blocks.CHEST)).save(consumer);
 
+        ModExtremeSmithingRecipeBuilder.smithing(
+                Ingredient.of(ModItems.infinity_smithing_template.get()),
+                Ingredient.of(Items.TOTEM_OF_UNDYING),
+                CompoundIngredient.of(Ingredient.of(Items.EXPERIENCE_BOTTLE), Ingredient.of(Items.BEACON), Ingredient.of(ModItems.enhancement_core.get())),
+                RecipeCategory.MISC,
+                ModItems.infinity_totem.get())
+                .unlockedBy("has_item", has(ModItems.infinity_smithing_template.get()))
+                .save(consumer, Static.rl(getModItemName(ModItems.infinity_totem.get()) + "_smithing"));
+
         ModShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModItems.cosmic_meatballs.get())
                 .requires(Items.PORKCHOP)
                 .requires(Items.BEEF)
@@ -349,8 +367,8 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
 
         ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.blaze_shovel.get(), 2)
                 .pattern("   DC")
-                .pattern("   CD")
-                .pattern("  A  ")
+                .pattern("  DCD")
+                .pattern("  AD ")
                 .pattern(" E   ")
                 .pattern("B    ")
                 .define('A', Blocks.BONE_BLOCK)
@@ -390,7 +408,7 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
                 .unlockedBy("has_item", has(ModItems.crystal_matrix_ingot.get())).save(consumer);
 
         ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.crystal_pickaxe.get(), 3)
-                .pattern("CAAAA  ")
+                .pattern("CAAAA D")
                 .pattern(" CCCC  ")
                 .pattern("    CCA")
                 .pattern("   B CA")
@@ -400,6 +418,7 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
                 .define('A', ModBlocks.crystal_matrix.get())
                 .define('B', ModItems.neutron_ingot.get())
                 .define('C', ModItems.crystal_matrix_ingot.get())
+                .define('D', ModBlocks.neutron.get())
                 .showNotification(true)
                 .unlockedBy("has_item", has(ModItems.crystal_matrix_ingot.get())).save(consumer);
 
@@ -657,22 +676,22 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
 
                 .unlockedBy("has_item", has(ModItems.neutron_ingot.get())).save(consumer);
 
-        ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.infinity_totem.get())
-                .pattern("   NNN   ")
-                .pattern("  NIIIN  ")
-                .pattern("  NYIYN  ")
-                .pattern("CCCIIICCC")
-                .pattern(" CCIIICC ")
-                .pattern("  NIIIN  ")
-                .pattern("  NNNNN  ")
-                .pattern("   CCC   ")
-                .pattern("    C    ")
-                .define('N', ModItems.neutron_ingot.get())
-                .define('I', ModItems.infinity_nugget.get())
-                .define('Y', Items.TOTEM_OF_UNDYING)
-                .define('C', ModItems.crystal_matrix_ingot.get())
-
-                .unlockedBy("has_item", has(Items.TOTEM_OF_UNDYING)).save(consumer);
+//        ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.infinity_totem.get())
+//                .pattern("   NNN   ")
+//                .pattern("  NIIIN  ")
+//                .pattern("  NYIYN  ")
+//                .pattern("CCCIIICCC")
+//                .pattern(" CCIIICC ")
+//                .pattern("  NIIIN  ")
+//                .pattern("  NNNNN  ")
+//                .pattern("   CCC   ")
+//                .pattern("    C    ")
+//                .define('N', ModItems.neutron_ingot.get())
+//                .define('I', ModItems.infinity_nugget.get())
+//                .define('Y', Items.TOTEM_OF_UNDYING)
+//                .define('C', ModItems.crystal_matrix_ingot.get())
+//
+//                .unlockedBy("has_item", has(Items.TOTEM_OF_UNDYING)).save(consumer);
 
         ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.infinity_bucket.get())
                 .pattern("NN     NN")

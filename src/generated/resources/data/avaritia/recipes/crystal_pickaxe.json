@@ -10,10 +10,13 @@
     },
     "C": {
       "item": "avaritia:crystal_matrix_ingot"
+    },
+    "D": {
+      "item": "avaritia:neutron"
     }
   },
   "pattern": [
-    "CAAAA  ",
+    "CAAAA D",
     " CCCC  ",
     "    CCA",
     "   B CA",

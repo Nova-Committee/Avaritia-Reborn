@@ -2,6 +2,7 @@ package committee.nova.mods.avaritia.client.screen;
 
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.common.item.resources.EnhancementCoreItem;
+import committee.nova.mods.avaritia.common.item.resources.InfinitySmithingTemplateItem;
 import committee.nova.mods.avaritia.common.menu.ExtremeSmithingMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.CyclingSlotBackground;
@@ -51,21 +52,21 @@ public class ExtremeSmithingScreen extends ItemCombinerScreen<ExtremeSmithingMen
         }
     }
 
+    @Override
     public void containerTick() {
         super.containerTick();
         Optional<SmithingTemplateItem> optional = this.getTemplateItem();
         this.templateIcon.tick(EMPTY_SLOT_SMITHING_TEMPLATES);
-        this.baseIcon.tick(optional.map(SmithingTemplateItem::getBaseSlotEmptyIcons).orElse(List.of()));
-        this.additionalIcon1.tick(optional.map(SmithingTemplateItem::getAdditionalSlotEmptyIcons).orElse(List.of()));
+        //this.baseIcon.tick(optional.map(InfinitySmithingTemplateItem::getBaseSlotEmptyIcons).orElse(List.of()));
+        //this.additionalIcon1.tick(optional.map(InfinitySmithingTemplateItem::getAdditionalSlotEmptyIcons).orElse(List.of()));
     }
 
     private Optional<SmithingTemplateItem> getTemplateItem() {
         ItemStack itemstack = this.menu.getSlot(0).getItem();
         if (!itemstack.isEmpty()) {
             Item item = itemstack.getItem();
-            if (item instanceof SmithingTemplateItem) {
-                SmithingTemplateItem smithingtemplateitem = (SmithingTemplateItem)item;
-                return Optional.of(smithingtemplateitem);
+            if (item instanceof InfinitySmithingTemplateItem smithingTemplateItem) {
+                return Optional.of(smithingTemplateItem);
             }
         }
 

@@ -55,7 +55,7 @@ public class ContainerUtils {
     }
 
     /**
-     * @return The quantity of items from addition that can be added to base
+     * @return The quantity of items from additions that can be added to base
      */
     public static int incrStackSize(@Nonnull ItemStack base, @Nonnull ItemStack addition) {
         if (canStack(base, addition)) {
@@ -66,7 +66,7 @@ public class ContainerUtils {
     }
 
     /**
-     * @return The quantity of items from addition that can be added to base
+     * @return The quantity of items from additions that can be added to base
      */
     public static int incrStackSize(@Nonnull ItemStack base, int addition) {
         int totalSize = base.getCount() + addition;

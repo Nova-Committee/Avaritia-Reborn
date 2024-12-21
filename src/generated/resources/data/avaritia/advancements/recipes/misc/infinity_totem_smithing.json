@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "minecraft:totem_of_undying"
+              "avaritia:infinity_smithing_template"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "avaritia:infinity_totem"
+        "recipe": "avaritia:infinity_totem_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,8 +28,8 @@
   ],
   "rewards": {
     "recipes": [
-      "avaritia:infinity_totem"
+      "avaritia:infinity_totem_smithing"
     ]
   },
-  "sends_telemetry_event": true
+  "sends_telemetry_event": false
 }

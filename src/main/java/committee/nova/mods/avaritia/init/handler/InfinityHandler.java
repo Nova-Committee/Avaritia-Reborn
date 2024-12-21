@@ -295,7 +295,7 @@ public class InfinityHandler {
         Item item = entityItem.getItem().getItem();
         if (item instanceof InfinityArmorItem || item instanceof InfinityAxeItem || item instanceof InfinityBowItem ||
                 item instanceof InfinityHoeItem || item instanceof InfinityShovelItem || item instanceof InfinityPickaxeItem ||
-                item instanceof InfinitySwordItem) {
+                item instanceof InfinitySwordItem || item instanceof InfinityCrossBowItem) {
             entityItem.setInvulnerable(true);
         }
     }

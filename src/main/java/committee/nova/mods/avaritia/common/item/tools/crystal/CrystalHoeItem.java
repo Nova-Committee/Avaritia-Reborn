@@ -78,9 +78,10 @@ public class CrystalHoeItem extends HoeItem implements ITooltip {
                 growable.performBonemeal(serverLevel, level.random, pos, targetState);
                 serverLevel.levelEvent(2005, pos, 0);
                 ForgeHooks.onCropsGrowPost(serverLevel, pos, targetState);
+                return InteractionResult.CONSUME;
             }
         }
-        return InteractionResult.CONSUME;
+        return InteractionResult.SUCCESS;
     }
 
     @Override

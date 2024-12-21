@@ -1,5 +1,6 @@
 package committee.nova.mods.avaritia.common.menu;
 
+import committee.nova.mods.avaritia.common.crafting.recipe.ExtremeSmithingRecipe;
 import committee.nova.mods.avaritia.init.registry.ModMenus;
 import committee.nova.mods.avaritia.init.registry.ModRecipeTypes;
 import net.minecraft.core.BlockPos;
@@ -28,7 +29,7 @@ public class ExtremeSmithingMenu extends ItemCombinerMenu {
     @Nullable
     private SmithingRecipe selectedRecipe;
     private final Level level;
-    private final List<SmithingRecipe> recipes;
+    private final List<ExtremeSmithingRecipe> recipes;
 
     public ExtremeSmithingMenu(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
         this(id, playerInventory);
@@ -65,11 +66,11 @@ public class ExtremeSmithingMenu extends ItemCombinerMenu {
 
     @Override
     public void createResult() {
-        List<SmithingRecipe> list = this.level.getRecipeManager().getRecipesFor(ModRecipeTypes.EXTREME_SMITHING_RECIPE.get(), this.inputSlots, this.level);
+        List<ExtremeSmithingRecipe> list = this.level.getRecipeManager().getRecipesFor(ModRecipeTypes.EXTREME_SMITHING_RECIPE.get(), this.inputSlots, this.level);
         if (list.isEmpty()) {
             this.resultSlots.setItem(0, ItemStack.EMPTY);
         } else {
-            SmithingRecipe smithingrecipe = list.get(0);
+            ExtremeSmithingRecipe smithingrecipe = list.get(0);
             ItemStack itemstack = smithingrecipe.assemble(this.inputSlots, this.level.registryAccess());
             if (itemstack.isItemEnabled(this.level.enabledFeatures())) {
                 this.selectedRecipe = smithingrecipe;

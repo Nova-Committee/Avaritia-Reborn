@@ -8,6 +8,7 @@ import committee.nova.mods.avaritia.client.screen.craft.NetherCraftScreen;
 import committee.nova.mods.avaritia.client.screen.craft.SculkCraftScreen;
 import committee.nova.mods.avaritia.common.menu.ModCraftMenu;
 import committee.nova.mods.avaritia.init.compat.jei.category.CompressorCategory;
+import committee.nova.mods.avaritia.init.compat.jei.category.ExtremeSmithingRecipeCategory;
 import committee.nova.mods.avaritia.init.compat.jei.category.tables.EndCraftingTableCategory;
 import committee.nova.mods.avaritia.init.compat.jei.category.tables.ExtremeCraftingTableCategory;
 import committee.nova.mods.avaritia.init.compat.jei.category.tables.NetherCraftingTableCategory;
@@ -54,6 +55,7 @@ public class JeiCompat implements IModPlugin {
         registration.addRecipeCategories(new NetherCraftingTableCategory(helper));
         registration.addRecipeCategories(new EndCraftingTableCategory(helper));
         registration.addRecipeCategories(new ExtremeCraftingTableCategory(helper));
+        registration.addRecipeCategories(new ExtremeSmithingRecipeCategory(helper));
     }
 
     @Override
