@@ -2,6 +2,12 @@
   "type": "avaritia:shaped_table",
   "category": "equipment",
   "key": {
+    "A": {
+      "item": "avaritia:crystal_matrix"
+    },
+    "C": {
+      "item": "avaritia:crystal_matrix_ingot"
+    },
     "I": {
       "item": "avaritia:infinity_ingot"
     },
@@ -14,14 +20,14 @@
   },
   "pattern": [
     "      III",
-    "     IIXI",
-    "      III",
-    "     N I ",
-    "    N    ",
-    "   N     ",
+    "     IIII",
+    "    CIIII",
+    "    ACII ",
+    "   AXAC  ",
+    "   NA    ",
     "  N      ",
     " N       ",
-    "N        "
+    "A        "
   ],
   "result": {
     "item": "avaritia:infinity_shovel"

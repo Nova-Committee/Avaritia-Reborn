@@ -13,6 +13,9 @@
     "avaritia:dense_neutron_collector",
     "avaritia:denser_neutron_collector",
     "avaritia:densest_neutron_collector",
-    "avaritia:neutron_compressor"
+    "avaritia:neutron_compressor",
+    "avaritia:extreme_anvil",
+    "avaritia:infinity_chest",
+    "avaritia:extreme_smithing_table"
   ]
 }

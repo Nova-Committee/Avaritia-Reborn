@@ -13,7 +13,7 @@ import java.util.List;
  * @CreateTime: 2024/12/20 00:42
  * @Description:
  */
-public class InfinitySmithingTemplateItem extends SmithingTemplateItem {
+public class UpgradeSmithingTemplateItem extends SmithingTemplateItem {
     private static final ChatFormatting TITLE_FORMAT = ChatFormatting.GRAY;
     private static final ChatFormatting DESCRIPTION_FORMAT = ChatFormatting.BLUE;
     private static final ResourceLocation EMPTY_SLOT_HOE = new ResourceLocation("item/empty_slot_hoe");
@@ -23,7 +23,7 @@ public class InfinitySmithingTemplateItem extends SmithingTemplateItem {
     private static final ResourceLocation EMPTY_SLOT_PICKAXE = new ResourceLocation("item/empty_slot_pickaxe");
     private static final ResourceLocation EMPTY_SLOT_BLOCK = new ResourceLocation("item/empty_slot_block");
 
-    public InfinitySmithingTemplateItem() {
+    public UpgradeSmithingTemplateItem() {
         super(Component.empty(),
                 Component.empty()
                         .withStyle(DESCRIPTION_FORMAT),

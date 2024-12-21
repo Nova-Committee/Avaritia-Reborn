@@ -2,26 +2,35 @@
   "type": "avaritia:shaped_table",
   "category": "equipment",
   "key": {
+    "A": {
+      "item": "avaritia:crystal_matrix"
+    },
+    "C": {
+      "item": "avaritia:crystal_matrix_ingot"
+    },
     "I": {
       "item": "avaritia:infinity_ingot"
     },
-    "W": {
-      "tag": "minecraft:wool"
+    "N": {
+      "item": "avaritia:neutron_ingot"
+    },
+    "P": {
+      "item": "avaritia:neutron_pile"
     },
     "X": {
-      "item": "avaritia:crystal_matrix"
+      "item": "avaritia:infinity_catalyst"
     }
   },
   "pattern": [
-    "     II  ",
-    "    I W  ",
-    "   I  W  ",
-    "  I   W  ",
-    "  X   W  ",
-    "  I   W  ",
-    "   I  W  ",
-    "    I W  ",
-    "     II  "
+    "      III",
+    "  AAIINNP",
+    " AXA   C ",
+    " AA   C  ",
+    " I   C   ",
+    " I  C    ",
+    "IN C     ",
+    "INC      ",
+    "IP       "
   ],
   "result": {
     "item": "avaritia:infinity_bow"

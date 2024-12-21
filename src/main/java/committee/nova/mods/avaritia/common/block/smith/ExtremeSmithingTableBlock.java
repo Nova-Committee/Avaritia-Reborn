@@ -10,6 +10,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -40,7 +41,7 @@ public class ExtremeSmithingTableBlock extends BaseBlock {
     @Override
     public MenuProvider getMenuProvider(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos) {
         return new SimpleMenuProvider((i, inventory, player) -> {
-            return new ExtremeSmithingMenu(i, inventory);
+            return new ExtremeSmithingMenu(i, inventory, ContainerLevelAccess.create(pLevel, pPos));
         }, CONTAINER_TITLE);
     }
 

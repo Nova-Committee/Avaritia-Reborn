@@ -2,6 +2,10 @@ package committee.nova.mods.avaritia.init.registry;
 
 import committee.nova.mods.avaritia.Static;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.network.chat.Component;
@@ -27,6 +31,14 @@ public class ModDamageTypes {
 
     public static ResourceKey<DamageType> INFINITY = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Static.MOD_ID, "infinity"));
 
+    public static final RegistrySetBuilder DAMAGE_BUILDER = new RegistrySetBuilder()
+            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap);
+
+    public static HolderLookup.Provider append(HolderLookup.Provider original) {
+        return DAMAGE_BUILDER.buildPatch(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY), original);
+    }
+
+    // 注册
     public static void bootstrap(BootstapContext<DamageType> context) {
         context.register(INFINITY, new DamageType("infinity", DamageScaling.ALWAYS, 0.1F));
     }

@@ -2,6 +2,12 @@
   "type": "avaritia:shaped_table",
   "category": "equipment",
   "key": {
+    "A": {
+      "item": "avaritia:crystal_matrix"
+    },
+    "B": {
+      "item": "avaritia:neutron"
+    },
     "C": {
       "item": "avaritia:crystal_matrix_ingot"
     },
@@ -16,15 +22,15 @@
     }
   },
   "pattern": [
-    "       II",
-    "      III",
-    "     III ",
-    "    III  ",
-    " C III   ",
-    "  CII    ",
-    "  NC     ",
-    " N  C    ",
-    "X        "
+    "      NNN",
+    "     NIIN",
+    "    NIIIN",
+    "   NIIIN ",
+    "CCNIIIN  ",
+    " AACIN   ",
+    " ABAN    ",
+    " NAAC    ",
+    "X   C    "
   ],
   "result": {
     "item": "avaritia:infinity_sword"

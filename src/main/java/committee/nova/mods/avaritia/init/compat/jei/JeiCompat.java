@@ -2,10 +2,13 @@ package committee.nova.mods.avaritia.init.compat.jei;
 
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.client.screen.CompressorScreen;
+import committee.nova.mods.avaritia.client.screen.ExtremeSmithingScreen;
 import committee.nova.mods.avaritia.client.screen.craft.EndCraftScreen;
 import committee.nova.mods.avaritia.client.screen.craft.ExtremeCraftScreen;
 import committee.nova.mods.avaritia.client.screen.craft.NetherCraftScreen;
 import committee.nova.mods.avaritia.client.screen.craft.SculkCraftScreen;
+import committee.nova.mods.avaritia.common.menu.CompressorMenu;
+import committee.nova.mods.avaritia.common.menu.ExtremeSmithingMenu;
 import committee.nova.mods.avaritia.common.menu.ModCraftMenu;
 import committee.nova.mods.avaritia.init.compat.jei.category.CompressorCategory;
 import committee.nova.mods.avaritia.init.compat.jei.category.ExtremeSmithingRecipeCategory;
@@ -65,6 +68,7 @@ public class JeiCompat implements IModPlugin {
             var manager = world.getRecipeManager();
             registration.addRecipes(CompressorCategory.RECIPE_TYPE, manager.getAllRecipesFor(ModRecipeTypes.COMPRESSOR_RECIPE.get()));
 
+            registration.addRecipes(ExtremeSmithingRecipeCategory.RECIPE_TYPE, manager.getAllRecipesFor(ModRecipeTypes.EXTREME_SMITHING_RECIPE.get()));
 
             var recipes = Stream.of(1, 2, 3, 4).collect(Collectors.toMap(tier -> tier, tier ->
                     manager.byType(ModRecipeTypes.CRAFTING_TABLE_RECIPE.get()).values()
@@ -92,25 +96,28 @@ public class JeiCompat implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.nether_crafting_table.get()), NetherCraftingTableCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.end_crafting_table.get()), EndCraftingTableCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.extreme_crafting_table.get()), ExtremeCraftingTableCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.extreme_smithing_table.get()), ExtremeSmithingRecipeCategory.RECIPE_TYPE);
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        registration.addRecipeTransferHandler(ModCraftMenu.class, ModMenus.sculk_crafting_tile_table.get(), SculkCraftingTableCategory.RECIPE_TYPE, 1, 81, 82, 36);
-        registration.addRecipeTransferHandler(ModCraftMenu.class, ModMenus.nether_crafting_tile_table.get(), NetherCraftingTableCategory.RECIPE_TYPE, 1, 81, 82, 36);
-        registration.addRecipeTransferHandler(ModCraftMenu.class, ModMenus.end_crafting_tile_table.get(), EndCraftingTableCategory.RECIPE_TYPE, 1, 81, 82, 36);
+        registration.addRecipeTransferHandler(CompressorMenu.class, ModMenus.compressor.get(), CompressorCategory.RECIPE_TYPE, 1, 1, 2, 36);
+        registration.addRecipeTransferHandler(ModCraftMenu.class, ModMenus.sculk_crafting_tile_table.get(), SculkCraftingTableCategory.RECIPE_TYPE, 1, 9, 10, 36);
+        registration.addRecipeTransferHandler(ModCraftMenu.class, ModMenus.nether_crafting_tile_table.get(), NetherCraftingTableCategory.RECIPE_TYPE, 1, 25, 26, 36);
+        registration.addRecipeTransferHandler(ModCraftMenu.class, ModMenus.end_crafting_tile_table.get(), EndCraftingTableCategory.RECIPE_TYPE, 1, 49, 50, 36);
         registration.addRecipeTransferHandler(ModCraftMenu.class, ModMenus.extreme_crafting_table.get(), ExtremeCraftingTableCategory.RECIPE_TYPE, 1, 81, 82, 36);
+        registration.addRecipeTransferHandler(ExtremeSmithingMenu.class, ModMenus.extreme_smithing_table.get(), ExtremeSmithingRecipeCategory.RECIPE_TYPE, 1, 5, 6, 36);
 
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(CompressorScreen.class, 89, 35, 21, 16, CompressorCategory.RECIPE_TYPE);
-        registration.addRecipeClickArea(SculkCraftScreen.class, 174, 90, 21, 14, SculkCraftingTableCategory.RECIPE_TYPE);
-        registration.addRecipeClickArea(NetherCraftScreen.class, 174, 90, 21, 14, NetherCraftingTableCategory.RECIPE_TYPE);
-        registration.addRecipeClickArea(EndCraftScreen.class, 174, 90, 21, 14, EndCraftingTableCategory.RECIPE_TYPE);
-        registration.addRecipeClickArea(ExtremeCraftScreen.class, 174, 90, 21, 14, ExtremeCraftingTableCategory.RECIPE_TYPE);
-//registration.addGhostIngredientHandler(ExtremeRecipeGeneratorScreen.class, new RecipeLinkJEI<>());
+        registration.addRecipeClickArea(CompressorScreen.class, 86, 25, 31, 8, CompressorCategory.RECIPE_TYPE);
+        registration.addRecipeClickArea(SculkCraftScreen.class, 61, 24, 22, 12, SculkCraftingTableCategory.RECIPE_TYPE);
+        registration.addRecipeClickArea(NetherCraftScreen.class, 100, 44, 22, 12, NetherCraftingTableCategory.RECIPE_TYPE);
+        registration.addRecipeClickArea(EndCraftScreen.class, 135, 62, 22, 12, EndCraftingTableCategory.RECIPE_TYPE);
+        registration.addRecipeClickArea(ExtremeCraftScreen.class, 174, 90, 22, 12, ExtremeCraftingTableCategory.RECIPE_TYPE);
+        registration.addRecipeClickArea(ExtremeSmithingScreen.class, 86, 27, 22, 12, ExtremeSmithingRecipeCategory.RECIPE_TYPE);//todo
     }
 
     @Override

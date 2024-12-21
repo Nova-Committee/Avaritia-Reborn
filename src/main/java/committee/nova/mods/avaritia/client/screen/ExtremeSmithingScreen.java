@@ -1,8 +1,7 @@
 package committee.nova.mods.avaritia.client.screen;
 
 import committee.nova.mods.avaritia.Static;
-import committee.nova.mods.avaritia.common.item.resources.EnhancementCoreItem;
-import committee.nova.mods.avaritia.common.item.resources.InfinitySmithingTemplateItem;
+import committee.nova.mods.avaritia.common.item.resources.UpgradeSmithingTemplateItem;
 import committee.nova.mods.avaritia.common.menu.ExtremeSmithingMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.CyclingSlotBackground;
@@ -65,7 +64,7 @@ public class ExtremeSmithingScreen extends ItemCombinerScreen<ExtremeSmithingMen
         ItemStack itemstack = this.menu.getSlot(0).getItem();
         if (!itemstack.isEmpty()) {
             Item item = itemstack.getItem();
-            if (item instanceof InfinitySmithingTemplateItem smithingTemplateItem) {
+            if (item instanceof UpgradeSmithingTemplateItem smithingTemplateItem) {
                 return Optional.of(smithingTemplateItem);
             }
         }

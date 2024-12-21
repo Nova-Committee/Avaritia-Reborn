@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "avaritia:infinity_smithing_template"
+              "avaritia:endest_pearl"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "avaritia:infinity_totem_smithing"
+        "recipe": "avaritia:enhancement_core"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,8 +28,8 @@
   ],
   "rewards": {
     "recipes": [
-      "avaritia:infinity_totem_smithing"
+      "avaritia:enhancement_core"
     ]
   },
-  "sends_telemetry_event": false
+  "sends_telemetry_event": true
 }

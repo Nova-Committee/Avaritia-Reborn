@@ -2,6 +2,7 @@ package committee.nova.mods.avaritia.init.compat.jei.category;
 
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.common.crafting.recipe.ExtremeSmithingRecipe;
+import committee.nova.mods.avaritia.init.registry.ModBlocks;
 import committee.nova.mods.avaritia.util.RecipeUtils;
 import committee.nova.mods.avaritia.util.lang.Localizable;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -14,9 +15,10 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.crafting.CompoundIngredient;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 /**
  * @Project: Avaritia
@@ -31,8 +33,8 @@ public class ExtremeSmithingRecipeCategory implements IRecipeCategory<ExtremeSmi
     private final IDrawable icon;
 
     public ExtremeSmithingRecipeCategory(IGuiHelper guiHelper) {
-        background = guiHelper.createDrawable(TEXTURE, 0, 168, 108, 18);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(Blocks.SMITHING_TABLE));
+        background = guiHelper.createDrawable(TEXTURE, 0, 0, 170, 64);
+        icon = guiHelper.createDrawableItemStack(new ItemStack(ModBlocks.extreme_crafting_table.get()));
     }
 
     @Override
@@ -56,22 +58,21 @@ public class ExtremeSmithingRecipeCategory implements IRecipeCategory<ExtremeSmi
     }
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, @NotNull ExtremeSmithingRecipe recipe, @NotNull IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 1)
+        builder.addSlot(RecipeIngredientRole.INPUT, 27, 23)
                 .addIngredients(recipe.template);
 
-        builder.addSlot(RecipeIngredientRole.INPUT, 19, 1)
+        builder.addSlot(RecipeIngredientRole.INPUT, 45, 23)
                 .addIngredients(recipe.base);
 
-        if (recipe.additions instanceof CompoundIngredient compoundIngredient) {//todo fix location
-            builder.addSlot(RecipeIngredientRole.INPUT, 37, 1)
-                    .addIngredients(compoundIngredient.getChildren().stream().toList().get(0));
-            builder.addSlot(RecipeIngredientRole.INPUT, 37, 1)
-                    .addIngredients(compoundIngredient.getChildren().stream().toList().get(1));
-            builder.addSlot(RecipeIngredientRole.INPUT, 37, 1)
-                    .addIngredients(compoundIngredient.getChildren().stream().toList().get(2));
-        }
+        builder.addSlot(RecipeIngredientRole.INPUT, 45, 5)
+                .addIngredients(Ingredient.of(Arrays.stream(recipe.additions.getItems()).toList().get(0)));
+        builder.addSlot(RecipeIngredientRole.INPUT, 63, 23)
+                .addIngredients(Ingredient.of(Arrays.stream(recipe.additions.getItems()).toList().get(1)));
+        builder.addSlot(RecipeIngredientRole.INPUT, 45, 41)
+                .addIngredients(Ingredient.of(Arrays.stream(recipe.additions.getItems()).toList().get(2)));
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 91, 1)
+
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 23)
                 .addItemStack(RecipeUtils.getResultItem(recipe));
     }
 

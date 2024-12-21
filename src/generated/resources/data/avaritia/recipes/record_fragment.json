@@ -3,21 +3,24 @@
   "category": "misc",
   "key": {
     "a": {
-      "tag": "minecraft:music_discs"
+      "item": "avaritia:neutron_pile"
     },
     "b": {
-      "item": "avaritia:neutron_pile"
+      "tag": "minecraft:music_discs"
+    },
+    "c": {
+      "item": "avaritia:neutron_nugget"
     }
   },
   "pattern": [
     "         ",
-    "         ",
-    "         ",
-    "    b    ",
-    "   bab   ",
-    "    b    ",
-    "         ",
-    "         ",
+    "    a    ",
+    "   aca   ",
+    "  accca  ",
+    " accbcca ",
+    "  accca  ",
+    "   aca   ",
+    "    a    ",
     "         "
   ],
   "result": {

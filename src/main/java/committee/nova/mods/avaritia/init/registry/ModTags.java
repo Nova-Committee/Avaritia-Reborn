@@ -18,4 +18,5 @@ import net.minecraft.world.level.block.Block;
 public class ModTags {
     public static final TagKey<Item> SINGULARITY = ItemTags.create(Static.rl("singularity"));
     public static final TagKey<Item> DRAWERS = ItemTags.create(new ResourceLocation("storagedrawers", "drawers"));
+    public static final TagKey<Block> NEUTRON_UNBREAK = BlockTags.create(Static.rl("neutron_unbreak"));
 }

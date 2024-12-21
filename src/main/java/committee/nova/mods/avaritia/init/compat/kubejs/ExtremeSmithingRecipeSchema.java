@@ -26,7 +26,7 @@ public interface ExtremeSmithingRecipeSchema {
             .constructor(RESULT, TEMPLATE, BASE, ADDITION)
             .constructor(RecipeConstructor.Factory.defaultWith((recipe, key) -> {
                 if (key == TEMPLATE) {
-                    return InputItem.of(Ingredient.of(ModItems.infinity_smithing_template.get()), 1);
+                    return InputItem.of(Ingredient.of(ModItems.upgrade_smithing_template.get()), 1);
                 } else {
                     return null;
                 }

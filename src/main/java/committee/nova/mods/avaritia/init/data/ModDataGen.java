@@ -2,9 +2,14 @@ package committee.nova.mods.avaritia.init.data;
 
 import committee.nova.mods.avaritia.init.data.provider.*;
 import committee.nova.mods.avaritia.init.data.provider.loot.ModLootTables;
-import committee.nova.mods.avaritia.init.data.provider.recipe.ModRecipes;
+import committee.nova.mods.avaritia.init.data.provider.ModRecipes;
+import committee.nova.mods.avaritia.init.registry.ModDamageTypes;
 import net.minecraft.DetectedVersion;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.metadata.PackMetadataGenerator;
@@ -52,11 +57,16 @@ public class ModDataGen {
             generator.addProvider(true, new ModAdvancements(output, future, helper));
 //            generator.addProvider(true, new ModFluidTags(output, future, helper));
 
-            ModRegistries.addProviders(true, generator, future, helper);
+            generator.addProvider(true, new ModRegistries(generator.getPackOutput(), future));
+            generator.addProvider(true, new ModDamageTypeTags(generator.getPackOutput(), future.thenApply(ModDamageTypes::append), helper));
             generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
                     Component.literal("Avaritia Resources"),
                     DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
                     Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
         }
     }
+
+
+
+
 }

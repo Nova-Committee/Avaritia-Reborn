@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "minecraft:bucket"
+              "avaritia:infinity_ingot"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "avaritia:infinity_bucket"
+        "recipe": "avaritia:infinity_crossbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "avaritia:infinity_bucket"
+      "avaritia:infinity_crossbow"
     ]
   },
   "sends_telemetry_event": true

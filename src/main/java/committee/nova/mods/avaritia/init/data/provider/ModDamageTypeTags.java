@@ -1,8 +1,12 @@
 package committee.nova.mods.avaritia.init.data.provider;
 
 import committee.nova.mods.avaritia.Static;
+import committee.nova.mods.avaritia.init.data.ModDataGen;
 import committee.nova.mods.avaritia.init.registry.ModDamageTypes;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
@@ -26,6 +30,7 @@ public class ModDamageTypeTags extends TagsProvider<DamageType> {
         super(output, Registries.DAMAGE_TYPE, future, Static.MOD_ID, helper);
     }
 
+
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         this.tag(DamageTypeTags.BYPASSES_ARMOR).add(ModDamageTypes.INFINITY);
@@ -35,6 +40,6 @@ public class ModDamageTypeTags extends TagsProvider<DamageType> {
         this.tag(DamageTypeTags.BYPASSES_EFFECTS).add(ModDamageTypes.INFINITY);
         this.tag(DamageTypeTags.BYPASSES_RESISTANCE).add(ModDamageTypes.INFINITY);
         this.tag(DamageTypeTags.BYPASSES_ENCHANTMENTS).add(ModDamageTypes.INFINITY);
-        this.tag(DamageTypeTags.WITCH_RESISTANT_TO).add(ModDamageTypes.INFINITY);
+        this.tag(DamageTypeTags.ALWAYS_HURTS_ENDER_DRAGONS).add(ModDamageTypes.INFINITY);
     }
 }

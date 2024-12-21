@@ -2,6 +2,7 @@ package committee.nova.mods.avaritia.init.data.provider;
 
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.init.registry.ModBlocks;
+import committee.nova.mods.avaritia.init.registry.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -41,20 +42,26 @@ public class ModBlockTags extends IntrinsicHolderTagsProvider<Block> {
                 ModBlocks.crystal_matrix.get(), ModBlocks.infinity.get(), ModBlocks.neutron.get(),
                 ModBlocks.neutron_collector.get(), ModBlocks.dense_neutron_collector.get(),
                 ModBlocks.denser_neutron_collector.get(), ModBlocks.densest_neutron_collector.get(),
-                ModBlocks.neutron_compressor.get()
+                ModBlocks.neutron_compressor.get(), ModBlocks.extreme_anvil.get(),
+                ModBlocks.infinity_chest.get(), ModBlocks.extreme_smithing_table.get()
         );
         tag(BlockTags.MINEABLE_WITH_AXE).add(ModBlocks.compressed_chest.get());
-        tag(BlockTags.MINEABLE_WITH_SHOVEL).add(ModBlocks.endless_cake.get());
+        tag(BlockTags.MINEABLE_WITH_SHOVEL).add(ModBlocks.endless_cake.get(), ModBlocks.soul_farmland.get());
         tag(BlockTags.BEACON_BASE_BLOCKS).add(
                 ModBlocks.crystal_matrix.get(),
                 ModBlocks.infinity.get(),
                 ModBlocks.neutron.get(),
                 ModBlocks.endless_cake.get()
         );
-
         tag(BlockTags.PORTALS).add(
                 ModBlocks.infinity.get(),
                 ModBlocks.neutron.get()
+        );
+        tag(ModTags.NEUTRON_UNBREAK).add(
+          ModBlocks.dense_neutron_collector.get(), ModBlocks.denser_neutron_collector.get(), ModBlocks.densest_neutron_collector.get(),
+                ModBlocks.extreme_crafting_table.get(), ModBlocks.extreme_smithing_table.get(), ModBlocks.neutron_compressor.get(),
+                ModBlocks.neutron.get(), ModBlocks.infinity.get(),
+                ModBlocks.infinity_chest.get(), ModBlocks.endless_cake.get(), ModBlocks.extreme_anvil.get()
         );
 
     }

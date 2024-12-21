@@ -10,6 +10,7 @@ import committee.nova.mods.avaritia.common.block.compressor.CompressorBlock;
 import committee.nova.mods.avaritia.common.block.craft.CompressedCraftTableBlock;
 import committee.nova.mods.avaritia.common.block.craft.DoubleCompressedCraftTableBlock;
 import committee.nova.mods.avaritia.common.block.craft.ModCraftTableBlock;
+import committee.nova.mods.avaritia.common.block.misc.ExtremeAnvilBlock;
 import committee.nova.mods.avaritia.common.block.misc.SoulFarmLandBlock;
 import committee.nova.mods.avaritia.common.block.smith.ExtremeSmithingTableBlock;
 import net.minecraft.world.item.BlockItem;
@@ -37,10 +38,10 @@ public class ModBlocks {
     public static RegistryObject<Block> double_compressed_crafting_table = block("double_compressed_crafting_table", DoubleCompressedCraftTableBlock::new, ModRarities.UNCOMMON);
 
     //RESOURCE
-    public static RegistryObject<Block> neutron = block("neutron", ResourceBlock::new, ModRarities.EPIC);
-    public static RegistryObject<Block> infinity = block("infinity", ResourceBlock::new, ModRarities.COSMIC);
-    public static RegistryObject<Block> crystal_matrix = block("crystal_matrix", ResourceBlock::new, ModRarities.RARE);
-    public static RegistryObject<Block> blaze_cube_block = block("blaze_cube_block", ResourceBlock::new, ModRarities.RARE);
+    public static RegistryObject<Block> neutron = block("neutron", () -> new ResourceBlock(ModResourceBlocks.NEUTRON), ModRarities.EPIC);
+    public static RegistryObject<Block> infinity = block("infinity", () -> new ResourceBlock(ModResourceBlocks.INFINITY), ModRarities.COSMIC);
+    public static RegistryObject<Block> crystal_matrix = block("crystal_matrix", () -> new ResourceBlock(ModResourceBlocks.CRYSTAL), ModRarities.RARE);
+    public static RegistryObject<Block> blaze_cube_block = block("blaze_cube_block", () -> new ResourceBlock(ModResourceBlocks.BLAZE), ModRarities.RARE);
     public static RegistryObject<Block> compressed_chest = block("compressed_chest", CompressedChestBlock::new, ModRarities.RARE);
     public static RegistryObject<Block> infinity_chest = block("infinity_chest", InfinityChestBlock::new, ModRarities.LEGEND);
     public static RegistryObject<Block> soul_farmland = block("soul_farmland", SoulFarmLandBlock::new, ModRarities.RARE);
@@ -56,6 +57,8 @@ public class ModBlocks {
     public static RegistryObject<Block> densest_neutron_collector = block("densest_neutron_collector", BaseNeutronCollectorBlock::new, ModRarities.COSMIC);
     public static RegistryObject<Block> neutron_compressor = block("neutron_compressor", CompressorBlock::new, ModRarities.RARE);
     public static RegistryObject<Block> extreme_smithing_table = block("extreme_smithing_table", ExtremeSmithingTableBlock::new, ModRarities.LEGEND);
+
+    public static RegistryObject<Block> extreme_anvil = block("extreme_anvil", ExtremeAnvilBlock::new, ModRarities.LEGEND);
 
     //CAKE
     public static RegistryObject<Block> endless_cake = block("endless_cake", EndlessCakeBlock::new, ModRarities.UNCOMMON);

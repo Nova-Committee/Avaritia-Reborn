@@ -79,7 +79,7 @@ public class SculkCraftingTableCategory implements IRecipeCategory<BaseTableCraf
 
             for (int i = heightOffset; i < shaped.getHeight() + heightOffset; i++) {
                 for (int j = widthOffset; j < shaped.getWidth() + widthOffset; j++) {
-                    builder.addSlot(RecipeIngredientRole.INPUT, j * 18 + 3, i * 18 + 3).addIngredients(inputs.get(stackIndex));
+                    builder.addSlot(RecipeIngredientRole.INPUT, j * 18 + 2, i * 18 + 2).addIngredients(inputs.get(stackIndex));
                     stackIndex++;
                 }
             }

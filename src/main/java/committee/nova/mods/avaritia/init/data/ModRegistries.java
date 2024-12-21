@@ -16,6 +16,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+import static committee.nova.mods.avaritia.init.registry.ModDamageTypes.DAMAGE_BUILDER;
+
 /**
  * Name: Avaritia-forge / ModRegistries
  * Author: cnlimiter
@@ -25,19 +27,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModRegistries extends DatapackBuiltinEntriesProvider {
 
-    public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap);
-
-    private ModRegistries(PackOutput output, CompletableFuture<HolderLookup.Provider> future) {
-        super(output, future, BUILDER, Set.of("minecraft", Static.MOD_ID));
-    }
-
-    public static void addProviders(boolean isServer, DataGenerator generator, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper helper) {
-        generator.addProvider(isServer, new ModRegistries(generator.getPackOutput(), provider));
-        generator.addProvider(isServer, new ModDamageTypeTags(generator.getPackOutput(), provider.thenApply(r -> append(r, BUILDER)), helper));
-    }
-
-    private static HolderLookup.Provider append(HolderLookup.Provider original, RegistrySetBuilder builder) {
-        return builder.buildPatch(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY), original);
+    public ModRegistries(PackOutput output, CompletableFuture<HolderLookup.Provider> future) {
+        super(output, future, DAMAGE_BUILDER, Set.of("minecraft", Static.MOD_ID));
     }
 }

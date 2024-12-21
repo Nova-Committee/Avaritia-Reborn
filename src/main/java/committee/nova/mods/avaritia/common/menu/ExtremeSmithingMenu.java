@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.SmithingRecipe;
 import net.minecraft.world.level.Level;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Project: Avaritia
@@ -32,10 +34,11 @@ public class ExtremeSmithingMenu extends ItemCombinerMenu {
     private final List<ExtremeSmithingRecipe> recipes;
 
     public ExtremeSmithingMenu(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
-        this(id, playerInventory);
+        this(id, playerInventory, ContainerLevelAccess.NULL);
     }
-    public ExtremeSmithingMenu(int pContainerId, Inventory pPlayerInventory) {
-        super(ModMenus.extreme_smithing_table.get(), pContainerId, pPlayerInventory, ContainerLevelAccess.NULL);
+
+    public ExtremeSmithingMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess access) {
+        super(ModMenus.extreme_smithing_table.get(), pContainerId, pPlayerInventory, access);
         this.level = pPlayerInventory.player.level();
         this.recipes = this.level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.EXTREME_SMITHING_RECIPE.get());
     }
@@ -62,6 +65,11 @@ public class ExtremeSmithingMenu extends ItemCombinerMenu {
     @Override
     protected boolean isValidBlock(@NotNull BlockState pState) {
         return false;
+    }
+
+    @Override
+    public boolean stillValid(@NotNull Player pPlayer) {
+        return true;
     }
 
     @Override
@@ -115,6 +123,34 @@ public class ExtremeSmithingMenu extends ItemCombinerMenu {
             itemstack.shrink(1);
             this.inputSlots.setItem(pIndex, itemstack);
         }
+    }
 
+    @Override
+    public int getSlotToQuickMoveTo(@NotNull ItemStack pStack) {
+        return this.recipes.stream().map((smithingRecipe) -> {
+            return findSlotMatchingIngredient(smithingRecipe, pStack);
+        }).filter(Optional::isPresent).findFirst().orElse(Optional.of(List.of(0))).get().get(0);
+    }
+
+    private static Optional<List<Integer>> findSlotMatchingIngredient(SmithingRecipe pRecipe, ItemStack pStack) {
+        if (pRecipe.isTemplateIngredient(pStack)) {
+            return Optional.of(List.of(0));
+        } else if (pRecipe.isBaseIngredient(pStack)) {
+            return Optional.of(List.of(1));
+        } else {
+            return pRecipe.isAdditionIngredient(pStack) ? Optional.of(List.of(2,3,4)) : Optional.empty();
+        }
+    }
+
+    @Override
+    public boolean canTakeItemForPickAll(@NotNull ItemStack pStack, Slot pSlot) {
+        return pSlot.container != this.resultSlots && super.canTakeItemForPickAll(pStack, pSlot);
+    }
+
+    @Override
+    public boolean canMoveIntoInputSlots(@NotNull ItemStack pStack) {
+        return this.recipes.stream().map((smithingRecipe) -> {
+            return findSlotMatchingIngredient(smithingRecipe, pStack);
+        }).anyMatch(Optional::isPresent);
     }
 }

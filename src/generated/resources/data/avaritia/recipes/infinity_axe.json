@@ -2,6 +2,12 @@
   "type": "avaritia:shaped_table",
   "category": "equipment",
   "key": {
+    "A": {
+      "item": "avaritia:crystal_matrix"
+    },
+    "B": {
+      "item": "avaritia:neutron"
+    },
     "I": {
       "item": "avaritia:infinity_ingot"
     },
@@ -13,15 +19,15 @@
     }
   },
   "pattern": [
-    "        N",
-    "   IIIII ",
-    "   IIIX  ",
-    "    IN   ",
-    "    N    ",
-    "   N     ",
+    "    II   ",
+    "   II  B ",
+    "  IIIAA  ",
+    "  IIAXA  ",
+    "  I AAII ",
+    "   N  II ",
     "  N      ",
     " N       ",
-    "N        "
+    "A        "
   ],
   "result": {
     "item": "avaritia:infinity_axe"

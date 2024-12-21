@@ -95,7 +95,7 @@ public class ModItems {
     public static RegistryObject<Item> endest_pearl = item("endest_pearl", EndestPearlItem::new);
     public static RegistryObject<Item> matter_cluster = item("matter_cluster", MatterClusterItem::new);
     public static RegistryObject<Item> enhancement_core = item("enhancement_core", EnhancementCoreItem::new);
-    public static RegistryObject<Item> infinity_smithing_template = item("infinity_smithing_template", InfinitySmithingTemplateItem::new);
+    public static RegistryObject<Item> upgrade_smithing_template = item("upgrade_smithing_template", UpgradeSmithingTemplateItem::new);
     //food
     public static RegistryObject<Item> ultimate_stew = item("ultimate_stew", () -> new BaseItem(pro -> pro.rarity(ModRarities.EPIC).food(ModFoods.ultimate_stew)));
     public static RegistryObject<Item> cosmic_meatballs = item("cosmic_meatballs", () -> new BaseItem(pro -> pro.rarity(ModRarities.EPIC).food(ModFoods.cosmic_meatballs)));

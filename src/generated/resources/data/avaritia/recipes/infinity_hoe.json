@@ -2,6 +2,9 @@
   "type": "avaritia:shaped_table",
   "category": "equipment",
   "key": {
+    "A": {
+      "item": "avaritia:crystal_matrix"
+    },
     "I": {
       "item": "avaritia:infinity_ingot"
     },
@@ -13,15 +16,15 @@
     }
   },
   "pattern": [
-    "        N",
-    "     IIII",
-    "   IIIII ",
-    "     XI  ",
+    " IIIIIIAA",
+    "  IIIIAXA",
+    "      AAI",
+    "     N II",
     "    N    ",
     "   N     ",
     "  N      ",
     " N       ",
-    "N        "
+    "A        "
   ],
   "result": {
     "item": "avaritia:infinity_hoe"

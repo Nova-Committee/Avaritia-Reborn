@@ -30,6 +30,9 @@ public class ItemOverrideHandler {
             setPropertyOverride(ModItems.infinity_pickaxe.get(), Static.rl("hammer"), (itemStack, world, livingEntity, d) -> {
                 return itemStack.getOrCreateTag().getBoolean("hammer") ? 1 : 0;
             });
+            setPropertyOverride(ModItems.infinity_shovel.get(), Static.rl("destroyer"), (itemStack, world, livingEntity, d) -> {
+                return itemStack.getOrCreateTag().getBoolean("destroyer") ? 1 : 0;
+            });
             setPropertyOverride(ModItems.matter_cluster.get(), Static.rl("cap"), (itemStack, world, livingEntity, d) -> {
                 return MatterClusterItem.getClusterSize(itemStack) == MatterClusterItem.CAPACITY ? 1 : 0;
             });
@@ -41,35 +44,40 @@ public class ItemOverrideHandler {
                     return CrossbowItem.isCharged(itemStack) ? 0.0F : (float) (itemStack.getUseDuration() - livingEntity.getUseItemRemainingTicks()) / (float) CrossbowItem.getChargeDuration(itemStack);
                 }
             });
-
-            setPropertyOverride(ModItems.infinity_bow.get(), Static.rl("tracer"), (itemStack, world, livingEntity, d) -> {
-                return itemStack.getOrCreateTag().getBoolean("tracer") ? 1 : 0;
-            });
             setPropertyOverride(ModItems.infinity_bow.get(), Static.rl("pulling"), (itemStack, world, livingEntity, d) -> {
                 return livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack && !CrossbowItem.isCharged(itemStack) ? 1.0F : 0.0F;
             });
+
+            setPropertyOverride(ModItems.infinity_bow.get(), Static.rl("tracer"), (itemStack, world, livingEntity, d) -> {
+                if (livingEntity == null) {
+                    return 0.0F;
+                } else {
+                    return CrossbowItem.isCharged(itemStack) && itemStack.getOrCreateTag().getBoolean("tracer") ? 0.0F : (float) (itemStack.getUseDuration() - livingEntity.getUseItemRemainingTicks()) / (float) CrossbowItem.getChargeDuration(itemStack);
+                }
+            });
+            setPropertyOverride(ModItems.infinity_bow.get(), Static.rl("tracing"), (itemStack, world, livingEntity, d) -> {
+                return livingEntity != null && livingEntity.isUsingItem()
+                        && livingEntity.getUseItem() == itemStack && !CrossbowItem.isCharged(itemStack)
+                        && itemStack.getOrCreateTag().getBoolean("tracer")
+                        ? 1.0F : 0.0F;
+            });
+
 
             setPropertyOverride(ModItems.infinity_crossbow.get(), Static.rl("pull"), (itemStack, world, livingEntity, d) -> {
                 if (livingEntity == null) {
                     return 0.0F;
                 } else {
-                    return CrossbowItem.isCharged(itemStack) ? 0.0F : (float) (itemStack.getUseDuration() - livingEntity.getUseItemRemainingTicks()) / InfinityCrossBowItem.getChargeTime();
+                    return InfinityCrossBowItem.isCharged(itemStack) ? 0.0F : (float) (itemStack.getUseDuration() - livingEntity.getUseItemRemainingTicks()) / InfinityCrossBowItem.getChargeTime();
                 }
             });
+            setPropertyOverride(Items.CROSSBOW, new ResourceLocation("pulling"), (itemStack, level, livingEntity, p_174608_) -> {
+                return livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack && !InfinityCrossBowItem.isCharged(itemStack) ? 1.0F : 0.0F;
+            });
             setPropertyOverride(ModItems.infinity_crossbow.get(), Static.rl("charged"), (itemStack, world, livingEntity, d) -> {
-                return livingEntity != null && InfinityCrossBowItem.isCharged(itemStack)
-                        ? 1.0F : 0.0F;
+                return InfinityCrossBowItem.isCharged(itemStack) ? 1.0F : 0.0F;
             });
-
-            setPropertyOverride(ModItems.infinity_crossbow.get(), Static.rl("pulling"), (itemStack, world, livingEntity, d) -> {
-                return livingEntity != null && InfinityCrossBowItem.isCharged(itemStack)
-                        && InfinityCrossBowItem.containsChargedProjectile(itemStack, Items.FIREWORK_ROCKET)
-                        ? 1.0F : 0.0F;
-            });
-
-
-            setPropertyOverride(ModItems.infinity_shovel.get(), Static.rl("destroyer"), (itemStack, world, livingEntity, d) -> {
-                return itemStack.getOrCreateTag().getBoolean("destroyer") ? 1 : 0;
+            setPropertyOverride(ModItems.infinity_crossbow.get(), Static.rl("firework"), (itemStack, world, livingEntity, d) -> {
+                return InfinityCrossBowItem.isCharged(itemStack) && InfinityCrossBowItem.containsChargedProjectile(itemStack, Items.FIREWORK_ROCKET) ? 1.0F : 0.0F;
             });
         });
 
