@@ -2,20 +2,20 @@
   "type": "avaritia:extreme_smithing",
   "addition": [
     {
-      "item": "minecraft:lava_bucket"
+      "item": "minecraft:golden_carrot"
     },
     {
-      "item": "minecraft:powder_snow_bucket"
+      "item": "minecraft:dragon_egg"
     },
     {
       "item": "avaritia:enhancement_core"
     }
   ],
   "base": {
-    "item": "minecraft:bucket"
+    "item": "minecraft:cake"
   },
   "result": {
-    "item": "avaritia:infinity_bucket"
+    "item": "avaritia:endless_cake"
   },
   "template": {
     "item": "avaritia:infinity_smithing_template"

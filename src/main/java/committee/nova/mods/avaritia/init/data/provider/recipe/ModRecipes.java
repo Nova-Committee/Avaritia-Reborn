@@ -17,7 +17,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
@@ -229,7 +232,34 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
                 RecipeCategory.MISC,
                 ModItems.infinity_totem.get())
                 .unlockedBy("has_item", has(ModItems.infinity_smithing_template.get()))
-                .save(consumer, Static.rl(getModItemName(ModItems.infinity_totem.get()) + "_smithing"));
+                .save(consumer);
+
+        ModExtremeSmithingRecipeBuilder.smithing(
+                        Ingredient.of(ModItems.infinity_smithing_template.get()),
+                        Ingredient.of(Items.CAKE),
+                        CompoundIngredient.of(Ingredient.of(Items.GOLDEN_CARROT), Ingredient.of(Items.DRAGON_EGG), Ingredient.of(ModItems.enhancement_core.get())),
+                        RecipeCategory.MISC,
+                        ModBlocks.endless_cake.get().asItem())
+                .unlockedBy("has_item", has(ModItems.infinity_smithing_template.get()))
+                .save(consumer);
+
+        ModExtremeSmithingRecipeBuilder.smithing(
+                        Ingredient.of(ModItems.infinity_smithing_template.get()),
+                        Ingredient.of(Items.DIAMOND_HORSE_ARMOR),
+                        CompoundIngredient.of(Ingredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.SWIFTNESS)), Ingredient.of(Items.BLUE_ICE), Ingredient.of(ModItems.enhancement_core.get())),
+                        RecipeCategory.MISC,
+                        ModItems.neutron_horse_armor.get().asItem())
+                .unlockedBy("has_item", has(ModItems.infinity_smithing_template.get()))
+                .save(consumer);
+
+        ModExtremeSmithingRecipeBuilder.smithing(
+                        Ingredient.of(ModItems.infinity_smithing_template.get()),
+                        Ingredient.of(Items.BUCKET),
+                        CompoundIngredient.of(Ingredient.of(Items.LAVA_BUCKET), Ingredient.of(Items.POWDER_SNOW_BUCKET), Ingredient.of(ModItems.enhancement_core.get())),
+                        RecipeCategory.MISC,
+                        ModItems.infinity_bucket.get().asItem())
+                .unlockedBy("has_item", has(ModItems.infinity_smithing_template.get()))
+                .save(consumer);
 
         ModShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModItems.cosmic_meatballs.get())
                 .requires(Items.PORKCHOP)
@@ -676,39 +706,6 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
 
                 .unlockedBy("has_item", has(ModItems.neutron_ingot.get())).save(consumer);
 
-//        ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.infinity_totem.get())
-//                .pattern("   NNN   ")
-//                .pattern("  NIIIN  ")
-//                .pattern("  NYIYN  ")
-//                .pattern("CCCIIICCC")
-//                .pattern(" CCIIICC ")
-//                .pattern("  NIIIN  ")
-//                .pattern("  NNNNN  ")
-//                .pattern("   CCC   ")
-//                .pattern("    C    ")
-//                .define('N', ModItems.neutron_ingot.get())
-//                .define('I', ModItems.infinity_nugget.get())
-//                .define('Y', Items.TOTEM_OF_UNDYING)
-//                .define('C', ModItems.crystal_matrix_ingot.get())
-//
-//                .unlockedBy("has_item", has(Items.TOTEM_OF_UNDYING)).save(consumer);
-
-        ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.infinity_bucket.get())
-                .pattern("NN     NN")
-                .pattern("NNX   XNN")
-                .pattern("NBBX XBBN")
-                .pattern("NBBI IBBN")
-                .pattern("NBBI IBBN")
-                .pattern("NBBIIIBBN")
-                .pattern("NNBBBBBNN")
-                .pattern(" NNBBBNN ")
-                .pattern("  NNNNN  ")
-                .define('N', ModItems.neutron_ingot.get())
-                .define('X', ModItems.infinity_catalyst.get())
-                .define('I', ModItems.infinity_ingot.get())
-                .define('B', Items.BUCKET)
-
-                .unlockedBy("has_item", has(Items.BUCKET)).save(consumer);
 
         ConditionalRecipe.builder().addCondition(modLoaded("ae2")).addRecipe(
                 ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ResourceLocation.tryBuild("ae2", "creative_energy_cell"))

@@ -2,20 +2,20 @@
   "type": "avaritia:extreme_smithing",
   "addition": [
     {
-      "item": "minecraft:lava_bucket"
+      "item": "minecraft:potion"
     },
     {
-      "item": "minecraft:powder_snow_bucket"
+      "item": "minecraft:blue_ice"
     },
     {
       "item": "avaritia:enhancement_core"
     }
   ],
   "base": {
-    "item": "minecraft:bucket"
+    "item": "minecraft:diamond_horse_armor"
   },
   "result": {
-    "item": "avaritia:infinity_bucket"
+    "item": "avaritia:neutron_horse_armor"
   },
   "template": {
     "item": "avaritia:infinity_smithing_template"
