@@ -1,5 +1,6 @@
 package committee.nova.mods.avaritia.common.block.misc;
 
+import committee.nova.mods.avaritia.common.menu.ExtremeAnvilMenu;
 import committee.nova.mods.avaritia.init.registry.ModResourceBlocks;
 import committee.nova.mods.avaritia.init.registry.ModTags;
 import net.minecraft.core.BlockPos;
@@ -75,7 +76,7 @@ public class ExtremeAnvilBlock extends FallingBlock {
     }
 
     public static boolean isNoDown(BlockState pState) {
-        return pState.is(Blocks.BEDROCK) || pState.is(ModTags.NEUTRON_UNBREAK);
+        return pState.is(Blocks.BEDROCK) || pState.is(ModTags.EXTREME_ANVIL_UNBREAK);
     }
 
     @Override
@@ -97,8 +98,8 @@ public class ExtremeAnvilBlock extends FallingBlock {
     @Override
     @Nullable
     public MenuProvider getMenuProvider(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos) {
-        return new SimpleMenuProvider((p_48785_, p_48786_, p_48787_) -> {
-            return new AnvilMenu(p_48785_, p_48786_, ContainerLevelAccess.create(pLevel, pPos));
+        return new SimpleMenuProvider((i, inventory, player) -> {
+            return new ExtremeAnvilMenu(i, inventory, ContainerLevelAccess.create(pLevel, pPos));
         }, CONTAINER_TITLE);
     }
 
