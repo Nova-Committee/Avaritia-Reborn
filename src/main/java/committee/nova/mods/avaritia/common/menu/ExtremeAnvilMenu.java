@@ -35,19 +35,25 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
     public int repairItemCountCost;
     private String itemName;
     private final DataSlot cost;
+    private final ContainerData data;
     public ExtremeAnvilMenu(int pContainerId, Inventory pPlayerInventory, FriendlyByteBuf buf) {
-        this(pContainerId, pPlayerInventory, ContainerLevelAccess.NULL);
+        this(pContainerId, pPlayerInventory, ContainerLevelAccess.NULL, new SimpleContainerData(1));
     }
 
-    public ExtremeAnvilMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
+    public ExtremeAnvilMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess, ContainerData data) {
         super(ModMenus.extreme_anvil.get(), pContainerId, pPlayerInventory, pAccess);
         this.cost = DataSlot.standalone();
+        this.data = data;
         this.addDataSlot(this.cost);
+        this.addDataSlots(this.data);
     }
 
     @Override
     protected @NotNull ItemCombinerMenuSlotDefinition createInputSlotDefinitions() {
-        return ItemCombinerMenuSlotDefinition.create().withSlot(0, 27, 47, (p_266635_) -> true).withSlot(1, 76, 47, (p_266634_) -> true).withResultSlot(2, 134, 47).build();
+        return ItemCombinerMenuSlotDefinition.create()
+                .withSlot(0, 27, 47, (itemStack) -> true)
+                .withSlot(1, 76, 47, (itemStack) -> true)
+                .withResultSlot(2, 134, 47).build();
     }
 
     @Override
@@ -57,13 +63,22 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
 
     @Override
     protected boolean mayPickup(Player pPlayer, boolean pHasStack) {
-        return (pPlayer.getAbilities().instabuild || pPlayer.experienceLevel >= this.cost.get()) && this.cost.get() > 0;
+        return (pPlayer.getAbilities().instabuild || pPlayer.experienceLevel + this.data.get(0) >= this.cost.get()) && this.cost.get() > 0;
+    }
+
+    @Override
+    public void removed(@NotNull Player pPlayer) {
+        super.removed(pPlayer);
     }
 
     @Override
     protected void onTake(Player pPlayer, @NotNull ItemStack pStack) {
         if (!pPlayer.getAbilities().instabuild) {
-            pPlayer.giveExperienceLevels(-this.cost.get());
+            if (this.cost.get() >= this.data.get(0)) {
+                pPlayer.giveExperienceLevels(this.data.get(0) - this.cost.get());
+            } else {
+                this.data.set(0, this.data.get(0) - this.cost.get());
+            }
         }
 
         this.inputSlots.setItem(0, ItemStack.EMPTY);
@@ -283,5 +298,9 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
 
     public void setMaximumCost(int value) {
         this.cost.set(value);
+    }
+
+    public int getStoredExps() {
+        return this.data.get(0);
     }
 }

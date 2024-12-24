@@ -2,10 +2,7 @@ package committee.nova.mods.avaritia.init.registry;
 
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.client.render.tile.CompressedChestRenderer;
-import committee.nova.mods.avaritia.common.tile.CompressedChestTile;
-import committee.nova.mods.avaritia.common.tile.CompressorTile;
-import committee.nova.mods.avaritia.common.tile.InfinityChestTile;
-import committee.nova.mods.avaritia.common.tile.ModCraftTile;
+import committee.nova.mods.avaritia.common.tile.*;
 import committee.nova.mods.avaritia.common.tile.collector.BaseNeutronCollectorTile;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.world.level.block.Block;
@@ -57,5 +54,6 @@ public class ModTileEntities {
             });
     public static RegistryObject<BlockEntityType<CompressedChestTile>> compressed_chest_tile = blockEntity("compressed_chest_tile", CompressedChestTile::new, () -> new Block[]{ModBlocks.compressed_chest.get()});
     public static RegistryObject<BlockEntityType<InfinityChestTile>> infinity_chest_tile = blockEntity("infinity_chest_tile", InfinityChestTile::new, () -> new Block[]{ModBlocks.infinity_chest.get()});
+    public static RegistryObject<BlockEntityType<ExtremeAnvilTile>> extreme_anvil = blockEntity("extreme_anvil", ExtremeAnvilTile::new, () -> new Block[]{ModBlocks.extreme_anvil.get()});
 
 }

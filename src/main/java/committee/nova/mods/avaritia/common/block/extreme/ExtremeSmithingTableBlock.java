@@ -1,4 +1,4 @@
-package committee.nova.mods.avaritia.common.block.smith;
+package committee.nova.mods.avaritia.common.block.extreme;
 
 import committee.nova.mods.avaritia.api.common.block.BaseBlock;
 import committee.nova.mods.avaritia.common.menu.ExtremeSmithingMenu;

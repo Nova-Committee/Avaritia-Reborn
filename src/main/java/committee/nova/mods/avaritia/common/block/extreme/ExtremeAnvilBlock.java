@@ -1,12 +1,17 @@
-package committee.nova.mods.avaritia.common.block.misc;
+package committee.nova.mods.avaritia.common.block.extreme;
 
 import committee.nova.mods.avaritia.common.menu.ExtremeAnvilMenu;
+import committee.nova.mods.avaritia.common.tile.CompressorTile;
+import committee.nova.mods.avaritia.common.tile.ExtremeAnvilTile;
+import committee.nova.mods.avaritia.common.tile.collector.BaseNeutronCollectorTile;
 import committee.nova.mods.avaritia.init.registry.ModResourceBlocks;
 import committee.nova.mods.avaritia.init.registry.ModTags;
+import committee.nova.mods.avaritia.init.registry.ModTileEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -17,12 +22,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -34,9 +41,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @Project: Avaritia
@@ -44,7 +51,7 @@ import javax.annotation.Nullable;
  * @CreateTime: 2024/12/21 17:12
  * @Description:
  */
-public class ExtremeAnvilBlock extends FallingBlock {
+public class ExtremeAnvilBlock extends FallingBlock implements EntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final VoxelShape BASE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
     private static final VoxelShape X_LEG1 = Block.box(3.0D, 4.0D, 4.0D, 13.0D, 5.0D, 12.0D);
@@ -55,7 +62,6 @@ public class ExtremeAnvilBlock extends FallingBlock {
     private static final VoxelShape Z_TOP = Block.box(3.0D, 10.0D, 0.0D, 13.0D, 16.0D, 16.0D);
     private static final VoxelShape X_AXIS_AABB = Shapes.or(BASE, X_LEG1, X_LEG2, X_TOP);
     private static final VoxelShape Z_AXIS_AABB = Shapes.or(BASE, Z_LEG1, Z_LEG2, Z_TOP);
-    private static final Component CONTAINER_TITLE = Component.translatable("container.repair");
 
     public ExtremeAnvilBlock() {
         super(BlockBehaviour.Properties.of()
@@ -89,18 +95,14 @@ public class ExtremeAnvilBlock extends FallingBlock {
         if (pLevel.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            pPlayer.openMenu(pState.getMenuProvider(pLevel, pPos));
+            var tile = pLevel.getBlockEntity(pPos);
+
+            if (tile instanceof ExtremeAnvilTile anvilTile) {
+                NetworkHooks.openScreen((ServerPlayer) pPlayer, anvilTile, pPos);
+            }
             pPlayer.awardStat(Stats.INTERACT_WITH_ANVIL);
             return InteractionResult.CONSUME;
         }
-    }
-
-    @Override
-    @Nullable
-    public MenuProvider getMenuProvider(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos) {
-        return new SimpleMenuProvider((i, inventory, player) -> {
-            return new ExtremeAnvilMenu(i, inventory, ContainerLevelAccess.create(pLevel, pPos));
-        }, CONTAINER_TITLE);
     }
 
     @Override
@@ -151,5 +153,20 @@ public class ExtremeAnvilBlock extends FallingBlock {
     @Override
     public int getDustColor(BlockState pState, @NotNull BlockGetter pReader, @NotNull BlockPos pPos) {
         return pState.getMapColor(pReader, pPos).col;
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+        return new ExtremeAnvilTile(pPos, pState);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTicker(BlockEntityType<A> typeA, BlockEntityType<E> typeB, BlockEntityTicker<? super E> ticker) {
+        return typeA == typeB ? (BlockEntityTicker<A>) ticker : null;
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level pLevel, @NotNull BlockState pState, @NotNull BlockEntityType<T> pBlockEntityType) {
+        return createTicker(pBlockEntityType, ModTileEntities.extreme_anvil.get(), ExtremeAnvilTile::tick);
     }
 }

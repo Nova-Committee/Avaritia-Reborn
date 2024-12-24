@@ -3,7 +3,7 @@ package committee.nova.mods.avaritia.init.compat;
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.common.block.compressor.CompressorBlock;
 import committee.nova.mods.avaritia.common.block.craft.ModCraftTableBlock;
-import committee.nova.mods.avaritia.common.block.smith.ExtremeSmithingTableBlock;
+import committee.nova.mods.avaritia.common.block.extreme.ExtremeSmithingTableBlock;
 import committee.nova.mods.avaritia.common.crafting.recipe.ExtremeSmithingRecipe;
 import committee.nova.mods.avaritia.common.tile.CompressorTile;
 import committee.nova.mods.avaritia.common.tile.ModCraftTile;

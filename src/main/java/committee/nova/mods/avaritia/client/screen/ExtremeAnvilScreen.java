@@ -114,6 +114,7 @@ public class ExtremeAnvilScreen extends ItemCombinerScreen<ExtremeAnvilMenu> {
                 pGuiGraphics.drawString(this.font, component, k, 69, j);
             }
         }
+        pGuiGraphics.drawString(font, Component.literal(this.menu.getStoredExps() + ""), (this.imageWidth / 2 + this.font.width(title) / 2) + 45, 6, 4210752, false);
 
     }
 
