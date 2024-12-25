@@ -30,7 +30,7 @@ public class NeutronRingMenu extends BaseMenu {
     }
 
     public NeutronRingMenu(int id, Inventory playerInventory, int slot) {
-        super(ModMenus.neutron_ring.get(), id, null);
+        super(ModMenus.neutron_ring.get(), id, playerInventory);
         this.slot = slot;
         if (slot > -1) {
             this.ring = playerInventory.getItem(slot);

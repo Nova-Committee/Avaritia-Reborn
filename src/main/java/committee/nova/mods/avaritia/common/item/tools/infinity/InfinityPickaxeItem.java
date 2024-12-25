@@ -47,6 +47,7 @@ public class InfinityPickaxeItem extends PickaxeItem implements InitEnchantItem 
 
     public InfinityPickaxeItem() {
         super(ModToolTiers.INFINITY_PICKAXE, 0, 0F, (new Properties())
+                .rarity(ModRarities.COSMIC)
                 .stacksTo(1)
                 .fireResistant());
 
@@ -71,11 +72,6 @@ public class InfinityPickaxeItem extends PickaxeItem implements InitEnchantItem 
     @Override
     public Entity createEntity(Level level, Entity location, ItemStack stack) {
         return ImmortalItemEntity.create(ModEntities.IMMORTAL.get(), level, location.getX(), location.getY(), location.getZ(), stack);
-    }
-
-    @Override
-    public @NotNull Rarity getRarity(@NotNull ItemStack pStack) {
-        return ModRarities.COSMIC;
     }
 
     @Override
@@ -129,13 +125,13 @@ public class InfinityPickaxeItem extends PickaxeItem implements InitEnchantItem 
 
     @Override
     public int getInitEnchantLevel(ItemStack stack, Enchantment enchantment) {
-        return enchantment == Enchantments.BLOCK_FORTUNE ? 10 : 0;
+        return enchantment == Enchantments.BLOCK_FORTUNE ? 20 : 0;
     }
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltipComponents,
                                 @NotNull TooltipFlag isAdvanced) {
-        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.BLOCK_FORTUNE.getFullname(10)).build());
+        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.BLOCK_FORTUNE.getFullname(20)).build());
     }
 
     @Override

@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  * @CreateTime: 2024/7/13 上午11:32
  * @Description:
  */
-public class CompressedChestScreen extends BaseContainerScreen<CompressedChestMenu> implements MenuAccess<CompressedChestMenu> {
+public class CompressedChestScreen extends BaseContainerScreen<CompressedChestMenu>{
     private static final ResourceLocation CONTAINER_BACKGROUND = Static.rl("textures/gui/generic_243.png");
 
     public CompressedChestScreen(CompressedChestMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
@@ -28,7 +28,7 @@ public class CompressedChestScreen extends BaseContainerScreen<CompressedChestMe
     }
 
     @Override
-    protected void renderBg(@NotNull GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
-        renderDefaultBg(pGuiGraphics);
+    protected void renderBgOthers(GuiGraphics pGuiGraphics, int pX, int pY) {
+
     }
 }

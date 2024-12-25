@@ -1,7 +1,7 @@
 package committee.nova.mods.avaritia.common.block.craft;
 
 import committee.nova.mods.avaritia.api.common.block.BaseTileEntityBlock;
-import committee.nova.mods.avaritia.common.tile.ModCraftTile;
+import committee.nova.mods.avaritia.common.tile.TierCraftTile;
 import committee.nova.mods.avaritia.init.registry.ModCraftTier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,9 +25,9 @@ import org.jetbrains.annotations.Nullable;
  * Date: 2022/4/2 7:38
  * Version: 1.0
  */
-public class ModCraftTableBlock extends BaseTileEntityBlock {
+public class TierCraftTableBlock extends BaseTileEntityBlock {
 
-    public ModCraftTableBlock(ModCraftTier tier) {
+    public TierCraftTableBlock(ModCraftTier tier) {
         super(MapColor.METAL, tier.sound, tier.hardness, tier.resistance, true);
     }
 
@@ -35,7 +35,7 @@ public class ModCraftTableBlock extends BaseTileEntityBlock {
     public @NotNull InteractionResult use(@NotNull BlockState pState, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand p_60507_, @NotNull BlockHitResult p_60508_) {
         if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
             var tile = level.getBlockEntity(pos);
-            if (tile instanceof ModCraftTile table) {
+            if (tile instanceof TierCraftTile table) {
                 NetworkHooks.openScreen(serverPlayer, table, pos);
             }
         }
@@ -47,7 +47,7 @@ public class ModCraftTableBlock extends BaseTileEntityBlock {
         if (state.getBlock() != newState.getBlock()) {
             var tile = level.getBlockEntity(pos);
 
-            if (tile instanceof ModCraftTile table) {
+            if (tile instanceof TierCraftTile table) {
                 Containers.dropContents(level, pos, table.getInventory().getStacks());
             }
         }
@@ -57,7 +57,7 @@ public class ModCraftTableBlock extends BaseTileEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return new ModCraftTile(pos, state);
+        return new TierCraftTile(pos, state);
     }
 
     @Override

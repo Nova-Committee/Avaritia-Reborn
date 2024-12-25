@@ -9,7 +9,7 @@ import committee.nova.mods.avaritia.common.block.collector.BaseNeutronCollectorB
 import committee.nova.mods.avaritia.common.block.compressor.CompressorBlock;
 import committee.nova.mods.avaritia.common.block.craft.CompressedCraftTableBlock;
 import committee.nova.mods.avaritia.common.block.craft.DoubleCompressedCraftTableBlock;
-import committee.nova.mods.avaritia.common.block.craft.ModCraftTableBlock;
+import committee.nova.mods.avaritia.common.block.craft.TierCraftTableBlock;
 import committee.nova.mods.avaritia.common.block.extreme.ExtremeAnvilBlock;
 import committee.nova.mods.avaritia.common.block.misc.SoulFarmLandBlock;
 import committee.nova.mods.avaritia.common.block.extreme.ExtremeSmithingTableBlock;
@@ -47,10 +47,10 @@ public class ModBlocks {
     public static RegistryObject<Block> soul_farmland = block("soul_farmland", SoulFarmLandBlock::new, ModRarities.RARE);
 
     //MACHINE
-    public static RegistryObject<Block> sculk_crafting_table = block("sculk_crafting_table", () -> new ModCraftTableBlock(ModCraftTier.SCULK), ModRarities.COMMON);
-    public static RegistryObject<Block> nether_crafting_table = block("nether_crafting_table", () -> new ModCraftTableBlock(ModCraftTier.NETHER), ModRarities.UNCOMMON);
-    public static RegistryObject<Block> end_crafting_table = block("end_crafting_table", () -> new ModCraftTableBlock(ModCraftTier.END), ModRarities.RARE);
-    public static RegistryObject<Block> extreme_crafting_table = block("extreme_crafting_table", () -> new ModCraftTableBlock(ModCraftTier.EXTREME), ModRarities.EPIC);
+    public static RegistryObject<Block> sculk_crafting_table = block("sculk_crafting_table", () -> new TierCraftTableBlock(ModCraftTier.SCULK), ModRarities.COMMON);
+    public static RegistryObject<Block> nether_crafting_table = block("nether_crafting_table", () -> new TierCraftTableBlock(ModCraftTier.NETHER), ModRarities.UNCOMMON);
+    public static RegistryObject<Block> end_crafting_table = block("end_crafting_table", () -> new TierCraftTableBlock(ModCraftTier.END), ModRarities.RARE);
+    public static RegistryObject<Block> extreme_crafting_table = block("extreme_crafting_table", () -> new TierCraftTableBlock(ModCraftTier.EXTREME), ModRarities.EPIC);
     public static RegistryObject<Block> neutron_collector = block("neutron_collector", BaseNeutronCollectorBlock::new, ModRarities.RARE);
     public static RegistryObject<Block> dense_neutron_collector = block("dense_neutron_collector", BaseNeutronCollectorBlock::new, ModRarities.EPIC);
     public static RegistryObject<Block> denser_neutron_collector = block("denser_neutron_collector", BaseNeutronCollectorBlock::new, ModRarities.LEGEND);

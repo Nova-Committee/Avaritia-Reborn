@@ -2,11 +2,11 @@ package committee.nova.mods.avaritia.init.compat;
 
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.common.block.compressor.CompressorBlock;
-import committee.nova.mods.avaritia.common.block.craft.ModCraftTableBlock;
+import committee.nova.mods.avaritia.common.block.craft.TierCraftTableBlock;
 import committee.nova.mods.avaritia.common.block.extreme.ExtremeSmithingTableBlock;
 import committee.nova.mods.avaritia.common.crafting.recipe.ExtremeSmithingRecipe;
 import committee.nova.mods.avaritia.common.tile.CompressorTile;
-import committee.nova.mods.avaritia.common.tile.ModCraftTile;
+import committee.nova.mods.avaritia.common.tile.TierCraftTile;
 import committee.nova.mods.avaritia.init.registry.ModRecipeTypes;
 import committee.nova.mods.avaritia.init.registry.ModTooltips;
 import net.minecraft.client.Minecraft;
@@ -25,7 +25,7 @@ public class JadeCompat implements IWailaPlugin {
     @Override
     public void registerClient(IWailaClientRegistration registration) {
         registration.registerBlockComponent(CompressorComponentProvider.INSTANCE, CompressorBlock.class);
-        registration.registerBlockComponent(CraftingComponentProvider.INSTANCE, ModCraftTableBlock.class);
+        registration.registerBlockComponent(CraftingComponentProvider.INSTANCE, TierCraftTableBlock.class);
         registration.registerBlockComponent(ExtremeSmithingComponentProvider.INSTANCE, ExtremeSmithingTableBlock.class);
     }
 
@@ -60,7 +60,7 @@ public class JadeCompat implements IWailaPlugin {
         public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
             var level = Minecraft.getInstance().level;
             assert level != null;
-            var compressor = (ModCraftTile) accessor.getBlockEntity();
+            var compressor = (TierCraftTile) accessor.getBlockEntity();
             var recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CRAFTING_TABLE_RECIPE.get(), compressor.getInventory().toIInventory(), level);
 
             if (recipe.isPresent()) {

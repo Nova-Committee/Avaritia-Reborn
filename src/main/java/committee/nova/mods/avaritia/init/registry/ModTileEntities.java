@@ -45,7 +45,7 @@ public class ModTileEntities {
             }
     );
     public static RegistryObject<BlockEntityType<CompressorTile>> compressor_tile = blockEntity("compressor_tile", CompressorTile::new, () -> new Block[]{ModBlocks.neutron_compressor.get()});
-    public static RegistryObject<BlockEntityType<ModCraftTile>> mod_craft_tile = blockEntity("mod_craft_tile", ModCraftTile::new,
+    public static RegistryObject<BlockEntityType<TierCraftTile>> mod_craft_tile = blockEntity("mod_craft_tile", TierCraftTile::new,
             () -> new Block[]{
                     ModBlocks.sculk_crafting_table.get(),
                     ModBlocks.nether_crafting_table.get(),

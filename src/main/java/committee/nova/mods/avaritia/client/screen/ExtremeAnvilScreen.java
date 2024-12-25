@@ -1,6 +1,7 @@
 package committee.nova.mods.avaritia.client.screen;
 
 import committee.nova.mods.avaritia.Static;
+import committee.nova.mods.avaritia.api.client.screen.BaseContainerScreen;
 import committee.nova.mods.avaritia.common.menu.ExtremeAnvilMenu;
 import committee.nova.mods.avaritia.common.net.C2SRenamePacket;
 import committee.nova.mods.avaritia.init.handler.NetworkHandler;
@@ -23,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
  * @CreateTime: 2024/12/23 18:39
  * @Description:
  */
-public class ExtremeAnvilScreen extends ItemCombinerScreen<ExtremeAnvilMenu> {
+public class ExtremeAnvilScreen extends BaseContainerScreen<ExtremeAnvilMenu> {
     private static final ResourceLocation ANVIL_LOCATION = Static.rl("textures/gui/extreme_anvil_gui.png");
     private static final Component TOO_EXPENSIVE_TEXT = Component.translatable("container.repair.expensive");
     private EditBox name;
@@ -130,7 +131,7 @@ public class ExtremeAnvilScreen extends ItemCombinerScreen<ExtremeAnvilMenu> {
     }
 
     @Override
-    protected void renderErrorIcon(@NotNull GuiGraphics pGuiGraphics, int pX, int pY) {
+    protected void renderBgOthers(@NotNull GuiGraphics pGuiGraphics, int pX, int pY) {
         if ((this.menu.getSlot(0).hasItem() || this.menu.getSlot(1).hasItem()) && !this.menu.getSlot(this.menu.getResultSlot()).hasItem()) {
             pGuiGraphics.blit(ANVIL_LOCATION, pX + 99, pY + 47, this.imageWidth, 0, 28, 21);
         }

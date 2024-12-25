@@ -1,6 +1,7 @@
 package committee.nova.mods.avaritia.common.menu;
 
 import committee.nova.mods.avaritia.common.crafting.recipe.ExtremeSmithingRecipe;
+import committee.nova.mods.avaritia.init.registry.ModBlocks;
 import committee.nova.mods.avaritia.init.registry.ModMenus;
 import committee.nova.mods.avaritia.init.registry.ModRecipeTypes;
 import net.minecraft.core.BlockPos;
@@ -64,7 +65,7 @@ public class ExtremeSmithingMenu extends ItemCombinerMenu {
 
     @Override
     protected boolean isValidBlock(@NotNull BlockState pState) {
-        return false;
+        return pState.is(ModBlocks.extreme_smithing_table.get());
     }
 
     @Override

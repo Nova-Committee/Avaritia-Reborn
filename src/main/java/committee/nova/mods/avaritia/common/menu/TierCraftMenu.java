@@ -1,9 +1,9 @@
 package committee.nova.mods.avaritia.common.menu;
 
-import committee.nova.mods.avaritia.api.common.wrapper.ItemStackWrapper;
 import committee.nova.mods.avaritia.api.common.menu.BaseMenu;
 import committee.nova.mods.avaritia.common.container.ModCraftContainer;
 import committee.nova.mods.avaritia.common.container.slot.ModCraftResultSlot;
+import committee.nova.mods.avaritia.common.tile.TierCraftTile;
 import committee.nova.mods.avaritia.init.registry.ModCraftTier;
 import committee.nova.mods.avaritia.init.registry.ModMenus;
 import committee.nova.mods.avaritia.init.registry.ModRecipeTypes;
@@ -25,26 +25,26 @@ import org.jetbrains.annotations.NotNull;
  * Date: 2022/2/19 19:42
  * Version: 1.0
  */
-public class ModCraftMenu extends BaseMenu {
+public class TierCraftMenu extends BaseMenu<TierCraftTile> {
     private final Level world;
     private final Container result;
     private final Player player;
     private final ModCraftTier tier;
 
-    private ModCraftMenu(MenuType<?> type, int id, Inventory playerInventory, FriendlyByteBuf buf, ModCraftTier tier) {
-        this(type, id, playerInventory, new ItemStackWrapper(tier.size * tier.size), buf.readBlockPos(), tier);
+    private TierCraftMenu(MenuType<?> type, int id, Inventory playerInventory, FriendlyByteBuf buf, ModCraftTier tier) {
+        this(type, id, playerInventory, buf.readBlockPos(), tier);
     }
 
-    public ModCraftMenu(MenuType<?> type, int id, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos,
-                        ModCraftTier tier
+    public TierCraftMenu(MenuType<?> type, int id, Inventory playerInventory, BlockPos pos,
+                         ModCraftTier tier
     ) {
-        super(type, id, pos);
+        super(type, id, playerInventory, pos);
         this.player = playerInventory.player;
         this.world = playerInventory.player.level();
         this.result = new ResultContainer();
         this.tier = tier;
 
-        var matrix = new ModCraftContainer(this, inventory, tier.size * tier.size);
+        var matrix = new ModCraftContainer(this, getTileEntity().getInventory(), tier.size * tier.size);
 
         this.addSlot(new ModCraftResultSlot(this.player, this, matrix, this.result, 0, tier.outX, tier.outY));
 
@@ -68,36 +68,36 @@ public class ModCraftMenu extends BaseMenu {
         this.slotsChanged(matrix);
     }
 
-    public static ModCraftMenu sculk(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
-        return new ModCraftMenu(ModMenus.sculk_crafting_tile_table.get(), windowId, playerInventory, buf, ModCraftTier.SCULK);
+    public static TierCraftMenu sculk(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
+        return new TierCraftMenu(ModMenus.sculk_crafting_tile_table.get(), windowId, playerInventory, buf, ModCraftTier.SCULK);
     }
 
-    public static ModCraftMenu sculk(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
-        return new ModCraftMenu(ModMenus.sculk_crafting_tile_table.get(), windowId, playerInventory, inventory, pos, ModCraftTier.SCULK);
+    public static TierCraftMenu sculk(int windowId, Inventory playerInventory, BlockPos pos) {
+        return new TierCraftMenu(ModMenus.sculk_crafting_tile_table.get(), windowId, playerInventory, pos, ModCraftTier.SCULK);
     }
 
-    public static ModCraftMenu nether(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
-        return new ModCraftMenu(ModMenus.nether_crafting_tile_table.get(), windowId, playerInventory, buf, ModCraftTier.NETHER);
+    public static TierCraftMenu nether(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
+        return new TierCraftMenu(ModMenus.nether_crafting_tile_table.get(), windowId, playerInventory, buf, ModCraftTier.NETHER);
     }
 
-    public static ModCraftMenu nether(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
-        return new ModCraftMenu(ModMenus.nether_crafting_tile_table.get(), windowId, playerInventory, inventory, pos, ModCraftTier.NETHER);
+    public static TierCraftMenu nether(int windowId, Inventory playerInventory, BlockPos pos) {
+        return new TierCraftMenu(ModMenus.nether_crafting_tile_table.get(), windowId, playerInventory, pos, ModCraftTier.NETHER);
     }
 
-    public static ModCraftMenu end(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
-        return new ModCraftMenu(ModMenus.end_crafting_tile_table.get(), windowId, playerInventory, buf, ModCraftTier.END);
+    public static TierCraftMenu end(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
+        return new TierCraftMenu(ModMenus.end_crafting_tile_table.get(), windowId, playerInventory, buf, ModCraftTier.END);
     }
 
-    public static ModCraftMenu end(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
-        return new ModCraftMenu(ModMenus.end_crafting_tile_table.get(), windowId, playerInventory, inventory, pos, ModCraftTier.END);
+    public static TierCraftMenu end(int windowId, Inventory playerInventory, BlockPos pos) {
+        return new TierCraftMenu(ModMenus.end_crafting_tile_table.get(), windowId, playerInventory, pos, ModCraftTier.END);
     }
 
-    public static ModCraftMenu extreme(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
-        return new ModCraftMenu(ModMenus.extreme_crafting_table.get(), windowId, playerInventory, buf, ModCraftTier.EXTREME);
+    public static TierCraftMenu extreme(int windowId, Inventory playerInventory, FriendlyByteBuf buf) {
+        return new TierCraftMenu(ModMenus.extreme_crafting_table.get(), windowId, playerInventory, buf, ModCraftTier.EXTREME);
     }
 
-    public static ModCraftMenu extreme(int windowId, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
-        return new ModCraftMenu(ModMenus.extreme_crafting_table.get(), windowId, playerInventory, inventory, pos, ModCraftTier.EXTREME);
+    public static TierCraftMenu extreme(int windowId, Inventory playerInventory, BlockPos pos) {
+        return new TierCraftMenu(ModMenus.extreme_crafting_table.get(), windowId, playerInventory, pos, ModCraftTier.EXTREME);
     }
 
     @Override

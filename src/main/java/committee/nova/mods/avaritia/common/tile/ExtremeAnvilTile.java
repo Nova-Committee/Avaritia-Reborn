@@ -4,7 +4,6 @@ import committee.nova.mods.avaritia.api.common.tile.BaseInventoryTileEntity;
 import committee.nova.mods.avaritia.api.common.wrapper.ItemStackWrapper;
 import committee.nova.mods.avaritia.common.menu.ExtremeAnvilMenu;
 import committee.nova.mods.avaritia.init.registry.ModTileEntities;
-import committee.nova.mods.avaritia.util.ItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -12,11 +11,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -30,6 +26,7 @@ public class ExtremeAnvilTile extends BaseInventoryTileEntity {
     public final ItemStackWrapper inventory;
     public SimpleContainerData data = new SimpleContainerData(1);
     private int exps;
+    private boolean stopped = false;
     public ExtremeAnvilTile(BlockPos pos, BlockState state) {
         super(ModTileEntities.extreme_anvil.get(), pos, state);
         this.inventory = createInventoryHandler(null);
@@ -37,11 +34,13 @@ public class ExtremeAnvilTile extends BaseInventoryTileEntity {
 
     public static void tick(Level level, BlockPos pos, BlockState state, ExtremeAnvilTile tile) {
         if (level.isClientSide) return;
-        if (tile.exps < 100) {
-            tile.exps++;
+        if (!tile.stopped) {
+            ++tile.exps;
             tile.data.set(0, tile.exps);
         }
-
+        if (tile.exps >= 100) {
+            tile.stopped = true;
+        }
     }
     public static ItemStackWrapper createInventoryHandler(Runnable onContentsChanged) {
         var inventory = new ItemStackWrapper(3, onContentsChanged);

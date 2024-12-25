@@ -2,7 +2,7 @@ package committee.nova.mods.avaritia.common.tile;
 
 import committee.nova.mods.avaritia.api.common.wrapper.ItemStackWrapper;
 import committee.nova.mods.avaritia.api.common.tile.BaseInventoryTileEntity;
-import committee.nova.mods.avaritia.common.menu.ModCraftMenu;
+import committee.nova.mods.avaritia.common.menu.TierCraftMenu;
 import committee.nova.mods.avaritia.init.registry.ModBlocks;
 import committee.nova.mods.avaritia.init.registry.ModCraftTier;
 import committee.nova.mods.avaritia.init.registry.ModTileEntities;
@@ -21,12 +21,12 @@ import org.jetbrains.annotations.Nullable;
  * Date: 2022/4/2 8:44
  * Version: 1.0
  */
-public class ModCraftTile extends BaseInventoryTileEntity {
+public class TierCraftTile extends BaseInventoryTileEntity {
 
     private final ItemStackWrapper inventory;
     private ModCraftTier tier;
 
-    public ModCraftTile(BlockPos pos, BlockState blockState) {
+    public TierCraftTile(BlockPos pos, BlockState blockState) {
         super(ModTileEntities.mod_craft_tile.get(), pos, blockState);
         if (blockState.is(ModBlocks.sculk_crafting_table.get())) {
             tier = ModCraftTier.SCULK;
@@ -55,19 +55,19 @@ public class ModCraftTile extends BaseInventoryTileEntity {
     public AbstractContainerMenu createMenu(int pContainerId, @NotNull Inventory pInventory) {
         switch (tier) {
             case SCULK -> {
-                return ModCraftMenu.sculk(pContainerId, pInventory, this.inventory, this.getBlockPos());
+                return TierCraftMenu.sculk(pContainerId, pInventory, this.getBlockPos());
             }
             case END -> {
-                return ModCraftMenu.end(pContainerId, pInventory, this.inventory, this.getBlockPos());
+                return TierCraftMenu.end(pContainerId, pInventory, this.getBlockPos());
             }
             case NETHER -> {
-                return ModCraftMenu.nether(pContainerId, pInventory, this.inventory, this.getBlockPos());
+                return TierCraftMenu.nether(pContainerId, pInventory, this.getBlockPos());
             }
             case EXTREME -> {
-                return ModCraftMenu.extreme(pContainerId, pInventory, this.inventory, this.getBlockPos());
+                return TierCraftMenu.extreme(pContainerId, pInventory, this.getBlockPos());
             }
         }
-        return ModCraftMenu.extreme(pContainerId, pInventory, this.inventory, this.getBlockPos());
+        return TierCraftMenu.extreme(pContainerId, pInventory, this.getBlockPos());
     }
 
 }

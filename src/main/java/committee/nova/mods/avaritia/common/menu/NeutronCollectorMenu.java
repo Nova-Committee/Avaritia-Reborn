@@ -22,29 +22,20 @@ import org.jetbrains.annotations.NotNull;
  * Date: 2022/4/2 15:13
  * Version: 1.0
  */
-public class NeutronCollectorMenu extends BaseMenu {
+public class NeutronCollectorMenu extends BaseMenu<BaseNeutronCollectorTile> {
     private final ContainerData data;
 
 
     public NeutronCollectorMenu(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
-        this(id, playerInventory, BaseNeutronCollectorTile.createInventoryHandler(null), buffer.readBlockPos(), new SimpleContainerData(10));
+        this(id, playerInventory, buffer.readBlockPos(), new SimpleContainerData(10));
     }
 
-    public NeutronCollectorMenu(int id, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos, ContainerData data) {
-        super(ModMenus.neutron_collector.get(), id, pos);
+    public NeutronCollectorMenu(int id, Inventory playerInventory, BlockPos pos, ContainerData data) {
+        super(ModMenus.neutron_collector.get(), id, playerInventory, pos);
         this.data = data;
-        this.addSlot(new OutputSlot(inventory, 0, 80, 32));
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 9; j++) {
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-            }
-        }
-
-        for (int i = 0; i < 9; i++) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
-        }
+        this.addSlot(new OutputSlot(getTileEntity().getInventory(), 0, 80, 32));
         this.addDataSlots(data);
+        createInventorySlots(playerInventory);
     }
 
     @Override

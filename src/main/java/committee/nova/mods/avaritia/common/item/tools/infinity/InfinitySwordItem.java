@@ -36,6 +36,7 @@ import java.util.List;
 public class InfinitySwordItem extends SwordItem implements IMultiFunction, InitEnchantItem {
     public InfinitySwordItem() {
         super(ModToolTiers.INFINITY_SWORD, 0, 0F, (new Properties())
+                .rarity(ModRarities.COSMIC)
                 .stacksTo(1)
                 .fireResistant());
     }
@@ -85,10 +86,6 @@ public class InfinitySwordItem extends SwordItem implements IMultiFunction, Init
         return InteractionResultHolder.success(heldItem);
     }
 
-    @Override
-    public @NotNull Rarity getRarity(@NotNull ItemStack stack) {
-        return ModRarities.COSMIC;
-    }
 
     @Override
     public boolean isDamageable(ItemStack stack) {

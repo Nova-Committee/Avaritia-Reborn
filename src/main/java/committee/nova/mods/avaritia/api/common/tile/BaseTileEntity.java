@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
  * Date: 2022/4/2 14:00
  * Version: 1.0
  */
-public class BaseTileEntity extends BlockEntity {
+public abstract class BaseTileEntity extends BlockEntity {
     private boolean isChanged = false;
 
     public BaseTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {

@@ -103,7 +103,7 @@ public class CompressedChestTile extends ChestBlockEntity {
 
     @Override
     protected @NotNull AbstractContainerMenu createMenu(int pContainerId, @NotNull Inventory pInventory) {
-        return new CompressedChestMenu(pContainerId, pInventory, this, 9);
+        return new CompressedChestMenu(pContainerId, pInventory, this.worldPosition, 9);
     }
 
     @Override

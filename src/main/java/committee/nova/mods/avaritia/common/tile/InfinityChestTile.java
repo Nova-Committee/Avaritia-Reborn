@@ -48,7 +48,7 @@ public class InfinityChestTile extends BaseTileEntity implements MenuProvider {
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int pContainerId, @NotNull Inventory pPlayerInventory, @NotNull Player pPlayer) {
-        return new InfinityChestMenu(pContainerId, pPlayerInventory, pPlayer, getInventory());
+        return new InfinityChestMenu(pContainerId, pPlayerInventory, this.worldPosition);
     }
 
 

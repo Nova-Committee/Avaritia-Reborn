@@ -24,7 +24,7 @@ public class NeutronRingScreen extends BaseContainerScreen<NeutronRingMenu> {
     }
 
     @Override
-    protected void renderBg(@NotNull GuiGraphics guiGraphics, float v, int i, int i1) {
-        this.renderDefaultBg(guiGraphics);
+    protected void renderBgOthers(GuiGraphics pGuiGraphics, int pX, int pY) {
+
     }
 }

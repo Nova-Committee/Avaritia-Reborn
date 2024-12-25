@@ -6,6 +6,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerListener;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
@@ -17,10 +19,14 @@ import java.text.NumberFormat;
  * Date: 2022/4/2 11:37
  * Version: 1.0
  */
-public abstract class BaseContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
+public abstract class BaseContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements ContainerListener {
     protected ResourceLocation bgTexture;
     protected int bgImgWidth;
     protected int bgImgHeight;
+
+    public BaseContainerScreen(T container, Inventory inventory, Component title, ResourceLocation bgTexture) {
+        this(container, inventory, title, bgTexture, 176, 166, 256, 256);
+    }
 
     public BaseContainerScreen(T container, Inventory inventory, Component title, ResourceLocation bgTexture, int bgWidth, int bgHeight) {
         this(container, inventory, title, bgTexture, bgWidth, bgHeight, 256, 256);
@@ -44,22 +50,43 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu> exten
         return df.format(number);
     }
 
+    protected void subInit() {
+    }
+
+    protected void init() {
+        super.init();
+        this.subInit();
+        this.menu.addSlotListener(this);
+    }
+
+    public void removed() {
+        super.removed();
+        this.menu.removeSlotListener(this);
+    }
+
     @Override
-    public void render(@NotNull GuiGraphics matrix, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrix);
-        super.render(matrix, mouseX, mouseY, partialTicks);
-        this.renderTooltip(matrix, mouseX, mouseY);
+    public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        this.renderBackground(pGuiGraphics);
+        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+        this.renderFg(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+        this.renderTooltip(pGuiGraphics, pMouseX, pMouseY);
     }
 
-    protected void renderDefaultBg(GuiGraphics matrix, float uOffSet, float vOffSet) {
-        int x = this.getGuiLeft();
-        int y = this.getGuiTop();
-        matrix.blit(this.bgTexture, x, y, uOffSet, vOffSet, this.imageWidth, this.imageHeight, this.bgImgWidth, this.bgImgHeight);
+    protected void renderFg(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
     }
 
-    protected void renderDefaultBg(GuiGraphics matrix) {
-        int x = this.getGuiLeft();
-        int y = this.getGuiTop();
-        matrix.blit(this.bgTexture, x, y, 0, 0, this.imageWidth, this.imageHeight, this.bgImgWidth, this.bgImgHeight);
+    @Override
+    protected void renderBg(@NotNull GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
+        pGuiGraphics.blit(this.bgTexture, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.bgImgWidth, this.bgImgHeight);
+        this.renderBgOthers(pGuiGraphics, this.leftPos, this.topPos);
+    }
+
+    protected abstract void renderBgOthers(GuiGraphics pGuiGraphics, int pX, int pY);
+
+
+    public void dataChanged(@NotNull AbstractContainerMenu pContainerMenu, int pDataSlotIndex, int pValue) {
+    }
+
+    public void slotChanged(@NotNull AbstractContainerMenu pContainerToSend, int pSlotInd, @NotNull ItemStack pStack) {
     }
 }

@@ -1,7 +1,5 @@
 package committee.nova.mods.avaritia.common.menu;
 
-import com.mojang.logging.LogUtils;
-import committee.nova.mods.avaritia.init.registry.ModBlocks;
 import committee.nova.mods.avaritia.init.registry.ModMenus;
 import net.minecraft.SharedConstants;
 import net.minecraft.Util;
@@ -16,11 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -64,11 +59,6 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
     @Override
     protected boolean mayPickup(Player pPlayer, boolean pHasStack) {
         return (pPlayer.getAbilities().instabuild || pPlayer.experienceLevel + this.data.get(0) >= this.cost.get()) && this.cost.get() > 0;
-    }
-
-    @Override
-    public void removed(@NotNull Player pPlayer) {
-        super.removed(pPlayer);
     }
 
     @Override
@@ -161,8 +151,8 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
 
                     for(Enchantment enchantment1 : map1.keySet()) {
                         if (enchantment1 != null) {
-                            int i2 = (Integer)map.getOrDefault(enchantment1, 0);
-                            int j2 = (Integer)map1.get(enchantment1);
+                            int i2 = map.getOrDefault(enchantment1, 0);
+                            int j2 = map1.get(enchantment1);
                             j2 = i2 == j2 ? j2 + 1 : Math.max(j2, i2);
                             boolean flag1 = enchantment1.canEnchant(itemstack);
                             if (this.player.getAbilities().instabuild || itemstack.is(Items.ENCHANTED_BOOK)) {

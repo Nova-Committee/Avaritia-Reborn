@@ -2,7 +2,7 @@ package committee.nova.mods.avaritia.client.screen.craft;
 
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.api.client.screen.BaseContainerScreen;
-import committee.nova.mods.avaritia.common.menu.ModCraftMenu;
+import committee.nova.mods.avaritia.common.menu.TierCraftMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -15,11 +15,11 @@ import org.jetbrains.annotations.NotNull;
  * Date: 2022/4/2 11:40
  * Version: 1.0
  */
-public class SculkCraftScreen extends BaseContainerScreen<ModCraftMenu> {
+public class SculkCraftScreen extends BaseContainerScreen<TierCraftMenu> {
     private static final ResourceLocation BACKGROUND = new ResourceLocation(Static.MOD_ID, "textures/gui/craft/sculk_crafting_table_gui.png");
 
-    public SculkCraftScreen(ModCraftMenu container, Inventory inventory, Component title) {
-        super(container, inventory, title, BACKGROUND, 176, 161, 256, 256);
+    public SculkCraftScreen(TierCraftMenu container, Inventory inventory, Component title) {
+        super(container, inventory, title, BACKGROUND, 176, 161);
     }
 
     @Override
@@ -29,9 +29,8 @@ public class SculkCraftScreen extends BaseContainerScreen<ModCraftMenu> {
         stack.drawString(font, title, 15, 72, 4210752, false);
         //stack.drawString(font, this.playerInventoryTitle, 39, this.imageHeight - 94, 4210752, false);
     }
-
     @Override
-    protected void renderBg(@NotNull GuiGraphics stack, float partialTicks, int mouseX, int mouseY) {
-        this.renderDefaultBg(stack);
+    protected void renderBgOthers(GuiGraphics pGuiGraphics, int pX, int pY) {
+
     }
 }

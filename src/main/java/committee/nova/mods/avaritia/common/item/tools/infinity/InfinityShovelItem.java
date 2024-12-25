@@ -39,6 +39,7 @@ public class InfinityShovelItem extends ShovelItem {
 
     public InfinityShovelItem() {
         super(ModToolTiers.INFINITY_SHOVEL, 0, 0f, (new Properties())
+                .rarity(ModRarities.COSMIC)
                 .stacksTo(1)
                 .fireResistant());
 
@@ -52,11 +53,6 @@ public class InfinityShovelItem extends ShovelItem {
     @Override
     public boolean isDamageable(ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public @NotNull Rarity getRarity(@NotNull ItemStack pStack) {
-        return ModRarities.COSMIC;
     }
 
     @Override

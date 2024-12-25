@@ -21,26 +21,17 @@ import org.jetbrains.annotations.NotNull;
  * Date: 2022/4/2 18:09
  * Version: 1.0
  */
-public class CompressorMenu extends BaseMenu {
+public class CompressorMenu extends BaseMenu<CompressorTile> {
     public CompressorMenu(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
         this(id, playerInventory, CompressorTile.createInventoryHandler(null), buffer.readBlockPos());
     }
 
     public CompressorMenu(int id, Inventory playerInventory, ItemStackWrapper inventory, BlockPos pos) {
-        super(ModMenus.compressor.get(), id, pos);
+        super(ModMenus.compressor.get(), id, playerInventory, pos);
 
         this.addSlot(new OutputSlot(inventory, 0, 120, 35));
         this.addSlot(new BaseItemStackHandlerSlot(inventory, 1, 39, 35));
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 9; j++) {
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-            }
-        }
-
-        for (int i = 0; i < 9; i++) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
-        }
+        createInventorySlots(playerInventory);
     }
 
     @Override

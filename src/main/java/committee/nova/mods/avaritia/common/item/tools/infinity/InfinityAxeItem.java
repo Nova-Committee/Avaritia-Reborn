@@ -39,6 +39,7 @@ public class InfinityAxeItem extends AxeItem {
 
     public InfinityAxeItem() {
         super(ModToolTiers.INFINITY_AXE, 0, 0f, (new Properties())
+                .rarity(ModRarities.COSMIC)
                 .stacksTo(1)
                 .fireResistant());
 
@@ -66,15 +67,9 @@ public class InfinityAxeItem extends AxeItem {
     }
 
     @Override
-    public @NotNull Rarity getRarity(@NotNull ItemStack pStack) {
-        return ModRarities.COSMIC;
-    }
-
-    @Override
     public int getEnchantmentValue(ItemStack stack) {
         return 0;
     }
-
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level pLevel, Player player, @NotNull InteractionHand hand) {

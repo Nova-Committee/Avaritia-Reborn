@@ -25,7 +25,7 @@ public class BladeSlashEntity extends Projectile {
     public static float defaultSpeed = 2.0F;
     public final float zRot;
     public float damage = ModConfig.bladeSlashDamage.get();
-    public int duration = 5;
+    public int duration = 10;
 
     public BladeSlashEntity(EntityType<? extends Projectile> type, Level worldIn) {
         super(type, worldIn);

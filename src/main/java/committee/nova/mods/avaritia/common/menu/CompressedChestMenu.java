@@ -1,7 +1,9 @@
 package committee.nova.mods.avaritia.common.menu;
 
 import committee.nova.mods.avaritia.api.common.menu.BaseMenu;
+import committee.nova.mods.avaritia.common.tile.CompressedChestTile;
 import committee.nova.mods.avaritia.init.registry.ModMenus;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -13,27 +15,27 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class CompressedChestMenu extends BaseMenu {
+public class CompressedChestMenu extends BaseMenu<CompressedChestTile> {
     private static final int SLOTS_PER_ROW = 27;
     private final Container container;
     private final int containerRows;
 
     public CompressedChestMenu(int id, Inventory playerInventory, FriendlyByteBuf buffer) {
-        this(id, playerInventory, new SimpleContainer(9 * 27), 9);
+        this(id, playerInventory, buffer.readBlockPos(), 9);
     }
 
-    public CompressedChestMenu(int pContainerId, Inventory pPlayerInventory, Container pContainer, int pRows) {
-        super(ModMenus.GENERIC_9x27.get(), pContainerId);
+    public CompressedChestMenu(int pContainerId, Inventory pPlayerInventory, BlockPos pos, int pRows) {
+        super(ModMenus.GENERIC_9x27.get(), pContainerId, pPlayerInventory, pos);
         this.containerRows = pRows;
-        this.container = pContainer;
-        pContainer.startOpen(pPlayerInventory.player);
+        this.container = getTileEntity();
+        container.startOpen(pPlayerInventory.player);
         int $$5 = (this.containerRows - 4) * 18;
 
         int $$10;
         int $$9;
         for ($$10 = 0; $$10 < this.containerRows; ++$$10) {
             for ($$9 = 0; $$9 < SLOTS_PER_ROW; ++$$9) {
-                this.addSlot(new Slot(pContainer, $$9 + $$10 * SLOTS_PER_ROW, 8 + $$9 * 18, 17 + $$10 * 18));
+                this.addSlot(new Slot(container, $$9 + $$10 * SLOTS_PER_ROW, 8 + $$9 * 18, 17 + $$10 * 18));
             }
         }
 

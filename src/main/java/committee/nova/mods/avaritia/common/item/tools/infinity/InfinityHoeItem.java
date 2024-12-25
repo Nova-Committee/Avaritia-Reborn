@@ -45,6 +45,7 @@ public class InfinityHoeItem extends HoeItem {
 
     public InfinityHoeItem() {
         super(ModToolTiers.INFINITY_HOE, 0, 0f, (new Properties())
+                .rarity(ModRarities.COSMIC)
                 .stacksTo(1)
                 .fireResistant());
 
@@ -58,11 +59,6 @@ public class InfinityHoeItem extends HoeItem {
     @Override
     public boolean isDamageable(ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public @NotNull Rarity getRarity(@NotNull ItemStack pStack) {
-        return ModRarities.COSMIC;
     }
 
     @Override

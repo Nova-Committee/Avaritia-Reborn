@@ -26,7 +26,7 @@ public class NeutronCollectorScreen extends BaseContainerScreen<NeutronCollector
     private BaseNeutronCollectorTile tile;
 
     public NeutronCollectorScreen(NeutronCollectorMenu container, Inventory inventory, Component title) {
-        super(container, inventory, title, BACKGROUND, 176, 166, 256, 256);
+        super(container, inventory, title, BACKGROUND);
     }
 
     @Override
@@ -76,13 +76,12 @@ public class NeutronCollectorScreen extends BaseContainerScreen<NeutronCollector
     }
 
     @Override
-    protected void renderBg(@NotNull GuiGraphics stack, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBgOthers(GuiGraphics pGuiGraphics, int pX, int pY) {
         int i = this.getGuiLeft();
         int j = this.getGuiTop();
-        stack.blit(BACKGROUND, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, this.bgImgWidth, this.bgImgHeight);
         if (this.getProgress() > 0) {
             int i2 = this.getProgressBarScaled(18);
-            stack.blit(BACKGROUND, i + 99, j + 49 - i2, 176, 18 - i2, 4, i2);
+            pGuiGraphics.blit(BACKGROUND, i + 99, j + 49 - i2, 176, 18 - i2, 4, i2);
         }
     }
 

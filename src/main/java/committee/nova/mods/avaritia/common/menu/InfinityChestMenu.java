@@ -3,16 +3,17 @@ package committee.nova.mods.avaritia.common.menu;
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.api.common.menu.BaseMenu;
 import committee.nova.mods.avaritia.common.container.InfinityChestContainer;
+import committee.nova.mods.avaritia.common.tile.InfinityChestTile;
 import committee.nova.mods.avaritia.common.wrappers.InfinityChestWrapper;
 import committee.nova.mods.avaritia.common.wrappers.InfinityChestWrapper.*;
 import committee.nova.mods.avaritia.init.registry.ModMenus;
 import lombok.Getter;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,26 +24,24 @@ import java.util.List;
  * @CreateTime: 2024/11/17 01:51
  * @Description:
  */
-public class InfinityChestMenu extends BaseMenu {
+public class InfinityChestMenu extends BaseMenu<InfinityChestTile> {
     public final List<SlotInfo> viewingItems = new ArrayList<>();
     public final List<String> formatCount = new ArrayList<>();
 
-    protected final Player player;
     @Getter
     public InfinityChestWrapper chestWrapper;
     public InfinityChestContainer chestContainer;
     private double scrollTo = 0.0D;
 
     public InfinityChestMenu(int id, Inventory playerInventory, FriendlyByteBuf extraData) {
-        this(id, playerInventory, playerInventory.player,
-                new InfinityChestWrapper());
+        this(id, playerInventory,
+                extraData.readBlockPos());
 }
 
-    public InfinityChestMenu(int id, Inventory playerInventory, Player player, InfinityChestWrapper chestWrapper) {
-        super(ModMenus.infinity_chest.get(), id);
+    public InfinityChestMenu(int id, Inventory playerInventory, BlockPos pos) {
+        super(ModMenus.infinity_chest.get(), id, playerInventory, pos);
         this.chestContainer = new InfinityChestContainer();
-        this.chestWrapper = chestWrapper;
-        this.player = player;
+        this.chestWrapper = getTileEntity().getInventory();
         addSlots(player, player.getInventory());
     }
 

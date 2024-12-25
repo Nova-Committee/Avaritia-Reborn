@@ -27,7 +27,7 @@ public class CompressorScreen extends BaseContainerScreen<CompressorMenu> {
     private CompressorTile tile;
 
     public CompressorScreen(CompressorMenu container, Inventory inventory, Component title) {
-        super(container, inventory, title, BACKGROUND, 176, 166, 256, 256);
+        super(container, inventory, title, BACKGROUND);
     }
 
     @Override
@@ -37,14 +37,14 @@ public class CompressorScreen extends BaseContainerScreen<CompressorMenu> {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    protected void renderFg(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         int x = this.getGuiLeft();
         int y = this.getGuiTop();
 
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
 
 
-        if (mouseX > x + 63 && mouseX < x + 79 && mouseY > y + 35 && mouseY < y + 51) {
+        if (pMouseX > x + 63 && pMouseX < x + 79 && pMouseY > y + 35 && pMouseY < y + 51) {
             List<Component> tooltip = new ArrayList<>();
 
             if (this.getMaterialCount() < 1) {
@@ -59,34 +59,9 @@ public class CompressorScreen extends BaseContainerScreen<CompressorMenu> {
                 tooltip.add(text);
             }
 
-            guiGraphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
+            pGuiGraphics.renderComponentTooltip(font, tooltip, pMouseX, pMouseY);
         }
-
-//        if (mouseX > x + 89 && mouseX < x + 110 && mouseY > y + 35 && mouseY < y + 51) {
-//            List<Component> tooltip = new ArrayList<>();
-//
-//            if (this.getProgress() < 1) {
-//                tooltip.add(ModTooltips.PROGRESS_EMPTY.color(ChatFormatting.WHITE).build());
-//            } else {
-//
-//                var text = new TextComponent(number(this.getProgress()) + " / " + number(this.getTimeRequired()));
-//
-//                tooltip.add(text);
-//            }
-//
-//            this.renderComponentTooltip(matrix, tooltip, mouseX, mouseY);
-//        }
-
-//        if (mouseX > x + 68 && mouseX < x + 79 && mouseY > y + 28 && mouseY < y + 39) {
-//            if (this.isEjecting()) {
-//                this.renderTooltip(matrix, ModTooltips.EJECTING.color(ChatFormatting.WHITE).build(), mouseX, mouseY);
-//            } else {
-//                this.renderTooltip(matrix, ModTooltips.EJECT.color(ChatFormatting.WHITE).build(), mouseX, mouseY);
-//            }
-//        }
-
     }
-
 
     @Override
     protected void renderLabels(@NotNull GuiGraphics stack, int mouseX, int mouseY) {
@@ -95,27 +70,23 @@ public class CompressorScreen extends BaseContainerScreen<CompressorMenu> {
         stack.drawString(font, this.playerInventoryTitle, 8, this.imageHeight - 94, 4210752, false);
     }
 
-    @Override
-    protected void renderBg(@NotNull GuiGraphics stack, float partialTicks, int mouseX, int mouseY) {
-        this.renderDefaultBg(stack);
 
+    @Override
+    protected void renderBgOthers(GuiGraphics pGuiGraphics, int pX, int pY) {
         int x = this.getGuiLeft();
         int y = this.getGuiTop();
 
         if (this.hasRecipe()) {
             if (this.getMaterialCount() > 0 && this.getMaterialsRequired() > 0) {
                 int i2 = this.getMaterialBarScaled(16);
-                stack.blit(BACKGROUND, x + 63, y + 35, 176, 18, i2 + 1, 16);
+                pGuiGraphics.blit(BACKGROUND, x + 63, y + 35, 176, 18, i2 + 1, 16);
             }
 
             if (this.getProgress() > 0 && this.getMaterialCount() >= this.getMaterialsRequired()) {
                 int i2 = this.getProgressBarScaled(22);
-                stack.blit(BACKGROUND, x + 89, y + 35, 176, 0, i2 + 1, 16);
+                pGuiGraphics.blit(BACKGROUND, x + 89, y + 35, 176, 0, i2 + 1, 16);
             }
-
         }
-
-
     }
 
     private Component getMaterialStackDisplayName() {
