@@ -1,4 +1,4 @@
-package committee.nova.mods.avaritia.util.lang;
+package committee.nova.mods.avaritia.api.utils.lang;
 
 import net.minecraft.ChatFormatting;
 

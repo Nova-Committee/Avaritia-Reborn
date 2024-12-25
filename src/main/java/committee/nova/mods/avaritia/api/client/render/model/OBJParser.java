@@ -2,7 +2,7 @@ package committee.nova.mods.avaritia.api.client.render.model;
 
 import com.mojang.blaze3d.vertex.VertexFormat;
 import committee.nova.mods.avaritia.api.client.render.CCModel;
-import committee.nova.mods.avaritia.util.client.ResourceUtils;
+import committee.nova.mods.avaritia.api.client.util.ResourceUtils;
 import committee.nova.mods.avaritia.util.vec.SwapYZ;
 import committee.nova.mods.avaritia.util.vec.Transformation;
 import committee.nova.mods.avaritia.util.vec.Vector3;

@@ -1,8 +1,8 @@
 package committee.nova.mods.avaritia.api.client.render.model;
 
 import committee.nova.mods.avaritia.api.client.render.pipeline.attribute.AttributeKey;
-import committee.nova.mods.avaritia.util.client.colour.Colour;
-import committee.nova.mods.avaritia.util.client.colour.ColourRGBA;
+import committee.nova.mods.avaritia.api.client.util.colour.Colour;
+import committee.nova.mods.avaritia.api.client.util.colour.ColourRGBA;
 import committee.nova.mods.avaritia.util.java.Copyable;
 import org.jetbrains.annotations.Nullable;
 

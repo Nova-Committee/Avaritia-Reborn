@@ -2,7 +2,7 @@ package committee.nova.mods.avaritia.api.client.render.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import committee.nova.mods.avaritia.api.client.model.PerspectiveModel;
-import committee.nova.mods.avaritia.util.client.TextureUtils;
+import committee.nova.mods.avaritia.api.client.util.TextureUtils;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;

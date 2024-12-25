@@ -3,7 +3,7 @@ package committee.nova.mods.avaritia.api.client.render.pipeline.attribute;
 
 import committee.nova.mods.avaritia.api.client.render.CCRenderState;
 import committee.nova.mods.avaritia.api.client.render.pipeline.VertexAttribute;
-import committee.nova.mods.avaritia.util.client.colour.ColourRGBA;
+import committee.nova.mods.avaritia.api.client.util.colour.ColourRGBA;
 
 /**
  * Sets colour in CCRS to the specified colour in the model.

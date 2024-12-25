@@ -1,5 +1,7 @@
 package committee.nova.mods.avaritia;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mojang.authlib.GameProfile;
 import committee.nova.mods.avaritia.util.data.RawValue;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +26,7 @@ public class Static {
     public static final String MOD_ID = "avaritia";
 
     public static final Logger LOGGER = LogManager.getLogger();
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().enableComplexMapKeySerialization().create();
     public static final GameProfile avaritiaFakePlayer = new GameProfile(UUID.fromString("32283731-bbef-487c-bb69-c7e32f84ed27"), "[Avaritia]");
     public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat(",###");
     public static ResourceLocation rl(String path) {

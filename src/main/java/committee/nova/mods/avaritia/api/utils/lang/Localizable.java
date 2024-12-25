@@ -1,5 +1,6 @@
-package committee.nova.mods.avaritia.util.lang;
+package committee.nova.mods.avaritia.api.utils.lang;
 
+import lombok.Getter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -10,6 +11,7 @@ import net.minecraft.network.chat.MutableComponent;
  * Date: 2022/4/2 12:44
  * Version: 1.0
  */
+@Getter
 public class Localizable {
     private final String key;
     private final ChatFormatting defaultColor;
@@ -31,14 +33,6 @@ public class Localizable {
         return new Localizable(key, defaultColor);
     }
 
-    public String getKey() {
-        return this.key;
-    }
-
-    public ChatFormatting getDefaultColor() {
-        return this.defaultColor;
-    }
-
     public LocalizableBuilder args(Object... args) {
         return this.builder().args(args);
     }
@@ -51,11 +45,15 @@ public class Localizable {
         return this.builder().prepend(text);
     }
 
+    public LocalizableBuilder append(String text) {
+        return this.builder().append(text);
+    }
+
     public MutableComponent build() {
         return this.builder().build();
     }
 
-    public String buildString() {
+    public String string() {
         return this.builder().buildString();
     }
 
@@ -68,6 +66,7 @@ public class Localizable {
         private Object[] args = new Object[0];
         private ChatFormatting color;
         private String prependText = "";
+        private String appendText = "";
 
         public LocalizableBuilder(String key) {
             this.key = key;
@@ -88,10 +87,19 @@ public class Localizable {
             return this;
         }
 
+        public LocalizableBuilder append(String text) {
+            this.appendText = text + this.appendText;
+            return this;
+        }
+
         public MutableComponent build() {
             MutableComponent component = Component.translatable(this.key, this.args);
             if (!this.prependText.isEmpty()) {
                 component = (Component.literal(this.prependText)).append(component);
+            }
+
+            if (!this.appendText.isEmpty()) {
+                component =component.append(Component.literal(this.appendText));
             }
 
             if (this.color != null) {

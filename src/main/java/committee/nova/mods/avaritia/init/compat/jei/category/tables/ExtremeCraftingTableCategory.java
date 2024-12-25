@@ -1,11 +1,10 @@
 package committee.nova.mods.avaritia.init.compat.jei.category.tables;
 
 import committee.nova.mods.avaritia.Static;
-import committee.nova.mods.avaritia.api.common.crafting.ISpecialRecipe;
 import committee.nova.mods.avaritia.common.crafting.recipe.*;
 import committee.nova.mods.avaritia.init.registry.ModBlocks;
 import committee.nova.mods.avaritia.init.registry.ModItems;
-import committee.nova.mods.avaritia.util.lang.Localizable;
+import committee.nova.mods.avaritia.api.utils.lang.Localizable;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;

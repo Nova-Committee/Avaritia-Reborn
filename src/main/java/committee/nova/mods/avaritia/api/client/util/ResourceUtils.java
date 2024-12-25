@@ -1,4 +1,4 @@
-package committee.nova.mods.avaritia.util.client;
+package committee.nova.mods.avaritia.api.client.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;

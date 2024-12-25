@@ -1,21 +1,29 @@
-package committee.nova.mods.avaritia.util;
+package committee.nova.mods.avaritia.api.utils;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import committee.nova.mods.avaritia.util.NBTUtils;
 import committee.nova.mods.avaritia.util.vec.Vector3;
+import lombok.NonNull;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import static committee.nova.mods.avaritia.Static.LOGGER;
 
 /**
  * Description:
@@ -25,6 +33,118 @@ import java.util.Set;
  */
 public class ItemUtils {
     public ItemUtils() {
+    }
+
+    public static String getId(Item item) {
+        ResourceLocation resource = ForgeRegistries.ITEMS.getKey(item);
+        if (resource == null) return "minecraft:air";
+        else return resource.toString();
+    }
+
+    public static String getId(ItemStack itemStack) {
+        return getId(itemStack.getItem()) + getNbtString(itemStack);
+    }
+
+    public static Item getItem(String id) {
+        String resourceId = id;
+        if (id.contains("{") && id.endsWith("}")) resourceId = resourceId.substring(0, id.indexOf("{"));
+        return ForgeRegistries.ITEMS.getValue(new ResourceLocation(resourceId));
+    }
+
+    public static ItemStack getItemStack(String id) {
+        ItemStack result = new ItemStack(Items.AIR);
+        try {
+            result = getItemStack(id, false);
+        } catch (CommandSyntaxException ignored) {
+        }
+        return result;
+    }
+
+    public static ItemStack getItemStack(String id, boolean throwException) throws CommandSyntaxException {
+        Item item = getItem(id);
+        if (item == null) {
+            throw new RuntimeException("Unknown item ID: " + id);
+        }
+        ItemStack itemStack = new ItemStack(item);
+        if (id.contains("{") && id.endsWith("}") && !id.endsWith("{}")) {
+            try {
+                String nbtString = id.substring(id.indexOf("{"));
+                CompoundTag nbt = TagParser.parseTag(nbtString);
+                itemStack.setTag(nbt);
+            } catch (Exception e) {
+                if (throwException) throw e;
+                LOGGER.error("Failed to parse NBT data", e);
+            }
+        }
+        return itemStack;
+    }
+
+    public static String getNbtString(ItemStack itemStack) {
+        String json = "";
+        if (itemStack.hasTag() && itemStack.getTag() != null) {
+            json = itemStack.getTag().toString();
+        }
+        return json;
+    }
+
+    public static @NonNull ItemStack deserialize(JsonObject json) {
+        ItemStack itemStack;
+        try {
+            String itemId = json.get("item").getAsString();
+            int count = json.get("count").getAsInt();
+            count = Math.max(count, 1);
+            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId));
+            if (item == null) {
+                throw new JsonParseException("Unknown item ID: " + itemId);
+            }
+            itemStack = new ItemStack(item, count);
+
+            // 如果存在NBT数据，则解析
+            if (json.has("nbt")) {
+                try {
+                    CompoundTag nbt = TagParser.parseTag(json.get("nbt").getAsString());
+                    itemStack.setTag(nbt);
+                } catch (CommandSyntaxException e) {
+                    throw new JsonParseException("Failed to parse NBT data", e);
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Failed to deserialize item reward", e);
+            itemStack = new ItemStack(Items.AIR);
+        }
+        return itemStack;
+    }
+
+    public static JsonObject serialize(ItemStack reward) {
+        JsonObject json = new JsonObject();
+        try {
+            json.addProperty("item", getId(reward.getItem()));
+            json.addProperty("count", reward.getCount());
+
+            // 如果物品有NBT数据，则序列化
+            if (reward.hasTag()) {
+                if (reward.getTag() != null) {
+                    json.addProperty("nbt", getNbtString(reward));
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Failed to serialize item reward", e);
+            json.addProperty("item", getId(Items.AIR));
+            json.addProperty("count", 0);
+        }
+        return json;
+    }
+
+    public String getDisplayName(JsonObject json) {
+        return deserialize(json).getDisplayName().getString().replaceAll("\\[(.*)]", "$1");
+    }
+
+    public static String getDisplayName(ItemStack itemStack) {
+        return itemStack.getDisplayName().getString().replaceAll("\\[(.*)]", "$1");
+    }
+
+    public static String getDisplayName(Item item) {
+        return new ItemStack(item).getDisplayName().getString().replaceAll("\\[(.*)]", "$1");
     }
 
     public static ItemStack mapEquals(ItemStack stack, Map<ItemStack, Integer> map) {

@@ -1,6 +1,6 @@
 package committee.nova.mods.avaritia.api.client.render.model;
 
-import committee.nova.mods.avaritia.util.client.ResourceUtils;
+import committee.nova.mods.avaritia.api.client.util.ResourceUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import org.jetbrains.annotations.Nullable;

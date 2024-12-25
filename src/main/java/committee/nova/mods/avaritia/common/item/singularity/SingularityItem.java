@@ -7,7 +7,7 @@ import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
 import committee.nova.mods.avaritia.init.registry.ModTooltips;
 import committee.nova.mods.avaritia.util.SingularityUtils;
-import committee.nova.mods.avaritia.util.lang.Localizable;
+import committee.nova.mods.avaritia.api.utils.lang.Localizable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;

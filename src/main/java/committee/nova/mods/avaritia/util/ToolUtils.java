@@ -242,8 +242,8 @@ public class ToolUtils {
      *
      * @param shooter                  攻击者
      * @param level                    世界
-     * @param piercedAndKilledEntities
-     * @param pickup
+     * @param piercedAndKilledEntities 无视护甲的实体
+     * @param pickup                   拾起箭
      * @param randy                    随机
      * @param pos                      击中坐标
      */
