@@ -32,6 +32,7 @@ public class NetworkHandler {
         CHANNEL.registerMessage(id++, S2CTotemPacket.class, S2CTotemPacket::write, S2CTotemPacket::new, S2CTotemPacket::run);
         CHANNEL.registerMessage(id++, C2SJEIGhostPacket.class, C2SJEIGhostPacket::write, C2SJEIGhostPacket::new, C2SJEIGhostPacket::run);
         CHANNEL.registerMessage(id++, C2SICFilterPacket.class, C2SICFilterPacket::write, C2SICFilterPacket::new, C2SICFilterPacket::run);
+        CHANNEL.registerMessage(id++, C2SItemFilterPacket.class, C2SItemFilterPacket::write, C2SItemFilterPacket::new, C2SItemFilterPacket::run);
         CHANNEL.registerMessage(id++, C2SRenamePacket.class, C2SRenamePacket::write, C2SRenamePacket::new, C2SRenamePacket::run);
     }
 }

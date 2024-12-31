@@ -34,7 +34,7 @@ public class ExtremeSmithingRecipeCategory implements IRecipeCategory<ExtremeSmi
 
     public ExtremeSmithingRecipeCategory(IGuiHelper guiHelper) {
         background = guiHelper.createDrawable(TEXTURE, 0, 0, 170, 64);
-        icon = guiHelper.createDrawableItemStack(new ItemStack(ModBlocks.extreme_crafting_table.get()));
+        icon = guiHelper.createDrawableItemStack(new ItemStack(ModBlocks.extreme_smithing_table.get()));
     }
 
     @Override

@@ -1,7 +1,7 @@
 package committee.nova.mods.avaritia.api.client.shader;
 
 import committee.nova.mods.avaritia.api.client.shader.ShaderObject.ShaderType;
-import committee.nova.mods.avaritia.util.SneakyUtils;
+import committee.nova.mods.avaritia.api.utils.SneakyUtils;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import static committee.nova.mods.avaritia.util.SneakyUtils.nullCons;
+import static committee.nova.mods.avaritia.api.utils.SneakyUtils.nullCons;
 
 
 /**

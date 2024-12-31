@@ -9,7 +9,7 @@ import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.client.shader.AvaritiaShaders;
 import committee.nova.mods.avaritia.init.registry.ModItems;
 import committee.nova.mods.avaritia.util.ToolUtils;
-import committee.nova.mods.avaritia.util.client.ColorUtils;
+import committee.nova.mods.avaritia.api.client.util.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;

@@ -8,7 +8,7 @@ import committee.nova.mods.avaritia.api.client.model.bakedmodels.WrappedItemMode
 import committee.nova.mods.avaritia.client.shader.AvaritiaShaders;
 import committee.nova.mods.avaritia.common.item.MatterClusterItem;
 import committee.nova.mods.avaritia.init.registry.ModItems;
-import committee.nova.mods.avaritia.util.client.TransformUtils;
+import committee.nova.mods.avaritia.api.client.util.TransformUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

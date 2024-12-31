@@ -5,7 +5,7 @@ import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.init.registry.ModItems;
 import committee.nova.mods.avaritia.init.registry.ModRarities;
-import committee.nova.mods.avaritia.util.ContainerUtils;
+import committee.nova.mods.avaritia.api.utils.ContainerUtils;
 import committee.nova.mods.avaritia.api.utils.ItemUtils;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;

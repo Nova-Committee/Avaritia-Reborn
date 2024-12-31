@@ -34,12 +34,15 @@ public class ExtremeAnvilTile extends BaseInventoryTileEntity {
 
     public static void tick(Level level, BlockPos pos, BlockState state, ExtremeAnvilTile tile) {
         if (level.isClientSide) return;
-        if (!tile.stopped) {
-            ++tile.exps;
-            tile.data.set(0, tile.exps);
+        if (tile.data.get(0) < 100) {
+            tile.stopped = false;
         }
-        if (tile.exps >= 100) {
+        if (!tile.stopped) {
+            tile.data.set(0, ++tile.exps);
+        }
+        if (tile.data.get(0) >= 100) {
             tile.stopped = true;
+            tile.setChangedAndDispatch();
         }
     }
     public static ItemStackWrapper createInventoryHandler(Runnable onContentsChanged) {

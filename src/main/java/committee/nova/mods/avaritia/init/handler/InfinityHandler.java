@@ -252,12 +252,7 @@ public class InfinityHandler {
                     for (var drop : event.getDrops()) {
                         ItemStack stack = drop.getItem();
                         if (stack.is(Items.WITHER_SKELETON_SKULL)) {
-                            if (stack.getDamageValue() == 1) {
-                                skulls++;
-                            } else if (stack.getDamageValue() == 0) {
-                                skulls++;
-                                stack.setDamageValue(1);
-                            }
+                            skulls++;
                         }
                     }
 

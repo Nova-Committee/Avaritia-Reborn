@@ -2,7 +2,7 @@ package committee.nova.mods.avaritia.api.client.render.pipeline.attribute;
 
 import committee.nova.mods.avaritia.api.client.render.CCRenderState;
 import committee.nova.mods.avaritia.api.client.render.pipeline.VertexAttribute;
-import committee.nova.mods.avaritia.util.client.VectorUtils;
+import committee.nova.mods.avaritia.api.client.util.VectorUtils;
 
 /**
  * Sets the side state in CCRS based on the provided model. If the model does not have side data it requires normals.

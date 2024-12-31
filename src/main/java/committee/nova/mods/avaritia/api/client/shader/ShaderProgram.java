@@ -1,7 +1,7 @@
 package committee.nova.mods.avaritia.api.client.shader;
 
 import com.google.common.collect.ImmutableList;
-import committee.nova.mods.avaritia.util.java.StreamableIterable;
+import committee.nova.mods.avaritia.api.utils.java.StreamableIterable;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;

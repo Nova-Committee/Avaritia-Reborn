@@ -19,20 +19,24 @@ import java.util.Map;
  */
 public class RegisterRecipesEvent extends Event {
     private final RecipeManager recipeManager;
+    public final Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> oldRecipes;
+    public final Map<ResourceLocation, Recipe<?>> oldByName;
 
     public RegisterRecipesEvent(RecipeManager recipeManager) {
         this.recipeManager = recipeManager;
+        this.oldRecipes = recipeManager.recipes;
+        this.oldByName = recipeManager.byName;
     }
 
     public RecipeManager getRecipeManager() {
-        if (recipeManager.recipes instanceof ImmutableMap) {
-            recipeManager.recipes = new HashMap<>(recipeManager.recipes);
-            recipeManager.recipes.replaceAll((t, v) -> new HashMap<>(recipeManager.recipes.get(t)));
-        }
+        //if (recipeManager.recipes instanceof ImmutableMap) {
+            recipeManager.recipes = new HashMap<>(oldRecipes);
+            recipeManager.recipes.replaceAll((t, v) -> new HashMap<>(oldRecipes.get(t)));
+        //}
 
-        if (recipeManager.byName instanceof ImmutableMap) {
-            recipeManager.byName = new HashMap<>(recipeManager.byName);
-        }
+        //if (recipeManager.byName instanceof ImmutableMap) {
+            recipeManager.byName = new HashMap<>(oldByName);
+        //}
 
         return recipeManager;
     }

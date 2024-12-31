@@ -1,6 +1,5 @@
 package committee.nova.mods.avaritia.api.client.screen;
 
-import com.blamejared.crafttweaker.api.util.ItemStackUtil;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import committee.nova.mods.avaritia.api.client.screen.component.OperationButton;
@@ -10,8 +9,6 @@ import committee.nova.mods.avaritia.api.utils.ItemUtils;
 import committee.nova.mods.avaritia.api.utils.StringUtils;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -60,6 +57,10 @@ public class ItemSelectScreen extends Screen {
      * 父级 Screen
      */
     private final Screen previousScreen;
+    /**
+     * 输入数据回调1
+     */
+    private final Consumer<ItemStack> onDataReceived1;
     /**
      * 是否要显示该界面, 若为false则直接关闭当前界面并返回到调用者的 Screen
      */
@@ -154,9 +155,19 @@ public class ItemSelectScreen extends Screen {
         }
     }
 
-    public ItemSelectScreen(@NonNull Screen callbackScreen, @NonNull ItemStack defaultItem, Supplier<Boolean> shouldClose) {
+    public ItemSelectScreen(@NonNull Screen callbackScreen, @NonNull Consumer<ItemStack> onDataReceived, @NonNull ItemStack defaultItem) {
         super(Component.literal("ItemSelectScreen"));
         this.previousScreen = callbackScreen;
+        this.onDataReceived1 = onDataReceived;
+        this.currentItem = defaultItem;
+        this.selectedItemId = ItemUtils.getId(defaultItem);
+        this.shouldClose = null;
+    }
+
+    public ItemSelectScreen(@NonNull Screen callbackScreen, @NonNull Consumer<ItemStack> onDataReceived, @NonNull ItemStack defaultItem, Supplier<Boolean> shouldClose) {
+        super(Component.literal("ItemSelectScreen"));
+        this.previousScreen = callbackScreen;
+        this.onDataReceived1 = onDataReceived;
         this.currentItem = defaultItem;
         this.selectedItemId = ItemUtils.getId(defaultItem);
         this.shouldClose = shouldClose;
@@ -181,17 +192,10 @@ public class ItemSelectScreen extends Screen {
                         Minecraft.getInstance().setScreen(previousScreen);
                     } else {
                         // 获取选择的数据，并执行回调
-//                        if (onDataReceived1 != null) {
-//                            onDataReceived1.accept(this.currentItem);
-//                            Minecraft.getInstance().setScreen(previousScreen);
-//                        } else if (onDataReceived2 != null) {
-//                            String result = onDataReceived2.apply(this.currentItem);
-//                            if (StringUtils.isNotNullOrEmpty(result)) {
-//                                // this.errorText = Text.literal(result).setColor(0xFFFF0000);
-//                            } else {
-//                                Minecraft.getInstance().setScreen(previousScreen);
-//                            }
-//                        }
+                        if (onDataReceived1 != null) {
+                            onDataReceived1.accept(this.currentItem);
+                            Minecraft.getInstance().setScreen(previousScreen);
+                        }
                     }
                 }));
         // 创建取消按钮

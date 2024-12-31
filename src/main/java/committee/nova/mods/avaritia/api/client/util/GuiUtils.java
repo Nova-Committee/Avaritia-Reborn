@@ -6,6 +6,7 @@ import committee.nova.mods.avaritia.api.client.screen.coordinate.Coordinate;
 import committee.nova.mods.avaritia.api.client.screen.coordinate.TextureCoordinate;
 import committee.nova.mods.avaritia.api.utils.DateUtils;
 import committee.nova.mods.avaritia.api.utils.StringUtils;
+import committee.nova.mods.avaritia.api.utils.WorldUtils;
 import lombok.Getter;
 import lombok.NonNull;
 import net.minecraft.client.Minecraft;

@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -41,13 +40,14 @@ public class TextureUtils {
      * 自定义贴图缓存
      */
     private static final Map<ResourceLocation, NativeImage> CACHE = new HashMap<>();
+    private static final Map<ResourceLocation, BufferedImage> BUFFER_CACHE = new HashMap<>();
 
 
     /**
      * @return an array of ARGB pixel data
      */
     public static int[] loadTextureData(ResourceLocation resource) {
-        BufferedImage img = loadBufferedImage(resource);
+        BufferedImage img = getBufferedImage(resource);
         if (img == null) {
             return new int[0];
         }
@@ -67,17 +67,55 @@ public class TextureUtils {
         return data;
     }
 
-    public static BufferedImage loadBufferedImage(ResourceLocation textureFile) {
-        try {
-            return loadBufferedImage(ResourceUtils.getResourceAsStream(textureFile));
-        } catch (Exception e) {
-            System.err.println("Failed to load texture file: " + textureFile);
-            e.printStackTrace();
+    /**
+     * 从资源中加载纹理并转换为 BufferedImage。
+     *
+     * @param texture 纹理的 ResourceLocation
+     * @return 纹理对应的 BufferedImage 或 null
+     */
+    public static BufferedImage getBufferedImage(ResourceLocation texture) {
+        // 优先从缓存中获取
+        if (BUFFER_CACHE.containsKey(texture)) {
+            return BUFFER_CACHE.get(texture);
         }
-        return null;
+        try {
+            // 打开资源输入流并加载为 BufferedImage
+            try (InputStream inputStream = ResourceUtils.getResourceAsStream(texture)) {
+                BufferedImage nativeImage = getBufferedImage(inputStream);
+                BUFFER_CACHE.put(texture, nativeImage);
+                return nativeImage;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Failed to load texture: {}", texture);
+            return null;
+        }
     }
 
-    public static BufferedImage loadBufferedImage(InputStream in) throws IOException {
+    /**
+     * 从资源中加载纹理并转换为 NativeImage。
+     *
+     * @param texture 纹理的 ResourceLocation
+     * @return 纹理对应的 NativeImage 或 null
+     */
+    public static NativeImage getTextureImage(ResourceLocation texture) {
+        // 优先从缓存中获取
+        if (CACHE.containsKey(texture)) {
+            return CACHE.get(texture);
+        }
+        try {
+            // 打开资源输入流并加载为 NativeImage
+            try (InputStream inputStream = ResourceUtils.getResourceAsStream(texture)) {
+                NativeImage nativeImage = NativeImage.read(inputStream);
+                CACHE.put(texture, nativeImage);
+                return nativeImage;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Failed to load texture: {}", texture);
+            return null;
+        }
+    }
+
+    public static BufferedImage getBufferedImage(InputStream in) throws IOException {
         BufferedImage img = ImageIO.read(in);
         in.close();
         return img;
@@ -246,28 +284,6 @@ public class TextureUtils {
         return effectIcon;
     }
 
-    /**
-     * 从资源中加载纹理并转换为 NativeImage。
-     *
-     * @param texture 纹理的 ResourceLocation
-     * @return 纹理对应的 NativeImage 或 null
-     */
-    public static NativeImage getTextureImage(ResourceLocation texture) {
-        // 优先从缓存中获取
-        if (CACHE.containsKey(texture)) {
-            return CACHE.get(texture);
-        }
-        try {
-            // 打开资源输入流并加载为 NativeImage
-            try (InputStream inputStream = ResourceUtils.getResourceAsStream(texture)) {
-                NativeImage nativeImage = NativeImage.read(inputStream);
-                CACHE.put(texture, nativeImage);
-                return nativeImage;
-            }
-        } catch (Exception e) {
-            LOGGER.error("Failed to load texture: {}", texture);
-            return null;
-        }
-    }
+
 
 }

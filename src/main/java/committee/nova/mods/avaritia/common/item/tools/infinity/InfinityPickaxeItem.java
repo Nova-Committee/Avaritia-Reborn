@@ -2,8 +2,10 @@ package committee.nova.mods.avaritia.common.item.tools.infinity;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import committee.nova.mods.avaritia.api.iface.IFilterItem;
 import committee.nova.mods.avaritia.api.iface.InitEnchantItem;
 import committee.nova.mods.avaritia.api.utils.lang.Localizable;
+import committee.nova.mods.avaritia.common.capability.ItemFiltersProvider;
 import committee.nova.mods.avaritia.common.entity.ImmortalItemEntity;
 import committee.nova.mods.avaritia.init.config.ModConfig;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
@@ -33,6 +35,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,14 +47,13 @@ import java.util.List;
  * Date: 2022/3/31 10:25
  * Version: 1.0
  */
-public class InfinityPickaxeItem extends PickaxeItem implements InitEnchantItem {
+public class InfinityPickaxeItem extends PickaxeItem implements InitEnchantItem, IFilterItem {
 
     public InfinityPickaxeItem() {
         super(ModToolTiers.INFINITY_PICKAXE, 0, 0F, (new Properties())
                 .rarity(ModRarities.COSMIC)
                 .stacksTo(1)
                 .fireResistant());
-
     }
 
     @Override
@@ -132,7 +134,7 @@ public class InfinityPickaxeItem extends PickaxeItem implements InitEnchantItem 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltipComponents,
                                 @NotNull TooltipFlag isAdvanced) {
-        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.BLOCK_FORTUNE.getFullname(20)).build());
+        tooltipComponents.add(ModTooltips.INIT_ENCHANT.args(Enchantments.BLOCK_FORTUNE.getFullname(10)).build());
     }
 
     @Override

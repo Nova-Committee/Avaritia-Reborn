@@ -2,6 +2,7 @@ package committee.nova.mods.avaritia.api.client.model;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.math.Transformation;
+import committee.nova.mods.avaritia.api.client.util.TransformUtils;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.world.item.ItemDisplayContext;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  * <p>
  * Created by covers1624 on 9/7/22.
  *
- * @see committee.nova.mods.avaritia.util.client.TransformUtils
+ * @see TransformUtils
  */
 public class PerspectiveModelState implements ModelState {
 

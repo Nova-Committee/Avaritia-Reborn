@@ -1,7 +1,7 @@
 package committee.nova.mods.avaritia.api.common.container;
 
-import committee.nova.mods.avaritia.util.ContainerUtils;
-import committee.nova.mods.avaritia.util.java.ArrayUtils;
+import committee.nova.mods.avaritia.api.utils.ContainerUtils;
+import committee.nova.mods.avaritia.api.utils.java.ArrayUtils;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

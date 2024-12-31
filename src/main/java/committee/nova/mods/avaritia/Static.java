@@ -3,7 +3,7 @@ package committee.nova.mods.avaritia;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.authlib.GameProfile;
-import committee.nova.mods.avaritia.util.data.RawValue;
+import committee.nova.mods.avaritia.api.utils.data.RawValue;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;

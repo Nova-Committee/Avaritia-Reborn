@@ -3,6 +3,7 @@ package committee.nova.mods.avaritia.api.client.screen.component;
 import com.mojang.blaze3d.platform.NativeImage;
 import committee.nova.mods.avaritia.api.client.screen.coordinate.Coordinate;
 import committee.nova.mods.avaritia.api.client.screen.coordinate.TextureCoordinate;
+import committee.nova.mods.avaritia.api.client.util.GuiUtils;
 import committee.nova.mods.avaritia.api.utils.StringUtils;
 import committee.nova.mods.avaritia.api.client.util.TextureUtils;
 import lombok.Data;
@@ -405,18 +406,18 @@ public class OperationButton {
             // 绘制背景颜色
             int bgColor = this.getBackgroundColor();
             if (bgColor != 0) {
-                AbstractGuiUtils.fill(graphics, (int) (baseX + coordinate.getX() * scale), (int) (baseY + coordinate.getY() * scale), (int) (coordinate.getWidth() * scale), (int) (coordinate.getHeight() * scale), bgColor);
+                GuiUtils.fill(graphics, (int) (baseX + coordinate.getX() * scale), (int) (baseY + coordinate.getY() * scale), (int) (coordinate.getWidth() * scale), (int) (coordinate.getHeight() * scale), bgColor);
             }
             // 绘制纹理
             if (this.isHovered() && this.getTremblingAmplitude() > 0) {
-                AbstractGuiUtils.renderTremblingTexture(graphics, this.texture, textureCoordinate, coordinate, this.baseX, this.baseY, this.scale, true, this.getTremblingAmplitude());
+                GuiUtils.renderTremblingTexture(graphics, this.texture, textureCoordinate, coordinate, this.baseX, this.baseY, this.scale, true, this.getTremblingAmplitude());
             } else {
-                AbstractGuiUtils.renderRotatedTexture(graphics, this.texture, textureCoordinate, coordinate, this.baseX, this.baseY, this.scale, this.rotatedAngle, this.flipHorizontal, this.flipVertical);
+                GuiUtils.renderRotatedTexture(graphics, this.texture, textureCoordinate, coordinate, this.baseX, this.baseY, this.scale, this.rotatedAngle, this.flipHorizontal, this.flipVertical);
             }
             // 绘制前景颜色
             int fgColor = this.getForegroundColor();
             if (fgColor != 0) {
-                AbstractGuiUtils.fill(graphics, (int) (baseX + coordinate.getX() * scale), (int) (baseY + coordinate.getY() * scale), (int) (coordinate.getWidth() * scale), (int) (coordinate.getHeight() * scale), fgColor);
+                GuiUtils.fill(graphics, (int) (baseX + coordinate.getX() * scale), (int) (baseY + coordinate.getY() * scale), (int) (coordinate.getWidth() * scale), (int) (coordinate.getHeight() * scale), fgColor);
             }
         }
         if (renderPopup) {
@@ -456,7 +457,7 @@ public class OperationButton {
                     customPopupFunction.run();
                 } else if (tooltip != null && StringUtils.isNotNullOrEmpty(tooltip.getContent()) && Minecraft.getInstance().screen != null) {
                     if (font == null) font = Minecraft.getInstance().font;
-                    AbstractGuiUtils.drawPopupMessage(tooltip.setGraphics(graphics).setFont(font), (int) mouseX, (int) mouseY, Minecraft.getInstance().screen.width, Minecraft.getInstance().screen.height);
+                    GuiUtils.drawPopupMessage(tooltip.setGraphics(graphics).setFont(font), (int) mouseX, (int) mouseY, Minecraft.getInstance().screen.width, Minecraft.getInstance().screen.height);
                 }
             }
         }

@@ -12,7 +12,7 @@ import committee.nova.mods.avaritia.init.handler.ItemCaptureHandler;
 import committee.nova.mods.avaritia.init.registry.ModDamageTypes;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.init.registry.ModItems;
-import committee.nova.mods.avaritia.util.math.RayTracer;
+import committee.nova.mods.avaritia.api.utils.math.RayTracer;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;

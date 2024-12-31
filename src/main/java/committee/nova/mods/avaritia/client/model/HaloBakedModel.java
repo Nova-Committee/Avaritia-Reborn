@@ -6,7 +6,7 @@ import committee.nova.mods.avaritia.api.client.model.PerspectiveModelState;
 import committee.nova.mods.avaritia.api.client.model.Quad;
 import committee.nova.mods.avaritia.api.client.model.bakedmodels.WrappedItemModel;
 import committee.nova.mods.avaritia.api.client.render.buffer.AlphaOverrideVertexConsumer;
-import committee.nova.mods.avaritia.util.client.TransformUtils;
+import committee.nova.mods.avaritia.api.client.util.TransformUtils;
 import committee.nova.mods.avaritia.api.client.util.colour.ColourARGB;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;

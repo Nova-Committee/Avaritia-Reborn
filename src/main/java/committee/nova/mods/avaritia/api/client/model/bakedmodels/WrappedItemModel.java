@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import committee.nova.mods.avaritia.Static;
 import committee.nova.mods.avaritia.api.client.model.PerspectiveModel;
 import committee.nova.mods.avaritia.api.client.model.PerspectiveModelState;
-import committee.nova.mods.avaritia.util.client.TransformUtils;
+import committee.nova.mods.avaritia.api.client.util.TransformUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
