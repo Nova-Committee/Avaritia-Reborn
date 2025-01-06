@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "avaritia:shaped_table",
   "category": "misc",
   "key": {
     "x": {
@@ -10,12 +10,13 @@
     }
   },
   "pattern": [
-    "xxx",
-    "xyx",
-    "xxx"
+    "x x",
+    " y ",
+    "x x"
   ],
   "result": {
     "item": "avaritia:diamond_lattice"
   },
-  "show_notification": true
+  "show_notification": true,
+  "tier": 1
 }

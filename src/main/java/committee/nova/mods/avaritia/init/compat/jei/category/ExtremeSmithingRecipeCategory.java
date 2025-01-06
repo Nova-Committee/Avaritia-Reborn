@@ -74,6 +74,7 @@ public class ExtremeSmithingRecipeCategory implements IRecipeCategory<ExtremeSmi
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 23)
                 .addItemStack(RecipeUtils.getResultItem(recipe));
+        builder.moveRecipeTransferButton(160, 68);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package committee.nova.mods.avaritia.common.menu;
 
 import committee.nova.mods.avaritia.Static;
-import committee.nova.mods.avaritia.api.common.menu.BaseMenu;
+import committee.nova.mods.avaritia.api.common.menu.BaseTileMenu;
 import committee.nova.mods.avaritia.common.container.InfinityChestContainer;
 import committee.nova.mods.avaritia.common.tile.InfinityChestTile;
 import committee.nova.mods.avaritia.common.wrappers.InfinityChestWrapper;
@@ -24,7 +24,7 @@ import java.util.List;
  * @CreateTime: 2024/11/17 01:51
  * @Description:
  */
-public class InfinityChestMenu extends BaseMenu<InfinityChestTile> {
+public class InfinityChestMenu extends BaseTileMenu<InfinityChestTile> {
     public final List<SlotInfo> viewingItems = new ArrayList<>();
     public final List<String> formatCount = new ArrayList<>();
 

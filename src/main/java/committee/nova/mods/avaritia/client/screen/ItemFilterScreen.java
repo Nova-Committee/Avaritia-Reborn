@@ -1,9 +1,7 @@
 package committee.nova.mods.avaritia.client.screen;
 
 import com.google.common.collect.Lists;
-import com.google.gson.JsonObject;
 import committee.nova.mods.avaritia.api.client.screen.ItemSelectScreen;
-import committee.nova.mods.avaritia.api.client.screen.StringInputScreen;
 import committee.nova.mods.avaritia.api.client.screen.component.OperationButton;
 import committee.nova.mods.avaritia.api.client.screen.component.Text;
 import committee.nova.mods.avaritia.api.client.util.GuiUtils;
@@ -11,25 +9,24 @@ import committee.nova.mods.avaritia.api.utils.ItemUtils;
 import committee.nova.mods.avaritia.api.utils.StringUtils;
 import committee.nova.mods.avaritia.common.net.C2SItemFilterPacket;
 import committee.nova.mods.avaritia.init.handler.NetworkHandler;
-import committee.nova.mods.avaritia.init.registry.ModCaps;
 import lombok.Getter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static committee.nova.mods.avaritia.Static.GSON;
+import java.util.function.Predicate;
 
 /**
  * @Project: Avaritia
@@ -51,9 +48,13 @@ public class ItemFilterScreen extends Screen {
     // region 滚动条相关
 
     /**
-     * 储存的过滤物品
+     * 储存的物品
      */
     private final List<ItemStack> itemList = new ArrayList<>();
+    /**
+     * 显示的标签
+     */
+    private final Set<TagKey<Item>> visibleTags = new HashSet<>();
     /**
      * 当前选择的物品 ID
      */
@@ -122,6 +123,7 @@ public class ItemFilterScreen extends Screen {
 
     @Override
     protected void init() {
+        this.updateVisibleTags();
         this.updateItems();
         this.updateLayout();
         // 创建添加按钮
@@ -253,6 +255,10 @@ public class ItemFilterScreen extends Screen {
         setScrollOffset(0);
     }
 
+    private void updateVisibleTags() {
+        BuiltInRegistries.ITEM.getTagNames().forEach(this.visibleTags::add);
+    }
+
     /**
      * 设置排列方式
      */
@@ -310,7 +316,7 @@ public class ItemFilterScreen extends Screen {
                         // 绘制背景
                         int bgColor;
                         if (context.button().isHovered()
-                               // || ItemUtils.getId(itemStack).equalsIgnoreCase(this.getSelectedItemId())
+                                || ItemUtils.getId(itemStack).equalsIgnoreCase(this.getSelectedItemId())
                         ) {
                             bgColor = 0xEE7CAB7C;
                         } else {
@@ -326,6 +332,11 @@ public class ItemFilterScreen extends Screen {
                             if (context.button().isHovered()) {
                                 List<Component> list = itemStack.getTooltipLines(Minecraft.getInstance().player, Minecraft.getInstance().options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
                                 List<Component> list1 = Lists.newArrayList(list);
+                                this.visibleTags.forEach((itemITag) -> {
+                                    if (itemStack.is(itemITag)) {
+                                        list1.add(1, (Component.literal("#" + itemITag.location())).withStyle(ChatFormatting.DARK_PURPLE));
+                                    }
+                                });
                                 for (CreativeModeTab modeTab : CreativeModeTabs.allTabs()) {
                                     if (modeTab.contains(itemStack)) {
                                         list1.add(1, modeTab.getDisplayName().copy().withStyle(ChatFormatting.BLUE));

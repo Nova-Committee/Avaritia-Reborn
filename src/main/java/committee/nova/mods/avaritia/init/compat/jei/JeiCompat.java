@@ -121,12 +121,12 @@ public class JeiCompat implements IModPlugin {
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(CompressorScreen.class, 86, 25, 31, 8, CompressorCategory.RECIPE_TYPE);
-        registration.addRecipeClickArea(SculkCraftScreen.class, 61, 24, 22, 12, SculkCraftingTableCategory.RECIPE_TYPE);
-        registration.addRecipeClickArea(NetherCraftScreen.class, 100, 44, 22, 12, NetherCraftingTableCategory.RECIPE_TYPE);
-        registration.addRecipeClickArea(EndCraftScreen.class, 135, 62, 22, 12, EndCraftingTableCategory.RECIPE_TYPE);
+        registration.addRecipeClickArea(CompressorScreen.class, 84, 35, 31, 12, CompressorCategory.RECIPE_TYPE);
+        registration.addRecipeClickArea(SculkCraftScreen.class, 90, 40, 22, 12, SculkCraftingTableCategory.RECIPE_TYPE);
+        registration.addRecipeClickArea(NetherCraftScreen.class, 105, 58, 22, 12, NetherCraftingTableCategory.RECIPE_TYPE);
+        registration.addRecipeClickArea(EndCraftScreen.class, 135, 76, 22, 12, EndCraftingTableCategory.RECIPE_TYPE);
         registration.addRecipeClickArea(ExtremeCraftScreen.class, 174, 90, 22, 12, ExtremeCraftingTableCategory.RECIPE_TYPE);
-        registration.addRecipeClickArea(ExtremeSmithingScreen.class, 86, 27, 22, 12, ExtremeSmithingRecipeCategory.RECIPE_TYPE);//todo
+        registration.addRecipeClickArea(ExtremeSmithingScreen.class, 86, 40, 22, 12, ExtremeSmithingRecipeCategory.RECIPE_TYPE);//todo
         registration.addRecipeClickArea(ExtremeAnvilScreen.class, 102, 48, 22, 15, ExtremeAnvilRecipeCategory.RECIPE_TYPE);
     }
 

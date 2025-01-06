@@ -2,14 +2,18 @@ package committee.nova.mods.avaritia.common.block.craft;
 
 import committee.nova.mods.avaritia.api.common.block.BaseTileEntityBlock;
 import committee.nova.mods.avaritia.common.tile.TierCraftTile;
+import committee.nova.mods.avaritia.init.registry.ModBlocks;
 import committee.nova.mods.avaritia.init.registry.ModCraftTier;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,6 +23,8 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * Description:
  * Author: cnlimiter
@@ -26,9 +32,10 @@ import org.jetbrains.annotations.Nullable;
  * Version: 1.0
  */
 public class TierCraftTableBlock extends BaseTileEntityBlock {
-
+    ModCraftTier tier;
     public TierCraftTableBlock(ModCraftTier tier) {
         super(MapColor.METAL, tier.sound, tier.hardness, tier.resistance, true);
+        this.tier = tier;
     }
 
     @Override
@@ -61,8 +68,14 @@ public class TierCraftTableBlock extends BaseTileEntityBlock {
     }
 
     @Override
-    public @NotNull RenderShape getRenderShape(@NotNull BlockState p_49232_) {
-        return RenderShape.MODEL;
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        // 遍历方向列表，检查每个方向的方块状态
+        for (Direction direction : Direction.values()) {
+            BlockPos offsetPos = pos.relative(direction);
+            if (level.getBlockState(offsetPos).is( ModBlocks.infinity.get())) {
+                return 15;
+            }
+        }
+        return this.tier.lightLevel;
     }
-
 }

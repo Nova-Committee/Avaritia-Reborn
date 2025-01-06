@@ -37,6 +37,7 @@ public class EternalSingularityCraftRecipe implements BaseTableCraftingRecipe {
     private static boolean ingredientsLoaded = false;
     private final ResourceLocation recipeId;
     public NonNullList<Ingredient> inputs = NonNullList.create();
+    private BiFunction<Integer, ItemStack, ItemStack> transformers;
 
     public EternalSingularityCraftRecipe(ResourceLocation recipeId) {
         this.recipeId = recipeId;
@@ -127,6 +128,7 @@ public class EternalSingularityCraftRecipe implements BaseTableCraftingRecipe {
     public @NotNull NonNullList<ItemStack> getRemainingItems(@NotNull IItemHandler inv) {
         var remaining = BaseTableCraftingRecipe.super.getRemainingItems(inv);
 
+        if (this.transformers != null) {
             var used = new boolean[remaining.size()];
 
             for (int i = 0; i < remaining.size(); i++) {
@@ -136,15 +138,16 @@ public class EternalSingularityCraftRecipe implements BaseTableCraftingRecipe {
                     var input = this.inputs.get(j);
 
                     if (!used[j] && input.test(stack)) {
+                        var ingredient = this.transformers.apply(j, stack);
 
                         used[j] = true;
-                        remaining.set(i, stack);
+                        remaining.set(i, ingredient);
 
                         break;
                     }
                 }
             }
-
+        }
 
         return remaining;
     }
@@ -157,6 +160,11 @@ public class EternalSingularityCraftRecipe implements BaseTableCraftingRecipe {
     public boolean hasRequiredTier() {
         return true;
     }
+
+    public void setTransformers(BiFunction<Integer, ItemStack, ItemStack> transformers) {
+        this.transformers = transformers;
+    }
+
 
     public static class Serializer implements RecipeSerializer<EternalSingularityCraftRecipe> {
         @Override

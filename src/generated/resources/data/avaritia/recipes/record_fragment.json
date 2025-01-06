@@ -7,19 +7,14 @@
     },
     "b": {
       "tag": "minecraft:music_discs"
-    },
-    "c": {
-      "item": "avaritia:neutron_nugget"
     }
   },
   "pattern": [
     "         ",
     "    a    ",
-    "   aca   ",
-    "  accca  ",
-    " accbcca ",
-    "  accca  ",
-    "   aca   ",
+    "   aaa   ",
+    "  aabaa  ",
+    "   aaa   ",
     "    a    ",
     "         "
   ],
@@ -27,5 +22,5 @@
     "item": "avaritia:record_fragment"
   },
   "show_notification": true,
-  "tier": 4
+  "tier": 3
 }

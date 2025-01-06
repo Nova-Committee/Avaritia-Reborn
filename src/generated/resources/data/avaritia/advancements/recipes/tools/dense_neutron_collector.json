@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "": {
+    "has_item": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:air"
+              "avaritia:neutron_collector"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "avaritia:diamond_lattice"
+        "recipe": "avaritia:dense_neutron_collector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "",
+      "has_item",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "avaritia:diamond_lattice"
+      "avaritia:dense_neutron_collector"
     ]
   },
   "sends_telemetry_event": true

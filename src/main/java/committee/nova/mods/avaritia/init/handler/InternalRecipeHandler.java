@@ -5,6 +5,7 @@ import committee.nova.mods.avaritia.common.crafting.recipe.CompressorRecipe;
 import committee.nova.mods.avaritia.common.crafting.recipe.InfinityCatalystCraftRecipe;
 import committee.nova.mods.avaritia.common.crafting.recipe.ShapelessTableCraftingRecipe;
 import committee.nova.mods.avaritia.common.item.singularity.Singularity;
+import committee.nova.mods.avaritia.init.config.ModConfig;
 import committee.nova.mods.avaritia.init.event.RegisterRecipesEvent;
 import committee.nova.mods.avaritia.util.SingularityUtils;
 import net.minecraft.core.NonNullList;
@@ -33,7 +34,7 @@ public class InternalRecipeHandler {
 
         var infinity_catalyst = (InfinityCatalystCraftRecipe) event.getRecipe(Static.rl("infinity_catalyst"));
 
-        if (infinity_catalyst.getGroup().equals("default")) {
+        if (ModConfig.internalInfinityCatalystCraft.get() && infinity_catalyst.getGroup().equals("default")) {
             allSingularities.stream()
                     .filter(singularity -> singularity.getIngredient() != Ingredient.EMPTY)
                     .limit(81)

@@ -40,8 +40,6 @@ public class ExtremeAnvilRecipeCategory implements IRecipeCategory<IJeiAnvilReci
     private static final ResourceLocation TEXTURE = new ResourceLocation(Static.MOD_ID, "textures/gui/jei/extreme_anvil_jei.png");
     private final IDrawable background;
     private final IDrawable icon;
-    private final String leftSlotName = "leftSlot";
-    private final String rightSlotName = "rightSlot";
 
     public ExtremeAnvilRecipeCategory(IGuiHelper guiHelper) {
         background = guiHelper.drawableBuilder(TEXTURE, 0, 0, 170, 64)
@@ -75,10 +73,12 @@ public class ExtremeAnvilRecipeCategory implements IRecipeCategory<IJeiAnvilReci
         List<ItemStack> rightInputs = recipe.getRightInputs();
         List<ItemStack> outputs = recipe.getOutputs();
 
+        String leftSlotName = "leftSlot";
         IRecipeSlotBuilder leftInputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 23, 23)
                 .addItemStacks(leftInputs)
                 .setSlotName(leftSlotName);
 
+        String rightSlotName = "rightSlot";
         IRecipeSlotBuilder rightInputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 72, 23)
                 .addItemStacks(rightInputs)
                 .setSlotName(rightSlotName);
@@ -96,46 +96,5 @@ public class ExtremeAnvilRecipeCategory implements IRecipeCategory<IJeiAnvilReci
             builder.createFocusLink(rightInputSlot, outputSlot);
         }
     }
-
-    @Override
-    public void draw(@NotNull IJeiAnvilRecipe recipe, IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        Optional<ItemStack> leftStack = recipeSlotsView.findSlotByName(leftSlotName)
-                .flatMap(IRecipeSlotView::getDisplayedItemStack);
-
-        Optional<ItemStack> rightStack = recipeSlotsView.findSlotByName(rightSlotName)
-                .flatMap(IRecipeSlotView::getDisplayedItemStack);
-
-        if (leftStack.isEmpty() || rightStack.isEmpty()) {
-            return;
-        }
-
-        int cost = findLevelsCost(leftStack.get(), rightStack.get());
-        String costText = cost < 0 ? "err" : Integer.toString(cost);
-        String text = I18n.get("container.repair.cost", costText);
-
-        Minecraft minecraft = Minecraft.getInstance();
-        LocalPlayer player = minecraft.player;
-        // Show red if the player doesn't have enough levels
-        int mainColor = playerHasEnoughLevels(player, cost) ? 0xFF80FF20 : 0xFFFF6060;
-        drawRepairCost(minecraft, guiGraphics, text, mainColor);
-    }
-
-    private static boolean playerHasEnoughLevels(@Nullable LocalPlayer player, int cost) {
-        if (player == null) {
-            return true;
-        }
-        if (player.isCreative()) {
-            return true;
-        }
-        return cost < 40 && cost <= player.experienceLevel;
-    }
-
-    private void drawRepairCost(Minecraft minecraft, GuiGraphics guiGraphics, String text, int mainColor) {
-        int width = minecraft.font.width(text);
-        int x = getWidth() - 2 - width;
-        int y = 27;
-        guiGraphics.drawString(minecraft.font, text, x, y, mainColor);
-    }
-
 
 }

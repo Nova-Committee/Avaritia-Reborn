@@ -19,13 +19,11 @@ import org.jetbrains.annotations.NotNull;
  * @Description:
  */
 public class MatterClusterProvider implements ICapabilitySerializable<CompoundTag> {
-    private final ItemStackWrapper inv;
-    private final LazyOptional<ItemStackHandler> inventoryCap;
+    private final ItemStackWrapper inv = new ItemStackWrapper(64 * 64);
+    private final LazyOptional<ItemStackHandler> inventoryCap = LazyOptional.of(() -> inv);
 
     public MatterClusterProvider(ItemStack stack, CompoundTag nbt) {
-        this.inv = new ItemStackWrapper(256);
-        this.inv.setSlotValidator((integer, itemStack) -> itemStack.getItem() instanceof MatterClusterItem);
-        this.inventoryCap = LazyOptional.of(() -> inv);
+        this.inv.setSlotValidator((integer, itemStack) -> !(itemStack.getItem() instanceof MatterClusterItem));
     }
 
     @Override

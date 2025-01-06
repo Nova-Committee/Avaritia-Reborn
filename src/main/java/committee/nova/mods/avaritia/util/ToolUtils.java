@@ -297,7 +297,7 @@ public class ToolUtils {
      * @param result 命中结果
      * @param arrow  弓箭
      */
-    public static void infinityArrowDamage(@NotNull EntityHitResult result, Arrow arrow) {
+    public static void infinityTraceArrowDamage(@NotNull EntityHitResult result, Arrow arrow) {
 
         Entity entity = result.getEntity();
         float f = (float) arrow.getDeltaMovement().length();

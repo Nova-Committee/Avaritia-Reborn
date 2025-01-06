@@ -28,7 +28,5 @@ public class CapHandler {
 
     @SubscribeEvent
     public static void attachItemCaps(AttachCapabilitiesEvent<ItemStack> event) {
-        if (event.getObject().getItem() instanceof IFilterItem)
-            event.addCapability(new ResourceLocation(Static.MOD_ID, "filters"), new ItemFiltersProvider());
     }
 }

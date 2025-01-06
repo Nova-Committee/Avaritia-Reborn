@@ -1,19 +1,12 @@
 package committee.nova.mods.avaritia.common.entity.arrow;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import committee.nova.mods.avaritia.init.registry.ModEntities;
 import committee.nova.mods.avaritia.util.ToolUtils;
-import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -33,28 +26,16 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ShieldItem;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * Name: Avaritia-forge / TraceArrowEntity
@@ -63,44 +44,32 @@ import java.util.Set;
  * Description:
  */
 
-public class TraceArrowEntity extends AbstractArrow {
-    private static final EntityDataAccessor<Integer> ID_EFFECT_COLOR = SynchedEntityData.defineId(TraceArrowEntity.class, EntityDataSerializers.INT);
+public class TraceArrowEntity extends Arrow {
     private static final EntityDataAccessor<Integer> SPECTRAL_TIME = SynchedEntityData.defineId(TraceArrowEntity.class, EntityDataSerializers.INT);
-    ;
     private static final EntityDataAccessor<Integer> JUMP_COUNT = SynchedEntityData.defineId(TraceArrowEntity.class, EntityDataSerializers.INT);
-    private final Set<MobEffectInstance> effects;
     private final Entity owner = this.getOwner() == null ? this : this.getOwner();
-    private Potion potion;
-    private boolean fixedColor;
     private LivingEntity homingTarget;
     private Vec3 seekOrigin;
     private int homingTime;
 
-    public TraceArrowEntity(EntityType<? extends AbstractArrow> entityType, Level world) {
+    public TraceArrowEntity(EntityType<? extends Arrow> entityType, Level world) {
         super(entityType, world);
-        this.potion = Potions.EMPTY;
-        this.effects = Sets.newHashSet();
         this.homingTarget = null;
         this.seekOrigin = null;
         this.homingTime = 0;
     }
 
     public TraceArrowEntity(Level world, double xPos, double yPos, double zPos) {
-        super(ModEntities.TRACE_ARROW.get(), xPos, yPos, zPos, world);
-        this.potion = Potions.EMPTY;
-        this.effects = Sets.newHashSet();
-        this.homingTarget = null;
-        this.seekOrigin = null;
-        this.homingTime = 0;
+        this(ModEntities.TRACE_ARROW.get(), world);
+        this.setPos(xPos, yPos, zPos);
     }
 
-    public TraceArrowEntity(Level world, LivingEntity shooter) {
-        super(ModEntities.TRACE_ARROW.get(), shooter, world);
-        this.potion = Potions.EMPTY;
-        this.effects = Sets.newHashSet();
-        this.homingTarget = null;
-        this.seekOrigin = null;
-        this.homingTime = 0;
+    public TraceArrowEntity(Level world, LivingEntity pShooter) {
+        this(world, pShooter.getX(), pShooter.getEyeY() - (double)0.1F, pShooter.getZ());
+        this.setOwner(pShooter);
+        if (pShooter instanceof Player) {
+            this.pickup = AbstractArrow.Pickup.ALLOWED;
+        }
     }
 
     public static int getCustomColor(ItemStack p_191508_0_) {
@@ -128,21 +97,7 @@ public class TraceArrowEntity extends AbstractArrow {
     public void tick() {
         this.updateHoming();
         this.superTick();
-        if (this.level().isClientSide) {
-            if (this.inGround) {
-                if (this.inGroundTime % 5 == 0) {
-                    this.makeParticle(1);
-                }
-            } else {
-                this.makeParticle(2);
-            }
-        } else if (this.inGround && this.inGroundTime != 0 && !this.effects.isEmpty() && this.inGroundTime >= 600) {
-            this.level().broadcastEntityEvent(this, (byte) 0);
-            this.potion = Potions.EMPTY;
-            this.effects.clear();
-            this.entityData.set(ID_EFFECT_COLOR, -1);
-        }
-
+        super.tick();
     }
 
     private void superTick() {
@@ -281,106 +236,8 @@ public class TraceArrowEntity extends AbstractArrow {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult p_213868_1_) {
-        Entity entity = p_213868_1_.getEntity();
-        float f = (float) this.getDeltaMovement().length();
-        int i = Mth.ceil(Mth.clamp((double) f * this.getBaseDamage(), 0.0D, 2.147483647E9D));
-        if (this.getPierceLevel() > 0) {
-            if (this.piercingIgnoreEntityIds == null) {
-                this.piercingIgnoreEntityIds = new IntOpenHashSet(5);
-            }
-
-            if (this.piercedAndKilledEntities == null) {
-                this.piercedAndKilledEntities = Lists.newArrayListWithCapacity(5);
-            }
-
-            if (this.piercingIgnoreEntityIds.size() >= this.getPierceLevel() + 1) {
-                this.discard();
-                return;
-            }
-
-            this.piercingIgnoreEntityIds.add(entity.getId());
-        }
-
-        if (this.isCritArrow()) {
-            long j = this.random.nextInt(i / 2 + 2);
-            i = (int) Math.min(j + (long) i, 2147483647L);
-        }
-
-        DamageSource damagesource = ToolUtils.getArrowDamageSource(this, this.getOwner(), entity);
-        boolean isEnderman = entity.getType() == EntityType.ENDERMAN;
-        int k = entity.getRemainingFireTicks();
-        if (this.isOnFire() && !isEnderman) {
-            entity.setSecondsOnFire(5);
-        }
-
-        if (entity instanceof Player player) {
-            if (player.isUsingItem() && player.getUseItem().getItem() instanceof ShieldItem) {
-                player.getCooldowns().addCooldown(player.getUseItem().getItem(), 100);
-                this.level().broadcastEntityEvent(player, (byte) 30);
-                player.stopUsingItem();
-            }
-        }
-
-        if (entity.hurt(damagesource, (float) i)) {
-            if (entity instanceof LivingEntity livingentity) {
-                if (!this.level().isClientSide && this.getPierceLevel() <= 0) {
-                    livingentity.setArrowCount(livingentity.getArrowCount() + 1);
-                }
-
-                if (this.knockback > 0) {
-                    Vec3 vector3d = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale((double) this.knockback * 0.6D);
-                    if (vector3d.lengthSqr() > 0.0D) {
-                        livingentity.push(vector3d.x, 0.1D, vector3d.z);
-                    }
-                }
-
-                if (!this.level().isClientSide && owner instanceof LivingEntity) {
-                    EnchantmentHelper.doPostHurtEffects(livingentity, owner);
-                    EnchantmentHelper.doPostDamageEffects((LivingEntity) owner, livingentity);
-                }
-
-                this.doPostHurtEffects(livingentity);
-                if (livingentity != owner && livingentity instanceof Player && owner instanceof ServerPlayer && !this.isSilent()) {
-                    ((ServerPlayer) owner).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
-                }
-
-                if (!entity.isAlive() && this.piercedAndKilledEntities != null) {
-                    this.piercedAndKilledEntities.add(livingentity);
-                }
-
-                if (!this.level().isClientSide && owner instanceof ServerPlayer serverPlayer) {
-                    if (this.piercedAndKilledEntities != null && this.shotFromCrossbow()) {
-                        CriteriaTriggers.KILLED_BY_CROSSBOW.trigger(serverPlayer, this.piercedAndKilledEntities);
-                    } else if (!entity.isAlive() && this.shotFromCrossbow()) {
-                        CriteriaTriggers.KILLED_BY_CROSSBOW.trigger(serverPlayer, Arrays.asList(entity));
-                    }
-                }
-            }
-
-            this.playSound(this.getHitGroundSoundEvent(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-            if (this.getPierceLevel() <= 0) {
-                this.setDeltaMovement(this.getDeltaMovement().scale(0.0D));
-                this.setPos(entity.position());
-                this.seekNextTarget();
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ARROW_HIT, SoundSource.PLAYERS, 4.0F, 1.0F);
-            }
-        } else {
-            entity.setRemainingFireTicks(k);
-            this.setDeltaMovement(this.getDeltaMovement().scale(0.0D));
-            this.setYRot(this.getYRot() + 180.0F);
-            this.setPos(entity.position());
-            this.yRotO += 180.0F;
-            if (!this.level().isClientSide && this.getDeltaMovement().lengthSqr() < 1.0E-7D) {
-                if (this.pickup == Pickup.ALLOWED) {
-                    this.spawnAtLocation(this.getPickupItem(), 0.1F);
-                }
-
-                this.seekNextTarget();
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ARROW_HIT, SoundSource.PLAYERS, 4.0F, 1.0F);
-            }
-        }
-
+    protected void onHitEntity(@NotNull EntityHitResult pResult) {
+        ToolUtils.infinityTraceArrowDamage(pResult, this);
     }
 
     @Override
@@ -397,98 +254,21 @@ public class TraceArrowEntity extends AbstractArrow {
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ARROW_HIT, SoundSource.PLAYERS, 4.0F, 1.0F);
     }
 
-    public void setEffectsFromItem(ItemStack p_184555_1_) {
-        if (p_184555_1_.getItem() == Items.TIPPED_ARROW) {
-            this.potion = PotionUtils.getPotion(p_184555_1_);
-            Collection<MobEffectInstance> collection = PotionUtils.getCustomEffects(p_184555_1_);
-            if (!collection.isEmpty()) {
-
-                for (MobEffectInstance effectinstance : collection) {
-                    this.effects.add(new MobEffectInstance(effectinstance));
-                }
-            }
-
-            int i = getCustomColor(p_184555_1_);
-            if (i == -1) {
-                this.updateColor();
-            } else {
-                this.setFixedColor(i);
-            }
-        } else if (p_184555_1_.getItem() == Items.ARROW) {
-            this.potion = Potions.EMPTY;
-            this.effects.clear();
-            this.entityData.set(ID_EFFECT_COLOR, -1);
-        }
-
-    }
-
-    private void updateColor() {
-        this.fixedColor = false;
-        if (this.potion == Potions.EMPTY && this.effects.isEmpty()) {
-            this.entityData.set(ID_EFFECT_COLOR, -1);
-        } else {
-            this.entityData.set(ID_EFFECT_COLOR, PotionUtils.getColor(PotionUtils.getAllEffects(this.potion, this.effects)));
-        }
-
-    }
-
-    public void addEffect(MobEffectInstance p_184558_1_) {
-        this.effects.add(p_184558_1_);
-        this.getEntityData().set(ID_EFFECT_COLOR, PotionUtils.getColor(PotionUtils.getAllEffects(this.potion, this.effects)));
-    }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(ID_EFFECT_COLOR, -1);
         this.entityData.define(SPECTRAL_TIME, 0);
         this.entityData.define(JUMP_COUNT, 0);
     }
 
-    private void makeParticle(int p_184556_1_) {
-        int i = this.getColor();
-        if (i != -1 && p_184556_1_ > 0) {
-            double d0 = (double) (i >> 16 & 255) / 255.0D;
-            double d1 = (double) (i >> 8 & 255) / 255.0D;
-            double d2 = (double) (i & 255) / 255.0D;
 
-            for (int j = 0; j < p_184556_1_; ++j) {
-                this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
-            }
-        }
 
-    }
 
-    public int getColor() {
-        return this.entityData.get(ID_EFFECT_COLOR);
-    }
-
-    private void setFixedColor(int p_191507_1_) {
-        this.fixedColor = true;
-        this.entityData.set(ID_EFFECT_COLOR, p_191507_1_);
-    }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        if (this.potion != Potions.EMPTY && this.potion != null) {
-            compound.putString("Potion", BuiltInRegistries.POTION.getKey(this.potion).toString());
-        }
-
-        if (this.fixedColor) {
-            compound.putInt("Color", this.getColor());
-        }
-
-        if (!this.effects.isEmpty()) {
-            ListTag listnbt = new ListTag();
-
-            for (MobEffectInstance effectinstance : this.effects) {
-                listnbt.add(effectinstance.save(new CompoundTag()));
-            }
-
-            compound.put("CustomPotionEffects", listnbt);
-        }
-
         if (this.getSpectralTime() > 0) {
             compound.putInt("spectral_time", this.entityData.get(SPECTRAL_TIME));
         }
@@ -502,20 +282,6 @@ public class TraceArrowEntity extends AbstractArrow {
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        if (compound.contains("Potion", 8)) {
-            this.potion = PotionUtils.getPotion(compound);
-        }
-
-        for (MobEffectInstance effectinstance : PotionUtils.getCustomEffects(compound)) {
-            this.addEffect(effectinstance);
-        }
-
-        if (compound.contains("Color", 99)) {
-            this.setFixedColor(compound.getInt("Color"));
-        } else {
-            this.updateColor();
-        }
-
         if (compound.contains("spectral_time")) {
             this.setSpectral(compound.getInt("spectral_time"));
         }
@@ -527,64 +293,11 @@ public class TraceArrowEntity extends AbstractArrow {
     }
 
     @Override
-    protected void doPostHurtEffects(@NotNull LivingEntity livingEntity) {
+    public void doPostHurtEffects(@NotNull LivingEntity livingEntity) {
         super.doPostHurtEffects(livingEntity);
-        Iterator<MobEffectInstance> var2 = this.potion.getEffects().iterator();
-
-        MobEffectInstance effectinstance;
-        while (var2.hasNext()) {
-            effectinstance = var2.next();
-            livingEntity.addEffect(new MobEffectInstance(effectinstance.getEffect(), Math.max(effectinstance.getDuration() / 8, 1), effectinstance.getAmplifier(), effectinstance.isAmbient(), effectinstance.isVisible()));
-        }
-
-        if (!this.effects.isEmpty()) {
-            var2 = this.effects.iterator();
-
-            while (var2.hasNext()) {
-                effectinstance = var2.next();
-                livingEntity.addEffect(effectinstance);
-            }
-        }
-
         int spectralTime = this.entityData.get(SPECTRAL_TIME);
         if (spectralTime > 0) {
-            effectinstance = new MobEffectInstance(MobEffects.GLOWING, spectralTime, 0);
-            livingEntity.addEffect(effectinstance);
-        }
-
-    }
-
-    @Override
-    protected @NotNull ItemStack getPickupItem() {
-        if (this.effects.isEmpty() && this.potion == Potions.EMPTY) {
-            return new ItemStack(Items.ARROW);
-        } else {
-            ItemStack itemstack = new ItemStack(Items.TIPPED_ARROW);
-            PotionUtils.setPotion(itemstack, this.potion);
-            PotionUtils.setCustomEffects(itemstack, this.effects);
-            if (this.fixedColor) {
-                itemstack.getOrCreateTag().putInt("CustomPotionColor", this.getColor());
-            }
-
-            return itemstack;
-        }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte p_70103_1_) {
-        if (p_70103_1_ == 0) {
-            int i = this.getColor();
-            if (i != -1) {
-                double d0 = (double) (i >> 16 & 255) / 255.0D;
-                double d1 = (double) (i >> 8 & 255) / 255.0D;
-                double d2 = (double) (i & 255) / 255.0D;
-
-                for (int j = 0; j < 20; ++j) {
-                    this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
-                }
-            }
-        } else {
-            super.handleEntityEvent(p_70103_1_);
+            livingEntity.addEffect(new MobEffectInstance(MobEffects.GLOWING, spectralTime, 0));
         }
 
     }

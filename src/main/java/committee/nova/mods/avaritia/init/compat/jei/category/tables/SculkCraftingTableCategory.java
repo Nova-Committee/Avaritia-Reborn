@@ -93,7 +93,7 @@ public class SculkCraftingTableCategory implements IRecipeCategory<BaseTableCraf
             shapelessRecipe(builder, inputs);
             builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 20).addItemStack(new ItemStack(ModItems.eternal_singularity.get()));
         }
-        builder.moveRecipeTransferButton(82, 45);
+        builder.moveRecipeTransferButton(120, 45);
     }
 
     private void shapelessRecipe(@NotNull IRecipeLayoutBuilder builder, NonNullList<Ingredient> inputs) {

@@ -1,9 +1,12 @@
 package committee.nova.mods.avaritia.util;
 
 import com.google.common.collect.Sets;
+import committee.nova.mods.avaritia.api.common.container.SimpleContainer;
 import committee.nova.mods.avaritia.api.common.wrapper.StrictItemStack;
+import committee.nova.mods.avaritia.api.utils.ContainerUtils;
 import committee.nova.mods.avaritia.api.utils.ItemUtils;
 import committee.nova.mods.avaritia.common.item.MatterClusterItem;
+import committee.nova.mods.avaritia.init.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -25,6 +28,7 @@ import java.util.*;
  */
 public class ClustersUtils {
     public static Set<String> defaultTrashOres = Sets.newHashSet("minecraft:dirt");//todo, set trash block in gui
+
 
     public static void spawnClusters(Level world, Player player, Set<ItemStack> drops) {
         if (!world.isClientSide) {

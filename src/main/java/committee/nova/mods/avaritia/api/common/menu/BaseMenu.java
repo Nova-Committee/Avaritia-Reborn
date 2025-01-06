@@ -12,21 +12,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Description:
- * Author: cnlimiter
- * Date: 2022/2/19 19:46
- * Version: 1.0
+ * @Project: Avaritia
+ * @Author: cnlimiter
+ * @CreateTime: 2025/1/6 13:07
+ * @Description:
  */
-public abstract class BaseMenu<T extends BlockEntity> extends AbstractContainerMenu {
+public abstract class BaseMenu extends AbstractContainerMenu {
 
-    private BlockPos pos;
     public final Level level;
     public final Player player;
-
-    protected BaseMenu(MenuType<?> menu, int id, Inventory playerInventory, @NotNull BlockPos pos) {
-        this(menu, id, playerInventory);
-        this.pos = pos;
-    }
 
     protected BaseMenu(MenuType<?> menu, int id, Inventory playerInventory) {
         super(menu, id);
@@ -41,17 +35,7 @@ public abstract class BaseMenu<T extends BlockEntity> extends AbstractContainerM
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        return pos == null || player.distanceToSqr(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5) <= 64;
-    }
-
-    public BlockPos getBlockPos() {
-        return this.pos;
-    }
-
-
-    @SuppressWarnings("unchecked")
-    protected T getTileEntity() {
-        return (T) level.getBlockEntity(pos);
+        return true;
     }
 
     protected void createInventorySlots(Inventory pInventory) {

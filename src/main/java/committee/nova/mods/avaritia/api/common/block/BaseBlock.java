@@ -22,6 +22,10 @@ public class BaseBlock extends Block {
         super(properties.apply(Properties.of()));
     }
 
+    public BaseBlock(MapColor color, SoundType sound, float hardness, float resistance, int lightLevel) {
+        super(Properties.of().sound(sound).strength(hardness, resistance).mapColor(color).lightLevel((e) -> lightLevel));
+    }
+
     public BaseBlock(MapColor color, SoundType sound, float hardness, float resistance) {
         super(Properties.of().sound(sound).strength(hardness, resistance).mapColor(color));
     }

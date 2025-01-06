@@ -236,7 +236,7 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
             arrow.setBaseDamage(20);
             arrow.setPierceLevel((byte) 2);
         } else {
-            arrow = HeavenSubArrowEntity.create(worldIn, shooter.getX(), shooter.getY(), shooter.getZ());
+            arrow = HeavenSubArrowEntity.create(worldIn, shooter.getX(), shooter.getY() + 1.2, shooter.getZ());
             arrow.setOwner(shooter);
             arrow.setPierceLevel((byte) 5);
         }

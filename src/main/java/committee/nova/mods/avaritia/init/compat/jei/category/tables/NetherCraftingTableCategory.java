@@ -93,7 +93,7 @@ public class NetherCraftingTableCategory implements IRecipeCategory<BaseTableCra
             shapelessRecipe(builder, inputs);
             builder.addSlot(RecipeIngredientRole.OUTPUT, 133, 40).addItemStack(new ItemStack(ModItems.eternal_singularity.get()));
         }
-        builder.moveRecipeTransferButton(134, 85);
+        builder.moveRecipeTransferButton(145, 105);
     }
 
     private void shapelessRecipe(@NotNull IRecipeLayoutBuilder builder, NonNullList<Ingredient> inputs) {

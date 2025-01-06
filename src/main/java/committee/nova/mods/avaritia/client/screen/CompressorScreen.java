@@ -40,10 +40,6 @@ public class CompressorScreen extends BaseContainerScreen<CompressorMenu> {
     protected void renderFg(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         int x = this.getGuiLeft();
         int y = this.getGuiTop();
-
-        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-
-
         if (pMouseX > x + 63 && pMouseX < x + 79 && pMouseY > y + 35 && pMouseY < y + 51) {
             List<Component> tooltip = new ArrayList<>();
 

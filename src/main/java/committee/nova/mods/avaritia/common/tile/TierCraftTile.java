@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 public class TierCraftTile extends BaseInventoryTileEntity {
 
     private final ItemStackWrapper inventory;
-    private ModCraftTier tier;
+    public ModCraftTier tier;
 
     public TierCraftTile(BlockPos pos, BlockState blockState) {
         super(ModTileEntities.mod_craft_tile.get(), pos, blockState);

@@ -27,20 +27,14 @@ import java.util.Map;
  * @Description:
  */
 public class ExtremeAnvilMenu extends ItemCombinerMenu {
-    public int repairItemCountCost;
     private String itemName;
-    private final DataSlot cost;
-    private final ContainerData data;
+    public int repairItemCountCost;
     public ExtremeAnvilMenu(int pContainerId, Inventory pPlayerInventory, FriendlyByteBuf buf) {
-        this(pContainerId, pPlayerInventory, ContainerLevelAccess.NULL, new SimpleContainerData(1));
+        this(pContainerId, pPlayerInventory, ContainerLevelAccess.NULL);
     }
 
-    public ExtremeAnvilMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess, ContainerData data) {
+    public ExtremeAnvilMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
         super(ModMenus.extreme_anvil.get(), pContainerId, pPlayerInventory, pAccess);
-        this.cost = DataSlot.standalone();
-        this.data = data;
-        this.addDataSlot(this.cost);
-        this.addDataSlots(this.data);
     }
 
     @Override
@@ -58,19 +52,11 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
 
     @Override
     protected boolean mayPickup(Player pPlayer, boolean pHasStack) {
-        return (pPlayer.getAbilities().instabuild || pPlayer.experienceLevel + this.data.get(0) >= this.cost.get()) && this.cost.get() > 0;
+        return pPlayer.getAbilities().instabuild;
     }
 
     @Override
-    protected void onTake(Player pPlayer, @NotNull ItemStack pStack) {
-        if (!pPlayer.getAbilities().instabuild) {
-            if (this.cost.get() >= this.data.get(0)) {
-                pPlayer.giveExperienceLevels(this.data.get(0) - this.cost.get());
-            } else {
-                this.data.set(0, this.data.get(0) - this.cost.get());
-            }
-        }
-
+    protected void onTake(@NotNull Player pPlayer, @NotNull ItemStack pStack) {
         this.inputSlots.setItem(0, ItemStack.EMPTY);
         if (this.repairItemCountCost > 0) {
             ItemStack itemstack = this.inputSlots.getItem(1);
@@ -83,19 +69,15 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
         } else {
             this.inputSlots.setItem(1, ItemStack.EMPTY);
         }
-        this.cost.set(0);
     }
 
     @Override
     public void createResult() {
         ItemStack itemstack = this.inputSlots.getItem(0);
-        this.cost.set(1);
         int i = 0;
-        int j = 0;
         int k = 0;
         if (itemstack.isEmpty()) {
             this.resultSlots.setItem(0, ItemStack.EMPTY);
-            this.cost.set(0);
         } else {
             ItemStack itemstack1 = itemstack.copy();
             ItemStack itemstack2 = this.inputSlots.getItem(1);
@@ -109,7 +91,6 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
                     int l2 = Math.min(itemstack1.getDamageValue(), itemstack1.getMaxDamage() / 4);
                     if (l2 <= 0) {
                         this.resultSlots.setItem(0, ItemStack.EMPTY);
-                        this.cost.set(0);
                         return;
                     }
 
@@ -120,12 +101,10 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
                         ++i;
                         l2 = Math.min(itemstack1.getDamageValue(), itemstack1.getMaxDamage() / 4);
                     }
-
                     this.repairItemCountCost = i3;
                 } else {
                     if (!flag && (!itemstack1.is(itemstack2.getItem()) || !itemstack1.isDamageableItem())) {
                         this.resultSlots.setItem(0, ItemStack.EMPTY);
-                        this.cost.set(0);
                         return;
                     }
 
@@ -153,14 +132,14 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
                         if (enchantment1 != null) {
                             int i2 = map.getOrDefault(enchantment1, 0);
                             int j2 = map1.get(enchantment1);
-                            j2 = i2 == j2 ? j2 + 1 : Math.max(j2, i2);
+                            j2 = i2 + j2;
                             boolean flag1 = enchantment1.canEnchant(itemstack);
                             if (this.player.getAbilities().instabuild || itemstack.is(Items.ENCHANTED_BOOK)) {
                                 flag1 = true;
                             }
 
                             for(Enchantment enchantment : map.keySet()) {
-                                if (enchantment != enchantment1 && !enchantment1.isCompatibleWith(enchantment)) {
+                                if (enchantment != enchantment1) {
                                     flag1 = false;
                                     ++i;
                                 }
@@ -197,7 +176,6 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
 
                     if (flag3 && !flag2) {
                         this.resultSlots.setItem(0, ItemStack.EMPTY);
-                        this.cost.set(0);
                         return;
                     }
                 }
@@ -219,16 +197,12 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
                 itemstack1 = ItemStack.EMPTY;
             }
 
-            this.cost.set(j + i);
             if (i <= 0) {
                 itemstack1 = ItemStack.EMPTY;
             }
 
-            if (k == i && k > 0 && this.cost.get() >= 40) {
-                this.cost.set(39);
-            }
 
-            if (this.cost.get() >= 40 && !this.player.getAbilities().instabuild) {
+            if (!this.player.getAbilities().instabuild) {
                 itemstack1 = ItemStack.EMPTY;
             }
 
@@ -241,8 +215,7 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
                 if (k != i || k == 0) {
                     k2 = calculateIncreasedRepairCost(k2);
                 }
-
-                itemstack1.setRepairCost(0);//to 0
+                itemstack1.setRepairCost(k2);//to 0
                 EnchantmentHelper.setEnchantments(map, itemstack1);
             }
 
@@ -279,18 +252,6 @@ public class ExtremeAnvilMenu extends ItemCombinerMenu {
     @Nullable
     private static String validateName(String pItemName) {
         String s = SharedConstants.filterText(pItemName);
-        return s.length() <= 50 ? s : null;
-    }
-
-    public int getCost() {
-        return this.cost.get();
-    }
-
-    public void setMaximumCost(int value) {
-        this.cost.set(value);
-    }
-
-    public int getStoredExps() {
-        return this.data.get(0);
+        return s.length() <= 100 ? s : null;
     }
 }

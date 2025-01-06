@@ -93,30 +93,6 @@ public class ExtremeAnvilScreen extends BaseContainerScreen<ExtremeAnvilMenu> {
     @Override
     protected void renderLabels(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
         super.renderLabels(pGuiGraphics, pMouseX, pMouseY);
-        int i = this.menu.getCost();
-        if (i > 0) {
-            int j = 8453920;
-            Component component;
-            if (i >= 40 && !this.minecraft.player.getAbilities().instabuild) {
-                component = TOO_EXPENSIVE_TEXT;
-                j = 16736352;
-            } else if (!this.menu.getSlot(2).hasItem()) {
-                component = null;
-            } else {
-                component = Component.translatable("container.repair.cost", i);
-                if (!this.menu.getSlot(2).mayPickup(this.player)) {
-                    j = 16736352;
-                }
-            }
-
-            if (component != null) {
-                int k = this.imageWidth - 8 - this.font.width(component) - 2;
-                pGuiGraphics.fill(k - 2, 67, this.imageWidth - 8, 79, 1325400064);
-                pGuiGraphics.drawString(this.font, component, k, 69, j);
-            }
-        }
-        pGuiGraphics.drawString(font, Component.literal(this.menu.getStoredExps() + ""), (this.imageWidth / 2 + this.font.width(title) / 2) + 45, 6, 4210752, false);
-
     }
 
     @Override

@@ -71,7 +71,7 @@ public class BladeSlashRender extends EntityRenderer<BladeSlashEntity> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(BladeSlashEntity entity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull BladeSlashEntity entity) {
         return TEXTURE;
     }
 

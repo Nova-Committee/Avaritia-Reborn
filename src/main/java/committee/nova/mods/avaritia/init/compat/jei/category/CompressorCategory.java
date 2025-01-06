@@ -71,7 +71,7 @@ public class CompressorCategory implements IRecipeCategory<ICompressorRecipe> {
         var output = recipe.getResultItem(level.registryAccess());
         builder.addSlot(RecipeIngredientRole.INPUT, 37, 21).addIngredients(inputs.get(0));
         builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 21).addItemStack(output);
-
+        builder.moveRecipeTransferButton(160, 68);
     }
 
     @Override

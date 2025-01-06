@@ -70,10 +70,10 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
                 "crafting_table_from_compressed_crafting_table", "crafting_table");
 
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.diamond_lattice.get())
-                .pattern("xxx")
-                .pattern("xyx")
-                .pattern("xxx")
+        ModShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.diamond_lattice.get(), 1)
+                .pattern("x x")
+                .pattern(" y ")
+                .pattern("x x")
                 .define('x', Items.DIAMOND)
                 .define('y', Items.NETHERITE_SCRAP)
                 .unlockedBy("", lul).save(consumer);
@@ -86,7 +86,7 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
                 .pattern(" bcb ")
                 .define('x', Items.BLAZE_ROD)
                 .define('y', Items.BONE)
-                .define('a', Blocks.NETHERRACK)
+                .define('a', Blocks.ANCIENT_DEBRIS)
                 .define('b', Items.BLAZE_POWDER)
                 .define('c', Items.FIRE_CHARGE)
                 .unlockedBy("has_item", has(Items.BLAZE_ROD)).save(consumer);
@@ -194,19 +194,16 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
                 .define('g', ModItems.neutron_pile.get())
                 .unlockedBy("has_item", has(ModItems.neutron_pile.get())).save(consumer);
 
-        ModShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.record_fragment.get(), 4)
+        ModShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.record_fragment.get(), 3)
                 .pattern("         ")
                 .pattern("    a    ")
-                .pattern("   aca   ")
-                .pattern("  accca  ")
-                .pattern(" accbcca ")
-                .pattern("  accca  ")
-                .pattern("   aca   ")
+                .pattern("   aaa   ")
+                .pattern("  aabaa  ")
+                .pattern("   aaa   ")
                 .pattern("    a    ")
                 .pattern("         ")
                 .define('b', ItemTags.MUSIC_DISCS)
                 .define('a', ModItems.neutron_pile.get())
-                .define('c', ModItems.neutron_nugget.get())
                 .unlockedBy("has_item", has(ItemTags.MUSIC_DISCS)).save(consumer);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.neutron_gear.get())
@@ -707,6 +704,46 @@ public class ModRecipes extends RecipeProvider implements IConditionBuilder {
                 .define('Q', Items.QUARTZ_BLOCK)
                 .showNotification(true)
                 .unlockedBy("has_item", has(ModItems.infinity_catalyst.get())).save(consumer);
+
+        ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModBlocks.dense_neutron_collector.get())
+                .pattern("AAC   CAA")
+                .pattern("AB     BA")
+                .pattern("C DEEED C")
+                .pattern("  EGGGE  ")
+                .pattern("  EGFGE  ")
+                .pattern("  EGGGE  ")
+                .pattern("C DEEED C")
+                .pattern("AB     BA")
+                .pattern("AAC   CAA")
+                .define('A', Items.ENDER_PEARL)
+                .define('B', Items.NETHER_STAR)
+                .define('C', ModItems.diamond_lattice.get())
+                .define('D', ModItems.neutron_ingot.get())
+                .define('E', Blocks.EMERALD_BLOCK)
+                .define('F', ModItems.endest_pearl.get())
+                .define('G', ModBlocks.neutron_collector.get())
+                .showNotification(true)
+                .unlockedBy("has_item", has(ModBlocks.neutron_collector.get())).save(consumer);
+
+        ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModBlocks.denser_neutron_collector.get())
+                .pattern("ABB F BBA")
+                .pattern("BCC   CCB")
+                .pattern("BCDEEEDCB")
+                .pattern("  EGGGE  ")
+                .pattern("F EGEGE F")
+                .pattern("  EGGGE  ")
+                .pattern("BCDEEEDCB")
+                .pattern("BCC   CCB")
+                .pattern("ABB F BBA")
+                .define('A', ModItems.neutron_gear.get())
+                .define('B', ModItems.neutron_pile.get())
+                .define('C', ModItems.blaze_cube.get())
+                .define('D', ModItems.infinity_catalyst.get())
+                .define('E', ModBlocks.blaze_cube_block.get())
+                .define('F', Blocks.GOLD_BLOCK)
+                .define('G', ModBlocks.dense_neutron_collector.get())
+                .showNotification(true)
+                .unlockedBy("has_item", has(ModBlocks.dense_neutron_collector.get())).save(consumer);
 
         ModShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModBlocks.neutron_compressor.get())
                 .pattern("IIIHHHIII")

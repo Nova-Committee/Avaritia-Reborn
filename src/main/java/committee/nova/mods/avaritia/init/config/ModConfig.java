@@ -29,6 +29,8 @@ public class ModConfig {
     public static final ForgeConfigSpec.IntValue singularityTimeRequired;
     public static final ForgeConfigSpec.DoubleValue growthSoulFarmland;
     public static final ForgeConfigSpec.IntValue bladeSlashDamage;
+    public static final ForgeConfigSpec.IntValue bladeSlashRadius;
+    public static final ForgeConfigSpec.BooleanValue internalInfinityCatalystCraft;
 
     public static final ForgeConfigSpec.IntValue neutronPileEmc;
     public static final ForgeConfigSpec.IntValue vanillaTotemEmc;
@@ -56,6 +58,8 @@ public class ModConfig {
         singularityTimeRequired = buildInt(common, "Singularity Time Required", 240, 0, Integer.MAX_VALUE, "Singularity default time required");
         growthSoulFarmland = buildDouble(common, "Growth soul farmland rate", 0.8, 0.0, 1.0, "Growth soul farmland rate");
         bladeSlashDamage = buildInt(common, "BladeSlash Damage", 200, 0, Integer.MAX_VALUE, "Damage of BladeSlash for Crystal Sword");
+        bladeSlashRadius = buildInt(common, "BladeSlash Radius", 10, 5, 100, "Radius of BladeSlash for Crystal Sword");
+        internalInfinityCatalystCraft = buildBoolean(common, "Internal InfinityCatalyst Craft", true, "Is InfinityCatalyst Craft use all Singularity");
         common.pop();
         common.push("emc");
         neutronPileEmc = buildInt(common, "Neutron Pile Emc", 100, 0, Integer.MAX_VALUE, "Emc of Neutron Pile");

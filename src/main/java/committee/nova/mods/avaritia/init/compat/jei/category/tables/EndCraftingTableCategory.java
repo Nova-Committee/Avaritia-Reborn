@@ -93,7 +93,7 @@ public class EndCraftingTableCategory implements IRecipeCategory<BaseTableCrafti
             shapelessRecipe(builder, inputs);
             builder.addSlot(RecipeIngredientRole.OUTPUT, 169, 58).addItemStack(new ItemStack(ModItems.eternal_singularity.get()));
         }
-        builder.moveRecipeTransferButton(170, 100);
+        builder.moveRecipeTransferButton(180, 138);
     }
 
     private void shapelessRecipe(@NotNull IRecipeLayoutBuilder builder, NonNullList<Ingredient> inputs) {

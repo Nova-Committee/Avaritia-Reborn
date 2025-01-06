@@ -10,6 +10,7 @@ import committee.nova.mods.avaritia.common.tile.TierCraftTile;
 import committee.nova.mods.avaritia.init.registry.ModRecipeTypes;
 import committee.nova.mods.avaritia.init.registry.ModTooltips;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;
@@ -60,12 +61,12 @@ public class JadeCompat implements IWailaPlugin {
         public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
             var level = Minecraft.getInstance().level;
             assert level != null;
-            var compressor = (TierCraftTile) accessor.getBlockEntity();
-            var recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CRAFTING_TABLE_RECIPE.get(), compressor.getInventory().toIInventory(), level);
+            var craftTile = (TierCraftTile) accessor.getBlockEntity();
+            var recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CRAFTING_TABLE_RECIPE.get(), craftTile.getInventory().toIInventory(), level);
 
             if (recipe.isPresent()) {
                 var output = recipe.get().getResultItem(level.registryAccess());
-                tooltip.add(ModTooltips.CRAFTING.args(output.getCount(), output.getHoverName()).build());
+                tooltip.add(ModTooltips.CRAFTING.args(I18n.get("jei.category.avaritia." + craftTile.tier.name), output.getCount(), output.getHoverName()).build());
             }
         }
 
