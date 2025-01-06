@@ -126,7 +126,7 @@ public class JeiCompat implements IModPlugin {
         registration.addRecipeClickArea(NetherCraftScreen.class, 105, 58, 22, 12, NetherCraftingTableCategory.RECIPE_TYPE);
         registration.addRecipeClickArea(EndCraftScreen.class, 135, 76, 22, 12, EndCraftingTableCategory.RECIPE_TYPE);
         registration.addRecipeClickArea(ExtremeCraftScreen.class, 174, 90, 22, 12, ExtremeCraftingTableCategory.RECIPE_TYPE);
-        registration.addRecipeClickArea(ExtremeSmithingScreen.class, 86, 40, 22, 12, ExtremeSmithingRecipeCategory.RECIPE_TYPE);//todo
+        registration.addRecipeClickArea(ExtremeSmithingScreen.class, 86, 40, 22, 12, ExtremeSmithingRecipeCategory.RECIPE_TYPE);
         registration.addRecipeClickArea(ExtremeAnvilScreen.class, 102, 48, 22, 15, ExtremeAnvilRecipeCategory.RECIPE_TYPE);
     }
 

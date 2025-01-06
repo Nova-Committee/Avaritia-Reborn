@@ -392,47 +392,14 @@ public class InfinityCrossBowItem extends CrossbowItem implements ITooltip {
     }
 
     @Override
-    public void onUseTick(Level pLevel, @NotNull LivingEntity pLivingEntity, @NotNull ItemStack pStack, int pCount) {
-        if (!pLevel.isClientSide) {
-            int i = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.QUICK_CHARGE, pStack);
-            SoundEvent soundevent = this.getSoundEvent(i);
-            SoundEvent soundevent1 = i == 0 ? SoundEvents.CROSSBOW_LOADING_MIDDLE : null;
-            float f = (float) (pStack.getUseDuration() - pCount) / (float) getChargeTime();
-            if (f < 0.2F) {
-                this.isLoadingStart = false;
-                this.isLoadingMiddle = false;
-            }
-
-            if (f >= 0.2F && !this.isLoadingStart) {
-                this.isLoadingStart = true;
-                pLevel.playSound(null, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), soundevent, SoundSource.PLAYERS, 0.5F, 1.0F);
-            }
-
-            if (f >= 0.5F && soundevent1 != null && !this.isLoadingMiddle) {
-                this.isLoadingMiddle = true;
-                pLevel.playSound(null, pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(), soundevent1, SoundSource.PLAYERS, 0.5F, 1.0F);
-            }
-        }
-    }
-
-    @Override
-    public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {
-        int i = this.getUseDuration(stack) - count;
+    public void releaseUsing(@NotNull ItemStack stack, @NotNull Level pLevel, @NotNull LivingEntity entity, int pTimeLeft) {
+        int i = this.getUseDuration(stack) - pTimeLeft;
         float f = getCharge(i, stack);
         if (f >= 1.0F && !isCharged(stack) && hasAmmo(entity, stack)) {
             setCharged(stack, true);
             SoundSource soundcategory = entity instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
             entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.CROSSBOW_LOADING_END, soundcategory, 1.0F, 1.0F / (entity.random.nextFloat() * 0.5F + 1.0F) + 0.2F);
         }
-    }
-
-    private SoundEvent getSoundEvent(int enchantmentLevel) {
-        return switch (enchantmentLevel) {
-            case 1 -> SoundEvents.CROSSBOW_QUICK_CHARGE_1;
-            case 2 -> SoundEvents.CROSSBOW_QUICK_CHARGE_2;
-            case 3 -> SoundEvents.CROSSBOW_QUICK_CHARGE_3;
-            default -> SoundEvents.CROSSBOW_LOADING_START;
-        };
     }
 
 
