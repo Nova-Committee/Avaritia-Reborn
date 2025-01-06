@@ -402,14 +402,12 @@ public class ToolUtils {
      * @param livingEntity 玩家
      * @param victim       被攻击者
      */
-    public static void sweepAttack(Level level, LivingEntity livingEntity, LivingEntity victim) {
+    public static void sweepAttack(Level level, LivingEntity livingEntity, Entity victim) {
         if (livingEntity instanceof Player player) {
             for (LivingEntity livingentity : level.getEntitiesOfClass(LivingEntity.class, player.getItemInHand(InteractionHand.MAIN_HAND).getSweepHitBox(player, victim))) {
                 double entityReachSq = Mth.square(player.getEntityReach()); // Use entity reach instead of constant 9.0. Vanilla uses bottom center-to-center checks here, so don't update this to use canReach, since it uses closest-corner checks.
                 if (!player.isAlliedTo(livingentity) && (!(livingentity instanceof ArmorStand) || !((ArmorStand) livingentity).isMarker()) && player.distanceToSqr(livingentity) < entityReachSq) {
                     livingentity.knockback(0.6F, Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(player.getYRot() * ((float) Math.PI / 180F)));
-                    victim.setHealth(0);
-                    victim.die(player.damageSources().source(ModDamageTypes.INFINITY, player, victim));
                 }
             }
             level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, livingEntity.getSoundSource(), 1.0F, 1.0F);
